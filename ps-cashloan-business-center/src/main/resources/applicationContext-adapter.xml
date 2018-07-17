@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="variableExtractorFactory" class="com.adpanshi.credit.data.variable.factory.VariableExtractorFactory">-->
+        <!--<property name="variableExtractorMap">-->
+            <!--<map>-->
+                <!--<entry key="channel_App_UserBasicInfo_VariableExtractor_1_0" value-ref="channel_App_UserBasicInfo_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_App_UserFastTouch_Variable_1_0" value-ref="channel_App_UserFastTouch_Variable_1_0"/>-->
+                <!--<entry key="channel_BT_UserBadRecord_VariableExtractor_1_0" value-ref="channel_BT_UserBadRecord_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserBasicInfo_VariableExtractor_1_0" value-ref="channel_BT_UserBasicInfo_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserCommunication_VariableExtractor_1_0" value-ref="channel_BT_UserCommunication_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserConsumption_VariableExtractor_1_0" value-ref="channel_BT_UserConsumption_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserConsumptionBankVerfication_VariableExtractor_1_0" value-ref="channel_BT_UserConsumptionBankVerfication_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserCreditLoan_VariableExtractor_1_0" value-ref="channel_BT_UserCreditLoan_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserDataReportModelOutPutItem_VariableExtractor1_0" value-ref="channel_BT_UserDataReportModelOutPutItem_VariableExtractor1_0"/>-->
+                <!--<entry key="channel_BT_UserFinance_VariableExtractor_1_0" value-ref="channel_BT_UserFinance_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserIdentity_VariableExtractor_1_0" value-ref="channel_BT_UserIdentity_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_BT_UserVerfication_VariableExtractor_1_0" value-ref="channel_BT_UserVerfication_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_ConsumerLoanHistory_callTop10Record_VariableExtractor_1_0" value-ref="channel_ConsumerLoanHistory_callTop10Record_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_ConsumerLoanHistory_contactsRecord_VariableExtractor_1_0" value-ref="channel_ConsumerLoanHistory_contactsRecord_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_ConsumerLoanHistory_emergencyContact1Record_VariableExtractor_1_0" value-ref="channel_ConsumerLoanHistory_emergencyContact1Record_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_ConsumerLoanHistory_loan_VariableExtractor" value-ref="channel_ConsumerLoanHistory_loan_VariableExtractor"/>-->
+                <!--<entry key="channel_ConsumerLoanHistory_selfRecord_VariableExtractor_1_0" value-ref="channel_ConsumerLoanHistory_selfRecord_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Scorpion_BasicUserOper_VariableExtractor_1_0" value-ref="channel_Scorpion_BasicUserOper_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Scorpion_CheatOper_VariableExtractor_1_0" value-ref="channel_Scorpion_CheatOper_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Scorpion_SocialOper_VariableExtractor_1_0" value-ref="channel_Scorpion_SocialOper_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_Cheat_Loan_VariableExtractor_1_0" value-ref="channel_Whiteknight_Cheat_Loan_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_Cheat_Login_VariableExtractor_1_0" value-ref="channel_Whiteknight_Cheat_Login_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_Cheat_Register_VariableExtractor_1_0" value-ref="channel_Whiteknight_Cheat_Register_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_ContactsInfo_VariableExtractor_1_0" value-ref="channel_Whiteknight_ContactsInfo_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_DeviceInfo_Attribute_VariableExtractor_1_0" value-ref="channel_Whiteknight_DeviceInfo_Attribute_VariableExtractor_1_0"/>-->
+                <!--<entry key="channel_Whiteknight_User_Loan_Credit_VariableExtractor_1_0" value-ref="channel_Whiteknight_User_Loan_Credit_VariableExtractor_1_0"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+</beans>

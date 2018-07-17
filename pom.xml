@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>ps-cashloan-business-marketing</module>
+        <module>ps-cashloan-business-center</module>
+        <module>ps-cashloan-business-report</module>
+    </modules>
+    <parent>
+        <groupId>com.adpanshi</groupId>
+        <artifactId>ps-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <groupId>com.adpanshi</groupId>
+    <artifactId>ps-cashloan-business</artifactId>
+    <version>1.0.0.1-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0.1</version>
+        </dependency>
+    </dependencies>
+</project>
