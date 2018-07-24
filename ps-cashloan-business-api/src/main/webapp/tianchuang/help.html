@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>帮助</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css"/>
+		<style type="text/css">
+			#list {
+				/*避免导航边框和列表背景边框重叠，看起来像两条边框似得；*/
+				margin-top: -1px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 45px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.bottom {
+				position: absolute;
+				bottom: 35px;
+				left: 0;
+				right: 0;
+				text-align: center;
+				color: #888;
+				z-index: 1;
+			}
+			
+			.bottom p {
+				font-size: 12px;
+				margin: 0;
+				padding: 0;
+			}
+			
+			.content{
+				padding: 10px;
+				color:#404040;
+			}
+			
+			.content>p{
+				text-align: justify;
+				text-justify: inter-ideograph;
+				text-indent: 2em;
+			}
+			.content>h4{
+				padding: 20px 0;
+				text-indent: 2em;
+				font-weight: normal;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<ul id="list" class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell linkC">
+					<a class="mui-navigate-right" href="javascript:void(0);">
+						忘记服务密码?
+					</a>
+				</li>
+				<li class="mui-table-view-cell linkC">
+					<a class="mui-navigate-right" href="javascript:void(0);">
+						无法收到验证码?
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="moreCode.html">
+						为什么有多次验证码?
+					</a>
+				</li>
+				<li class="mui-table-view-cell linkC">
+					<a class="mui-navigate-right" href="javascript:void(0);">
+						授权过程需要多久？
+					</a>
+				</li>
+			</ul>
+
+			<!--忘记服务密码-->
+			<div class="content mui-hidden linkC_0">
+				<h4 class="tc">忘记服务密码？</h4>
+				<p>服务密码是中国联通、中国移动、中国电信客户的身份识别密码，由6位数字组合（0～9）。如果忘记了密码，可以选择下面的方式来找回密码：</p>
+				<p>致电运营商的客服号码，选择人工服务，核实您的身份信息后即可找回密码。</p>
+				<p>移动客服电话 10086</p>
+				<p>联通客服电话 10010</p>
+				<p>电信客服电话 10000</p>
+				<p>2. 打开电脑浏览器，访问运营商的网站，您可以在运营商的官网上重置密码。</p>
+				<p>移动的官方网站：http://www.10086.cn/</p>
+				<p>联通的官方网站：http://www.10010.com/</p>
+				<p>电信的官方网站：http://www.189.cn/</p>
+				<p>3. 请携带您的身份证等证件，前往各地的运营商营业厅柜台办理。</p>
+			</div>
+			<!--无法收到验证码?-->
+			<div class="content mui-hidden linkC_1">
+				<h4 class="tc">无法收到验证码？</h4>
+				<p>如果您无法收到手机短信验证码，请尝试下面的方法解决：</p>
+				<p>1. 检查您的手机是否暂无信号或者已经欠费</p>
+				<p>2. 确认您的手机上是否安装了安全软件，导致短信验证码被拦截或屏蔽</p>
+				<p>3. 访问您手机运营商的官方网站，并尝试登录营业厅，确认您的手机是否因为验证码发送过于频繁导致收不到验证码。各手机运营商官方网站为：</p>
+				<p>移动 http://www.10086.cn/</p>
+				<p>联通 http://www.10010.com/</p>
+				<p>电信 http://www.189.cn/</p>
+				<p>如果以上方法都没有解决，可能是暂时的网络延迟，您可以稍后尝试重新获取。</p>
+			</div>
+			<!--授权过程需要多久？-->
+			<div class="content mui-hidden linkC_3">
+				<h4 class="tc">授权过程需要多久？</h4>
+				<p>根据运营商网络情况不同，授权服务需要1-3分钟时间才能完成，请耐心等待。 如果您发现等待时间过长，请选择非网络高峰期的时间重新授权。</p>
+			</div>
+		</div>
+		<div class="mui-content-padded">
+			<a class="mui-btn mui-btn-block mui-btn-primary" target="_self" href="login.html">返回</a>
+		</div>
+		<div class="bottom">
+			<p>保护信息安全，杜绝隐私泄露</p>
+			<p>©本服务由天创信用公司提供</p>
+		</div>
+		<script src="js/jquery.min.js"></script>
+		<script>
+			$(function(){
+				$('.linkC').on('click', function(){
+					var index = $(this).index();
+					$('.linkC_' + index).removeClass('mui-hidden').siblings().addClass('mui-hidden');
+				});
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rc.mapper.IdnoProvinceMatchDictMapper">
+	<resultMap type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rc.domain.IdnoProvinceMatchDict" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="provinceName" column="provinceName" javaType="String"/>
+        <result property="provinceStartNo" column="provinceStartNo" javaType="int"/>
+        <result property="createTime" column="createTime" javaType="Date"/>
+        <result property="state" column="state" javaType="int"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.province_name,
+        t.province_start_no,
+        t.create_time,
+        t.state
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="id !=null and id !=''">
+            AND t.id = #{id}
+         </if>
+		 <if test="provinceStartNo !=null and provinceStartNo !=''">
+            AND t.province_start_no = #{provinceStartNo}
+         </if>
+		 <if test="state !=null and state !=''">
+            AND t.state = #{state}
+         </if>
+		 <if test="provinceName !=null and provinceName !=''">
+            AND instr(t.province_name,#{provinceName})>0
+         </if>
+        <if test="startTime  != null">
+            <![CDATA[
+                     AND t.create_time >= CONCAT(#{startTime},' 00:00:00')
+                 ]]>
+        </if>
+        <if test="endTime  != null">
+            <![CDATA[
+                     AND t.create_time <= CONCAT(#{endTime},' 23:59:59')
+                 ]]>
+        </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rc.domain.IdnoProvinceMatchDict" >
+		<![CDATA[
+	        INSERT INTO cl_user_idno_match_dict (
+	            province_name ,
+	            province_start_no
+	        ) VALUES (
+	        	#{provinceName},
+	        	#{provinceStartNo}
+	        )
+	    ]]>
+	</insert>
+    <!-- 更新 -->
+    <update id="update" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rc.domain.IdnoProvinceMatchDict">
+        UPDATE cl_user_idno_match_dict
+        <set>
+            <if test="provinceName !=null and provinceName !=''">
+                province_name = #{provinceName},
+            </if>
+            <if test="provinceStartNo !=null and provinceStartNo !=''">
+                province_start_no = #{provinceStartNo},
+            </if>
+            <if test="state !=null ">
+                state = #{state}
+            </if>
+        </set>
+        WHERE  id = #{id}
+    </update>
+	
+	<update id="updateSelective" parameterType="java.util.HashMap">
+        UPDATE cl_user_idno_match_dict
+        <set>
+        	 <if test="provinceName !=null and provinceName !=''">
+                 province_name = #{provinceName},
+	         </if>
+			 <if test="provinceStartNo !=null and provinceStartNo !=''">
+                 province_start_no = #{provinceStartNo},
+	         </if>
+			 <if test="state !=null ">
+                 state = #{state}
+	         </if>
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	
+	<select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_idno_match_dict t
+        where t.id = #{id}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_idno_match_dict t
+        where 1=1
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_idno_match_dict t
+        where 1=1
+        <include refid="searchBy"/>
+        order by t.id desc
+    </select>
+
+    <delete id="del" parameterType="long">
+        DELETE FROM cl_user_idno_match_dict WHERE id=#{id}
+    </delete>
+
+</mapper>

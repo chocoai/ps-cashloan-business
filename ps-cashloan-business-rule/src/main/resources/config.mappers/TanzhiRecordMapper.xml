@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TanzhiRecordMapper">
+	<resultMap type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TanzhiRecord" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="borrowMainId" column="borrow_main_id" javaType="Long"/>
+        <result property="resId" column="res_id" javaType="String"/>
+        <result property="code" column="code" javaType="String"/>
+        <result property="phoneNumber" column="phone_number" javaType="String"/>
+        <result property="msg" column="msg" javaType="String"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="reportInfo" column="report_info" javaType="String"/>
+        <result property="basicInfo" column="basic_info" javaType="String"/>
+        <result property="relationPhoneInfos" column="relation_phone_infos" javaType="String"/>
+        <result property="section" column="section" javaType="String"/>
+        <result property="eveSums" column="eve_sums" javaType="String"/>
+        <result property="platformInfos" column="platform_infos" javaType="String"/>
+        <result property="refInfos" column="ref_infos" javaType="String"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="gmtUpdateTime" column="gmt_update_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.user_id,
+        t.borrow_main_id,
+        t.res_id,
+        t.code,
+        t.phone_number,
+        t.msg,
+        t.status,
+        t.report_info,
+        t.basic_info,
+        t.relation_phone_infos,
+        t.section,
+        t.eve_sums,
+        t.platform_infos,
+        t.ref_infos,
+        t.gmt_create_time,
+        t.gmt_update_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="@OGNL@isNotEmpty(id)">
+            AND t.id = #{id}
+         </if>
+		 <if test="@OGNL@isNotEmpty(userId)">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(borrowMainId)">
+            AND t.borrow_main_id = #{borrowMainId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(resId)">
+            AND t.res_id = #{resId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(code)">
+            AND t.code = #{code}
+         </if>
+		 <if test="@OGNL@isNotEmpty(phoneNumber)">
+            AND t.phone_number = #{phoneNumber}
+         </if>
+		 <if test="@OGNL@isNotEmpty(msg)">
+            AND t.msg = #{msg}
+         </if>
+		 <if test="@OGNL@isNotEmpty(status)">
+            AND t.status = #{status}
+         </if>
+		 <if test="@OGNL@isNotEmpty(reportInfo)">
+            AND t.report_info = #{reportInfo}
+         </if>
+		 <if test="@OGNL@isNotEmpty(basicInfo)">
+            AND t.basic_info = #{basicInfo}
+         </if>
+		 <if test="@OGNL@isNotEmpty(relationPhoneInfos)">
+            AND t.relation_phone_infos = #{relationPhoneInfos}
+         </if>
+		 <if test="@OGNL@isNotEmpty(section)">
+            AND t.section = #{section}
+         </if>
+		 <if test="@OGNL@isNotEmpty(eveSums)">
+            AND t.eve_sums = #{eveSums}
+         </if>
+		 <if test="@OGNL@isNotEmpty(platformInfos)">
+            AND t.platform_infos = #{platformInfos}
+         </if>
+		 <if test="@OGNL@isNotEmpty(refInfos)">
+            AND t.ref_infos = #{refInfos}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtCreateTime)">
+            AND t.gmt_create_time = #{gmtCreateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtUpdateTime)">
+            AND t.gmt_update_time = #{gmtUpdateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(remarks)">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TanzhiRecord" >
+		<![CDATA[
+	        INSERT INTO cl_tanzhi_record (
+	            user_id ,
+	            borrow_main_id ,
+	            res_id ,
+	            code ,
+	            phone_number ,
+	            msg ,
+	            status ,
+	            report_info ,
+	            basic_info ,
+	            relation_phone_infos ,
+	            section ,
+	            eve_sums ,
+	            platform_infos ,
+	            ref_infos ,
+	            gmt_create_time ,
+	            gmt_update_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{userId},
+	        	#{borrowMainId},
+	        	#{resId},
+	        	#{code},
+	        	#{phoneNumber},
+	        	#{msg},
+	        	#{status},
+	        	#{reportInfo},
+	        	#{basicInfo},
+	        	#{relationPhoneInfos},
+	        	#{section},
+	        	#{eveSums},
+	        	#{platformInfos},
+	        	#{refInfos},
+	        	NOW(),
+	        	NOW(),
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="updateSelective" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TanzhiRecord">
+        UPDATE cl_tanzhi_record 
+        <set>
+        	<if test="@OGNL@isNotEmpty(userId)">
+	            user_id = #{userId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(borrowMainId)">
+	            borrow_main_id = #{borrowMainId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(resId)">
+	            res_id = #{resId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(code)">
+	            code = #{code},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(phoneNumber)">
+	            phone_number = #{phoneNumber},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(msg)">
+	            msg = #{msg},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(status)">
+	            status = #{status},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(reportInfo)">
+	            report_info = #{reportInfo},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(basicInfo)">
+	            basic_info = #{basicInfo},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(relationPhoneInfos)">
+	            relation_phone_infos = #{relationPhoneInfos},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(section)">
+	            section = #{section},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(eveSums)">
+	            eve_sums = #{eveSums},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(platformInfos)">
+	            platform_infos = #{platformInfos},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(refInfos)">
+	            ref_infos = #{refInfos},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(gmtCreateTime)">
+	            gmt_create_time = #{gmtCreateTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(gmtUpdateTime)">
+	            gmt_update_time = #{gmtUpdateTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(remarks)">
+	            remarks = #{remarks},
+	        </if>
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_tanzhi_record t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+	
+	<select id="query" parameterType="map" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_tanzhi_record t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_tanzhi_record t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+</mapper>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.com.adpanshi.cashloan.com.adpanshi.cashloan.api.system.mapper.SysAttachmentMapper">
+	<resultMap type="com.adpanshi.cashloan.com.adpanshi.cashloan.api.system.domain.SysAttachment" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="targetTable" column="target_table" javaType="String"/>
+        <result property="targetField" column="target_field" javaType="String"/>
+        <result property="targetId" column="target_id" javaType="Long"/>
+        <result property="attachmentType" column="attachment_type" javaType="String"/>
+        <result property="classify" column="classify" javaType="Integer"/>
+        <result property="subClassify" column="sub_classify" javaType="Integer"/>
+        <result property="filePath" column="file_path" javaType="String"/>
+        <result property="originName" column="origin_name" javaType="String"/>
+        <result property="size" column="size" javaType="Long"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="suffix" column="suffix" javaType="String"/>
+        <result property="gmtCreaterTime" column="gmt_creater_time" javaType="Date"/>
+        <result property="gmtUpdateTime" column="gmt_update_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.target_table,
+        t.target_field,
+        t.target_id,
+        t.attachment_type,
+        t.classify,
+        t.sub_classify,
+        t.file_path,
+        t.origin_name,
+        t.size,
+        t.status,
+        t.suffix,
+        t.gmt_creater_time,
+        t.gmt_update_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="@OGNL@isNotEmpty(id)">
+            AND t.id = #{id}
+         </if>
+		 <if test="@OGNL@isNotEmpty(targetTable)">
+            AND t.target_table = #{targetTable}
+         </if>
+		 <if test="@OGNL@isNotEmpty(targetField)">
+            AND t.target_field = #{targetField}
+         </if>
+		 <if test="@OGNL@isNotEmpty(targetId)">
+            AND t.target_id = #{targetId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(attachmentType)">
+            AND t.attachment_type = #{attachmentType}
+         </if>
+		 <if test="@OGNL@isNotEmpty(classify)">
+            AND t.classify = #{classify}
+         </if>
+         <if test="@OGNL@isNotEmpty(subClassify)">
+            AND t.sub_classify = #{subClassify}
+         </if>
+		 <if test="@OGNL@isNotEmpty(filePath)">
+            AND t.file_path = #{filePath}
+         </if>
+		 <if test="@OGNL@isNotEmpty(originName)">
+            AND t.origin_name = #{originName}
+         </if>
+		 <if test="@OGNL@isNotEmpty(size)">
+            AND t.size = #{size}
+         </if>
+		 <if test="@OGNL@isNotEmpty(status)">
+            AND t.status = #{status}
+         </if>
+		 <if test="@OGNL@isNotEmpty(suffix)">
+            AND t.suffix = #{suffix}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtCreaterTime)">
+            AND t.gmt_creater_time = #{gmtCreaterTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtUpdateTime)">
+            AND t.gmt_update_time = #{gmtUpdateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(remarks)">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.com.adpanshi.cashloan.api.system.domain.SysAttachment" >
+		<![CDATA[
+	        INSERT INTO cl_sys_attachment (
+	            target_table ,
+	            target_field ,
+	            target_id ,
+	            attachment_type ,
+	            classify ,
+	            sub_classify,
+	            file_path ,
+	            origin_name ,
+	            size ,
+	            status ,
+	            suffix ,
+	            gmt_creater_time ,
+	            gmt_update_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{targetTable},
+	        	#{targetField},
+	        	#{targetId},
+	        	#{attachmentType},
+	        	#{classify},
+	        	#{subClassify},
+	        	#{filePath},
+	        	#{originName},
+	        	#{size},
+	        	1,
+	        	#{suffix},
+	        	now(),
+	        	now(),
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.adpanshi.cashloan.com.adpanshi.cashloan.api.system.domain.SysAttachment">
+        UPDATE cl_sys_attachment 
+        <set>
+			 <if test="@OGNL@isNotEmpty(targetTable)">
+	            target_table = #{targetTable},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(targetField)">
+	            target_field = #{targetField},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(targetId)">
+	            target_id = #{targetId},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(attachmentType)">
+	             attachment_type = #{attachmentType},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(classify)">
+	             classify = #{classify},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(subClassify)">
+	             sub_classify = #{subClassify},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(filePath)">
+	             file_path = #{filePath},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(originName)">
+	             origin_name = #{originName},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(size)">
+	             size = #{size},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(status)">
+	             status = #{status},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(suffix)">
+	             suffix = #{suffix},
+	         </if>
+			 <if test="@OGNL@isNotEmpty(remarks)">
+	             remarks = #{remarks},
+	         </if>
+	         	gmt_update_time=now()
+        </set>
+        WHERE status=1
+        	AND id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_sys_attachment t
+       	WHERE t.status=1  AND  t.id = #{value}
+		]]>
+    </select>
+	
+	<select id="listSelective" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT 
+        <include refid="Base_Column_List" />
+            FROM cl_sys_attachment t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_sys_attachment  t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<select id="getAttachmentByTargetData" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_sys_attachment t
+       	WHERE t.status=1  
+       		AND t.target_id = #{extra.targetId}
+            AND t.target_table = #{extra.targetTable}
+		 <if test="null !=extra.targetField and extra.targetField !=''">
+            AND t.target_field = #{extra.targetField}
+         </if>
+         ORDER BY t.gmt_update_time DESC LIMIT 1
+    </select>
+    
+    <!-- 根据给定条件查询用户合同及收入证明附件集 -->
+    <select id="queryAttachmentByPettyLoanScene" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_sys_attachment t
+            WHERE t.status=1 AND  t.target_table=#{targetMode.targetTable} AND t.target_field=#{targetMode.targetField} 
+            <if test="@OGNL@isNotEmpty(targetMode.targetId)">
+                AND t.target_id=#{targetMode.targetId}
+            </if>
+			AND EXISTS (SELECT plc.id FROM cl_petty_loan_scene plc WHERE plc.`status`=1 AND plc.scene_type IN(2,4) AND t.target_id=plc.id)
+		  	AND EXISTS 
+		  	(
+		  		SELECT ua.id FROM cl_user_auth ua WHERE ua.user_id=#{userId} AND ua.tenement_income_state IN
+		  		<foreach item="statusTmp" index="index" collection="tenementIncomeStates" open="(" separator="," close=")">
+			       #{statusTmp}
+		        </foreach>
+		  	)
+    </select>
+    <!-- 根据给定条件查询订单使用的场景及租房收入证明合同 -->
+	<select id="queryAttachmentByBorIdWithUserIdParams" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" /> FROM cl_sys_attachment t
+       		WHERE t.status=1 AND t.target_table=#{targetMode.targetTable} AND t.target_field=#{targetMode.targetField}
+       		<if test="@OGNL@isNotEmpty(targetMode.targetId)">
+                AND t.target_id=#{targetMode.targetId}
+            </if>
+            AND EXISTS (
+				SELECT pls.id FROM cl_petty_loan_scene pls WHERE pls.id=t.target_id AND pls.scene_type IN
+				  <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		            #{itemScene}
+	         	 </foreach>
+			      AND EXISTS (
+					SELECT plsb.petty_loan_scene_id FROM cl_petty_loan_scene_borrow plsb WHERE plsb.petty_loan_scene_id=pls.id  AND plsb.borrow_id=#{borrowId} AND plsb.user_id=#{userId}
+			))
+    </select>
+    
+    <select id="queryAttachmentByWithUserIdParams" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" /> FROM cl_sys_attachment t
+       		WHERE t.status=1 AND t.target_table=#{targetMode.targetTable} AND t.target_field=#{targetMode.targetField}
+       		<if test="@OGNL@isNotEmpty(targetMode.targetId)">
+                AND t.target_id=#{targetMode.targetId}
+            </if>
+            AND EXISTS (
+				SELECT pls.id FROM cl_petty_loan_scene pls WHERE pls.id=t.target_id AND pls.scene_type IN
+				  <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		            #{itemScene}
+	         	 </foreach>
+			    )
+    </select>
+    
+    <!-- 根据给定条件把对应的附件记录置为失效(非正常-逻辑删除) -->
+	<select id="updateAttachmentExpireByParameter" resultType="java.lang.Integer">
+	    UPDATE cl_sys_attachment SET status=0,gmt_update_time=NOW(),remarks=#{remarks} 
+	    	WHERE target_table=#{targetMode.targetTable} AND target_field=#{targetMode.targetField} 
+	    	 AND status=1 AND classify IN
+	    	<foreach item="classifyTmp" index="index" collection="classifys" open="(" separator="," close=")">
+			    #{classifyTmp}
+		    </foreach>
+	    	<if test="@OGNL@isNotEmpty(targetMode.targetId)">
+                AND target_id=#{targetMode.targetId}
+            </if>
+    </select>
+    
+    <!-- 根据给定主键idList集查询附件 -->
+    <select id="queryByIdList" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_sys_attachment t
+       	WHERE t.status=1  AND  t.id  IN
+       	<foreach item="itemId" index="index" collection="idList" open="(" separator="," close=")">
+       		#{itemId}
+       	</foreach>
+    </select>
+    
+    <!-- 根据给定idList更新目标对象 -->
+    <update id="updateTargetByIdList">
+	    UPDATE cl_sys_attachment SET 
+	       target_table=#{targetMode.targetTable},
+	       target_field=#{targetMode.targetField},
+	       target_id=#{targetMode.targetId}
+           WHERE status=1 AND id IN
+	       <foreach item="itemId" index="index" collection="idList" open="(" separator="," close=")">
+	       	  #{itemId}
+	       </foreach>
+    </update>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from cl_sys_attachment t
+		<where><include refid="searchBy"/></where>
+	</select>
+    
+</mapper>

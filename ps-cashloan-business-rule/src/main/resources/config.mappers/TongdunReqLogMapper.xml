@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_tongdun_req_log表:同盾第三方请求记录模块 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TongdunReqLogMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TongdunReqLog">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="submit_code" property="submitCode" jdbcType="VARCHAR" />
+        <result column="submit_params" property="submitParams" jdbcType="VARCHAR" />
+        <result column="report_id" property="reportId" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="query_code" property="queryCode" jdbcType="VARCHAR" />
+        <result column="rs_state" property="rsState" jdbcType="VARCHAR" />
+        <result column="rs_score" property="rsScore" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <resultMap id="ModelResultMap" extends="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.TongdunReqLogModel">
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="borrow_no" property="borrowNo" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="ModelDetailResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.TongdunReqLogModel">
+		<result column="query_params" property="queryParams" jdbcType="VARCHAR" />
+	</resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,order_no,borrow_id,user_id,state,create_time,submit_code,submit_params,report_id,update_time,query_code,rs_state,rs_score 
+    </sql>
+
+	<sql id="BaseModel_Column_List">
+		i.real_name,i.phone,b.order_no as borrow_no,b.amount,
+		q.id,q.order_no,q.borrow_id,q.user_id,q.state,q.create_time,q.submit_code,q.submit_params,
+		q.report_id,q.update_time,q.query_code,q.rs_state,q.rs_score 
+	</sql>
+	
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="orderNo != null and orderNo != '' ">
+                and order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="borrowId != null and borrowId != '' ">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null and userId != '' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="state != null and state != '' ">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="submitCode != null and submitCode != '' ">
+                and submit_code = #{submitCode,jdbcType=VARCHAR}
+            </if>
+            <if test="submitParams != null and submitParams != '' ">
+                and submit_params = #{submitParams,jdbcType=VARCHAR}
+            </if>
+            <if test="reportId != null and reportId != '' ">
+                and report_id = #{reportId,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="queryCode != null and queryCode != '' ">
+                and query_code = #{queryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="rsState != null and rsState != '' ">
+                and rs_state = #{rsState,jdbcType=VARCHAR}
+            </if>
+            <if test="rsScore != null and rsScore != '' ">
+                and rs_score = #{rsScore,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save">
+        insert into ${tableName} (order_no,borrow_id,user_id,state,create_time,submit_code,submit_params,report_id,update_time,query_code,rs_state,rs_score)values(#{item.orderNo,jdbcType=VARCHAR},#{item.borrowId,jdbcType=BIGINT},#{item.userId,jdbcType=BIGINT},#{item.state,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},#{item.submitCode,jdbcType=VARCHAR},#{item.submitParams,jdbcType=VARCHAR},#{item.reportId,jdbcType=VARCHAR},#{item.updateTime,jdbcType=TIMESTAMP},#{item.queryCode,jdbcType=VARCHAR},#{item.rsState,jdbcType=VARCHAR},#{item.rsScore,jdbcType=INTEGER})
+    </insert>
+
+    
+    <update id="update">
+        update ${tableName} set
+            order_no = #{item.orderNo,jdbcType=VARCHAR},
+            borrow_id = #{item.borrowId,jdbcType=BIGINT},
+            user_id = #{item.userId,jdbcType=BIGINT},
+            state = #{item.state,jdbcType=VARCHAR},
+            create_time = #{item.createTime,jdbcType=TIMESTAMP},
+            submit_code = #{item.submitCode,jdbcType=VARCHAR},
+            submit_params = #{item.submitParams,jdbcType=VARCHAR},
+            report_id = #{item.reportId,jdbcType=VARCHAR},
+            update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+            query_code = #{item.queryCode,jdbcType=VARCHAR},
+            rs_state = #{item.rsState,jdbcType=VARCHAR},
+            rs_score = #{item.rsScore,jdbcType=INTEGER}
+        where id = #{item.id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update ${tableName}
+          <set>
+            <if test="orderNo != null and orderNo != '' ">        
+                order_no = #{orderNo,jdbcType=VARCHAR},                
+            </if>
+            <if test="borrowId != null and borrowId != '' ">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="userId != null and userId != '' ">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},            
+              </if>
+            <if test="submitCode != null and submitCode != '' ">        
+                submit_code = #{submitCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="submitParams != null and submitParams != '' ">        
+                submit_params = #{submitParams,jdbcType=VARCHAR},                
+            </if>
+            <if test="reportId != null and reportId != '' ">        
+                report_id = #{reportId,jdbcType=VARCHAR},                
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},            
+             </if>
+            <if test="queryCode != null and queryCode != '' ">        
+                query_code = #{queryCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="rsState != null and rsState != '' ">        
+                rs_state = #{rsState,jdbcType=VARCHAR},                
+            </if>
+            <if test="rsScore != null and rsScore != '' ">        
+                rs_score = #{rsScore,jdbcType=INTEGER}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <include refid="searchBy"/>
+    </select>
+    
+    <select id="listModelByMap" resultMap="ModelResultMap"  parameterType="java.util.HashMap">
+        select
+        <include refid="BaseModel_Column_List" />
+        from ${tableName} q
+        <include refid="listModelByMapBaseSql"/>
+        <choose>
+            <when  test="tableNames !=null  ">
+                <foreach collection="tableNames" index="index" item="item" >
+
+                    UNION  ALL
+                    select
+                    <include refid="BaseModel_Column_List" />
+                    from ${item} q
+                    <include refid="listModelByMapBaseSql"/>
+                </foreach>
+                ORDER BY create_time DESC
+            </when >
+            <otherwise>
+                ORDER BY q.create_time DESC
+            </otherwise>
+        </choose>
+	</select>
+
+
+    <sql id="listModelByMapBaseSql">
+        JOIN cl_user_base_info i on q.user_id = i.user_id
+        JOIN cl_borrow b on q.borrow_id = b.id
+
+        <if test="realName !=null and realName != '' ">
+            and i.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="phone !=null and phone != '' ">
+            and i.phone like concat("%",#{phone,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="reportId !=null and reportId !=''">
+            and q.report_id like concat("%",#{reportId,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="state !=null and state !=''">
+            and q.state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="rsState != null and rsState != '' ">
+            and q.rs_state = #{rsState,jdbcType=VARCHAR}
+        </if>
+        <!--<if test="startTime != null">
+            and q.create_time &gt; #{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime  != null">
+            and q.create_time &lt; #{endTime,jdbcType=TIMESTAMP}
+        </if>--> <!--zy-->
+        <if test="startTime  != null">
+            <![CDATA[
+                     AND q.create_time >= CONCAT(#{startTime},' 00:00:00')
+                 ]]>
+        </if>
+        <if test="endTime  != null">
+            <![CDATA[
+                     AND q.create_time <= CONCAT(#{endTime},' 23:59:59')
+                 ]]>
+        </if>
+        <if test="borrowNo !=null and borrowNo != '' ">
+            and b.order_no  like concat("%",#{borrowNo,jdbcType=VARCHAR},"%")
+        </if>
+    </sql>
+ 
+	<select id="findModelById" resultMap="ModelDetailResultMap"  parameterType="java.lang.Long">
+        select d.query_params 
+        from ${tableName} q , ${tableNameDetail} d
+		where d.order_no = q.order_no and q.borrow_id = #{borrowId,jdbcType=INTEGER}
+	</select>
+
+    <select id="showTable" resultType="String"  parameterType="java.lang.String">
+        select TABLE_NAME from information_schema.`TABLES` where TABLE_NAME= #{tableName,jdbcType=VARCHAR} and TABLE_SCHEMA=(select database())
+    </select>
+	
+</mapper>

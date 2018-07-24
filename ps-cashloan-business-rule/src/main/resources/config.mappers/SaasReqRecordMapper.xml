@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.SaasReqRecordMapper">
+	<resultMap type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.SaasReqRecord" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="reqId" column="req_id" javaType="String"/>
+        <result property="resId" column="res_id" javaType="String"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="type" column="type" javaType="Integer"/>
+        <result property="state" column="state" javaType="String"/>
+        <result property="channel" column="channel" javaType="String"/>
+        <result property="reqCode" column="req_code" javaType="String"/>
+        <result property="msg" column="msg" javaType="String"/>
+        <result property="data" column="data" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="updateTime" column="update_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.req_id,
+        t.res_id,
+        t.user_id,
+        t.type,
+        t.state,
+        t.channel,
+        t.req_code,
+        t.msg,
+        t.data,
+        t.create_time,
+        t.update_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="@OGNL@isNotEmpty(id)">
+            AND t.id = #{id}
+         </if>
+		 <if test="@OGNL@isNotEmpty(reqId)">
+            AND t.req_id = #{reqId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(resId)">
+            AND t.res_id = #{resId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(userId)">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(type)">
+            AND t.type = #{type}
+         </if>
+		 <if test="@OGNL@isNotEmpty(state)">
+            AND t.state = #{state}
+         </if>
+		 <if test="@OGNL@isNotEmpty(channel)">
+            AND t.channel = #{channel}
+         </if>
+		 <if test="@OGNL@isNotEmpty(reqCode)">
+            AND t.req_code = #{reqCode}
+         </if>
+		 <if test="@OGNL@isNotEmpty(msg)">
+            AND t.msg = #{msg}
+         </if>
+		 <if test="@OGNL@isNotEmpty(data)">
+            AND t.data = #{data}
+         </if>
+		 <if test="@OGNL@isNotEmpty(createTime)">
+            AND t.create_time = #{createTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(updateTime)">
+            AND t.update_time = #{updateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(remarks)">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.SaasReqRecord" >
+		<![CDATA[
+	        INSERT INTO cl_saas_req_record (
+	            req_id ,
+	            res_id ,
+	            user_id ,
+	            type ,
+	            state ,
+	            channel ,
+	            req_code ,
+	            msg ,
+	            data ,
+	            create_time ,
+	            update_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{reqId},
+	        	#{resId},
+	        	#{userId},
+	        	#{type},
+	        	#{state},
+	        	#{channel},
+	        	#{reqCode},
+	        	#{msg},
+	        	#{data},
+	        	NOW(),
+	        	NOW(),
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="updateSelective" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.SaasReqRecord">
+        UPDATE cl_saas_req_record 
+        <set>
+        	<if test="@OGNL@isNotEmpty(reqId)">
+	            req_id = #{reqId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(resId)">
+	            res_id = #{resId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(userId)">
+	            user_id = #{userId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(type)">
+	            type = #{type},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(state)">
+	            state = #{state},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(channel)">
+	            channel = #{channel},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(reqCode)">
+	            req_code = #{reqCode},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(msg)">
+	            msg = #{msg},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(data)">
+	            data = #{data},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(createTime)">
+	            create_time = #{createTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(updateTime)">
+	            update_time = #{updateTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(remarks)">
+	            remarks = #{remarks},
+	        </if>
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_saas_req_record t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+	
+	<select id="query" parameterType="map" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_saas_req_record t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_saas_req_record t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+	<!-- 检查每日每个用户高级认证项的次数 -->
+	<select id="getAdvancedAuthByCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_saas_req_record t WHERE t.type=#{type} AND t.user_id=#{userId} AND DATE(t.create_time)=DATE(NOW())
+	</select>
+</mapper>

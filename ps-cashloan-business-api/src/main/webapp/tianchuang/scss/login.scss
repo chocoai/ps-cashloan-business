@@ -1,0 +1,109 @@
+.area {
+    margin: 20px auto 0px auto;
+}
+
+.mui-input-group:first-child {
+    /*margin-top: 20px;*/
+}
+
+.mui-input-group label {
+    width: 22%;
+}
+
+.mui-input-row label~input,
+.mui-input-row label~select,
+.mui-input-row label~textarea {
+    width: 78%;
+}
+
+.mui-checkbox input[type=checkbox],
+.mui-radio input[type=radio] {
+    top: 6px;
+}
+
+.mui-content-padded {
+    margin-top: 25px;
+}
+
+.mui-btn {
+    padding: 10px;
+}
+
+.mui-input-row label~input,
+.mui-input-row label~select,
+.mui-input-row label~textarea {
+    margin-top: 1px;
+}
+
+.mui-input-row.lh {
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+}
+
+.mui-input-row.lh::after {
+    left: 0;
+}
+
+._input {
+    font-size: 16px;
+}
+
+label .iconfont {
+    margin-left: 8px;
+    margin-top: -4px;
+}
+
+.mui-checkbox input[type=checkbox]::before {
+    font-size: 20px;
+}
+
+.proto {
+    font-size: 12px;
+    padding-top: 8px;
+}
+
+.mui-checkbox.mui-left span {
+    padding-left: 44px;
+}
+
+.proto i {
+    font-style: normal;
+    color: #0082E7;
+}
+
+.forget {
+    float: right;
+    padding-right: 20px;
+}
+
+
+/*login.html css*/
+#login{
+    min-height: 560px;
+    position: relative;
+}
+.fw {
+    padding: 20px;
+}
+
+.tc {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.bottom {
+    color: #888;
+    text-align: center;
+    position: absolute;
+    bottom: .35rem;
+    width: 100%;
+}
+
+.bottom p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+

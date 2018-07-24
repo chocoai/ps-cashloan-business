@@ -17,4 +17,5 @@
 
     <!--<dubbo:service interface="com.adpanshi.cashloan.data.thirdparty.aadhaar.domain.AadhaarRemoteDomain" version="1.0.0" ref="aadhaarDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>-->
     <!--<dubbo:service interface="com.adpanshi.cashloan.data.appdata.AppDataDomain" version="1.0.0" ref="appDataNativeDomain" validation="false" timeout="50000" retries="0" registry="cashloan-data"/>-->
+    <dubbo:reference id="dispatchRunDomain" interface="com.adpanshi.cashloan.dispatch.run.domain.DispatchRunDomain" version="1.0.0" check="false" registry="cashloan"/>
 </beans>

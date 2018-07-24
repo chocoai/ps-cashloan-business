@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>91买呗-完善资料</title>
+    <link rel="shortcut icon" href="img/xiaoeqiandai_favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/perfect.css">
+    <style>
+        .srzm,.zfht{width: 100vw;height: 100vh;position: fixed;z-index: 999;top: 0px;left:0px;display: none;}
+        .srzm img,.zfht img{width: 100%;height: 100%;}
+    </style>
+    <script type="text/javascript">
+        (function () {
+            var deviceWidth = document.documentElement.clientWidth;
+            if (deviceWidth > 750) deviceWidth = 750;
+            document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+        })();
+    </script>
+</head>
+<body>
+<div class="main">
+    <!--  <header>
+         <span class="back"><img src="img/back.png" alt=""></span>
+         <p>资料完善</p>
+     </header> -->
+    <div class="con">
+        <div class="tenement">
+            <div class="ten-top">
+                <p>租房合同</p>
+                <p class="tipe"><span>请上传5兆以内的租房合同 <a onclick="sfsm(1)">示范说明</a></span></p>
+            </div>
+            <div class="ten-con">
+                <ul class="t-img">
+                    <!-- <li>
+                        <img src="" alt="">
+                    </li> -->
+                    <li class="add tipe" id="filebox">
+                        <span>+</span>
+                        <input type="file" multiple="true"  onchange="imgChange(event)">
+                    </li>
+                </ul>
+            </div>
+            <div class="ten-time">
+                <p>
+                    <span>合同起止日期</span>
+                    <input type="date" class="start" onchange="startTime(event)"/> <span>&nbsp;至&nbsp; </span><input type="date" class="end" onchange="endTime(event)"/>
+                </p>
+                <!-- <span class="again-push">过期后需重新提交</span> -->
+            </div>
+        </div>
+        <div class="income">
+            <div class="ten-top">
+                <p>收入证明</p>
+                <p class="tipe"><span>请上传5兆以内的收入证明<a onclick="sfsm(2)">示范说明</a></span></p>
+            </div>
+            <div class="ten-con">
+                <ul class="imgbox">
+                    <li class="addincome">
+                        <span>+</span>
+                        <input type="file" onchange="imgChange1(event)">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer id="push">
+        <p class="push">提交</p>
+    </footer>
+</div>
+<div class="loading">
+    <p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </p>
+</div>
+<div class="tips">
+    <div class="dialog">
+        <span class="close"></span>
+        <h2 id="confirm"></h2>
+        <p><a href="javascript:;" class="yes">确定</a></p>
+    </div>
+</div>
+<div class="zfht">
+    <img onclick="hideImg(1)" src="./img/zfht.jpg" alt="">
+</div>
+<div class="srzm">
+    <img onclick="hideImg(2)" src="./img/srzm.jpg" alt="">
+</div>
+</body>
+<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext('2d');
+    //    瓦片canvas
+    var tCanvas = document.createElement("canvas");
+    var tctx = tCanvas.getContext("2d");
+    var maxsize = 1024 * 1024;//1M
+
+    var formdata = getFormData();
+    var files=[''];
+    var incomefile;
+    var tag=0;
+
+    function sfsm(id) {
+        if(id==1){
+            $('.zfht').show();
+        }else if(id==2){
+            $('.srzm').show();
+        }
+    };
+    function hideImg(id) {
+        if(id==1){
+            $('.zfht').hide();
+        }else if(id==2){
+            $('.srzm').hide();
+        }
+    };
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    };
+    var id = getQueryString('userId');
+    var status=10;
+    $.ajax({
+        url: '/api/act/user/userAuth/tenementIncomeISAuth.htm',
+        type:'post',
+        data: {userId:id},
+        dataType: 'json',
+        async: false,
+        success: function(result) {
+            if(result.code == 200){
+                console.log(result)
+                var LeaseFile=result.data.LeaseFile
+                status=result.data.status;
+                if(LeaseFile){
+                    $(".start").val(LeaseFile.startTime.split(" ")[0]);
+                    $(".end").val(LeaseFile.validityTime.split(" ")[0]);
+                    var data=LeaseFile.dataList;
+                    for(var i=0;i<data.length;i++){
+                        if(data[i].type==2){
+                            $('.t-img').append('<li><img src="'+data[i].path+'" ></li>')
+                            $('.tipe').hide();
+                        }
+                        if(data[i].type==3){
+                            $('.imgbox').append('<li><img src="'+data[i].path+'" ></li>')
+                            $('.addincome').hide();
+                        }
+                    }
+                }
+            }else{
+                show(result.msg);
+            }
+        },
+        error: function(data){
+            show("网络连接错误!");
+        }
+    });
+
+    if(status==10){
+
+    }else if(status==20){
+        $('.tips').fadeIn('500').find('h2').text("认证中...");
+        $('.push').html('认证中')
+        $('input').attr("disabled","disabled");
+    }else if(status==25){
+        $('.tips').fadeIn('500').find('h2').text("认证失败,请重新认证")
+        $('.push').html('重新提交')
+    }else if(status==40){
+        $('.tips').fadeIn('500').find('h2').text("已过期,需重新认证")
+        $('.again-push').show();
+        $('.push').html('重新提交')
+    }else if(status==30){
+        $('.tips').fadeIn('500').find('h2').text("已认证")
+        $('.push').html('已认证')
+        $('input').attr("disabled","disabled");
+    }
+
+    var startc,endc;
+    function startTime(e){
+        startc=e.target.value;
+        if(!endc){
+
+        }else{
+            if(e.target.value>=endc){
+                show('起始时间应该小于起始时间')
+                e.target.value='';
+                startc='';
+            }
+        }
+
+    };
+    function endTime(e){
+        endc=e.target.value;
+        if(!startc){
+
+        }else{
+            if(e.target.value<=startc){
+                show('到期时间应该大于起始时间')
+                e.target.value='';
+                endc='';
+            }
+        }
+    };
+    function imgChange(e) {
+        var file=e.target.files[0];
+        if (!/\/(?:jpeg|png)/i.test(file.type)){
+            show('只支持jpg/png 格式');
+            $('.loading').css('display','none');
+            return;
+        };
+        $('.loading').css('display','block');
+
+        if(!file){return;}
+        var a = URL.createObjectURL(file);
+
+        $('#filebox').before('<li class="file1"><span class="del" onclick="delImg(event)">×</span><img src="'+a+'" ></li>')
+        var reader = new FileReader();
+        //   获取图片大小
+        var size = file.size / 1024 > 1024 ? (~~(10 * file.size / 1024 / 1024)) / 10 + "MB" : ~~(file.size / 1024) + "KB";
+        reader.onload = function() {
+            var result = this.result;
+            var img = new Image();
+            img.src=result;
+            //如果图片大小小于5M，则直接上传
+            if (result.length <= maxsize) {
+                var basestr=result
+                var text = window.atob(basestr.split(",")[1]);
+                var buffer = new Uint8Array(text.length);
+                var pecent = 0, loop = null;
+                for (var i = 0; i < text.length; i++) {
+                    buffer[i] = text.charCodeAt(i);
+                }
+                var blob = getBlob([buffer], file.type);
+                files.push(blob)
+                $('.loading').css('display','none');
+                return;
+            }
+            //      图片加载完毕之后进行压缩，然后上传
+            if (img.complete) {
+                callback();
+            } else {
+                img.onload = callback;
+            }
+            function callback() {
+                var basestr = compress(img);
+                var text = window.atob(basestr.split(",")[1]);
+                var buffer = new Uint8Array(text.length);
+                var pecent = 0, loop = null;
+                for (var i = 0; i < text.length; i++) {
+                    buffer[i] = text.charCodeAt(i);
+                }
+                var blob = getBlob([buffer], file.type);
+                files.push(blob)
+                $('.loading').css('display','none');
+            }
+        };
+        reader.readAsDataURL(file);
+
+        if(files.length>=6){
+            $('#filebox').hide();
+        }
+    };
+
+    function imgChange1(e) {
+        var file=e.target.files[0];
+        if (!/\/(?:jpeg|png)/i.test(file.type)){
+            show('只支持jpg/png 格式');
+            $('.loading').css('display','none');
+            return;
+        };
+        $('.loading').css('display','block');
+        var a = URL.createObjectURL(file);
+        $('.imgbox').html('<li><span class="del" onclick="delincome(event)">×</span><img src="'+a+'" ></li>')
+
+        // if (!/\/(?:jpeg|png)/i.test(file.type)) return;
+        var reader = new FileReader();
+        //   获取图片大小
+        var size = file.size / 1024 > 1024 ? (~~(10 * file.size / 1024 / 1024)) / 10 + "MB" : ~~(file.size / 1024) + "KB";
+        reader.onload = function() {
+            var result = this.result;
+            var img = new Image();
+            img.src=result;
+            //如果图片大小小于5M，则直接上传
+            if (result.length <= maxsize) {
+                var basestr=result
+                var text = window.atob(basestr.split(",")[1]);
+                var buffer = new Uint8Array(text.length);
+                var pecent = 0, loop = null;
+                for (var i = 0; i < text.length; i++) {
+                    buffer[i] = text.charCodeAt(i);
+                }
+                var blob = getBlob([buffer], file.type);
+                incomefile = blob;
+                $(".addincome").hide();
+                $('.loading').css('display','none');
+                return;
+            }
+            //      图片加载完毕之后进行压缩，然后上传
+            if (img.complete) {
+                callback();
+            } else {
+                img.onload = callback;
+            }
+            function callback() {
+                var basestr = compress(img);
+                var text = window.atob(basestr.split(",")[1]);
+                var buffer = new Uint8Array(text.length);
+                var pecent = 0, loop = null;
+                for (var i = 0; i < text.length; i++) {
+                    buffer[i] = text.charCodeAt(i);
+                }
+                var blob = getBlob([buffer], file.type);
+
+                incomefile = blob;
+                $(".addincome").hide();
+                $('.loading').css('display','none');
+
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+    function delImg(e){
+        var li =$('.file1');
+        var l=li.length;
+        e.target.parentNode.remove();
+        for(var i =0;i<l;i++) {
+            if(li[i] == e.target.parentNode){
+                files.splice(i+1,1)
+            }
+        }
+        if(files.length<=6){
+            $('#filebox').show();
+        }
+    };
+    function delincome(e){
+        $('.imgbox').html('<li class="addincome">'+
+            '<span>+</span>'+
+            '<input type="file" onchange="imgChange1(event)">'+
+            '</li>')
+        incomefile='';
+        $(".addincome").show();
+    }
+    $('#push').on('touchstart',function(){
+        var start = $(".start").val();
+        var end = $(".end").val();
+        var flag=$('.push').html();
+        if(flag=='提交' || flag=='重新提交'){
+            $('.loading').css('display','block');
+        }else{
+            return;
+        }
+        var start = $(".start").val();
+        var end = $(".end").val();
+        if (files.length<=1) {
+            $('.tips').fadeIn('500').find('h2').text("请上传租房合同")
+            $('.loading').css('display','none');
+            return;
+        }
+        if(!start || !end){
+            $('.tips').fadeIn('500').find('h2').text("请选择时间")
+            $('.loading').css('display','none');
+            return;
+        };
+        if(!incomefile){
+            $('.tips').fadeIn('500').find('h2').text("请上传收入证明")
+            $('.loading').css('display','none');
+            return;
+        };
+        if (!files.length) return;
+        files[0]=incomefile;
+        var xhr = new XMLHttpRequest();
+
+        var formdata = getFormData();
+
+        for(var k=0;k<files.length;k++){
+            formdata.append('files', files[k]);
+        }
+        // formdata.append('filesArrays', files[0]);
+        // formdata.append('filesArrays', files[1]);
+        // formdata.append('filesArrays', files[2]);
+        // formdata.append('files2', files[0]);
+        // formdata.append('files', ['files[2]']);
+        formdata.append('userId',id);
+        formdata.append('startTime',start);
+        formdata.append('validityTime',end);
+        xhr.open('POST', '/api/act/user/userAuth/tenementIncomeUpload.htm');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var res = JSON.parse(xhr.responseText);
+                if(res.code==200){
+                    $('input').attr("disabled","disabled");
+                    $('.loading').css('display','none');
+
+                    $('.del').hide();
+                    $('.tipe').hide();
+                    show('上传成功');
+                    $('.push').html('上传成功');
+                }else{
+                    show('上传失败,请重新提交!');
+                    $('.loading').css('display','none');
+                }
+            }else{
+                show('上传失败,请重新提交!');
+                $('.loading').css('display','none');
+            }
+        };
+        xhr.send(formdata);
+    })
+
+
+
+
+
+
+
+
+    //-----弹窗的封装
+    function show(msg) {
+        $('.tips').fadeIn(500).find('h2').text(msg);
+    }
+    //弹窗关闭封装
+    function close(e) {
+        var msg=$(this).parent().parent().children('h2').html();
+        // if(msg=='上传成功'){
+        //     window.history.go(-1);
+        // }
+        $(this).parents('.tips').fadeOut('300');
+        setTimeout(function (){
+            $('.dialog .yes').text('确定');
+        }, 500);
+        return false;
+    }
+    //关闭弹窗
+    $('.dialog .close').click(close);
+    $('.dialog a.yes').click(close);
+    $('.back').on('touchstart',function(){
+        window.history.go(-1);
+    })
+
+
+
+
+    function compress(img) {
+        var initSize = img.src.length;
+        var width = img.width;
+        var height = img.height;
+        console.log(width,height,width * height)
+        //如果图片大于5百万像素，计算压缩比并将大小压至500万以下
+        var ratio;
+        if ((ratio = width * height / 5000000) > 1) {
+            // ratio = 0.8;
+            ratio =Math.sqrt(ratio)
+            // console.log(ratio)
+            width /= ratio;
+            height /= ratio;
+        } else {
+            ratio = 1;
+        }
+        canvas.width = width;
+        canvas.height = height;
+//        铺底色
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        //如果图片像素大于100万则使用瓦片绘制
+        var count;
+        if ((count = width * height / 1000000) > 1) {
+            count = ~~(Math.sqrt(count) + 1); //计算要分成多少块瓦片
+//            计算每块瓦片的宽和高
+            var nw = ~~(width / count);
+            var nh = ~~(height / count);
+            tCanvas.width = nw;
+            tCanvas.height = nh;
+            for (var i = 0; i < count; i++) {
+                for (var j = 0; j < count; j++) {
+                    tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
+                    ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
+                }
+            }
+        } else {
+            ctx.drawImage(img, 0, 0, width, height);
+        }
+        //进行最小压缩
+        var ndata = canvas.toDataURL('image/jpeg', 0.6);
+        console.log('压缩前：' + initSize);
+        console.log('压缩后：' + ndata.length);
+        console.log('压缩率：' + ~~(100 * (initSize - ndata.length) / initSize) + "%");
+        tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
+        // console.log(ndata)
+        return ndata;
+    }
+    /**
+     * 获取blob对象的兼容性写法
+     * @param buffer
+     * @param format
+     * @returns {*}
+     */
+    function getBlob(buffer, format) {
+        try {
+            return new Blob(buffer, {type: format});
+        } catch (e) {
+            var bb = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder);
+            buffer.forEach(function(buf) {
+                bb.append(buf);
+            });
+            return bb.getBlob(format);
+        }
+    }
+    /**
+     * 获取formdata
+     */
+    function getFormData() {
+        var isNeedShim = ~navigator.userAgent.indexOf('Android')
+            && ~navigator.vendor.indexOf('Google')
+            && !~navigator.userAgent.indexOf('Chrome')
+            && navigator.userAgent.match(/AppleWebKit\/(\d+)/).pop() <= 534;
+        return isNeedShim ? new FormDataShim() : new FormData()
+    }
+    /**
+     * formdata 补丁, 给不支持formdata上传blob的android机打补丁
+     * @constructor
+     */
+    function FormDataShim() {
+        console.warn('using formdata shim');
+        var o = this,
+            parts = [],
+            boundary = Array(21).join('-') + (+new Date() * (1e16 * Math.random())).toString(36),
+            oldSend = XMLHttpRequest.prototype.send;
+        this.append = function(name, value, filename) {
+            parts.push('--' + boundary + '\r\nContent-Disposition: form-data; name="' + name + '"');
+            if (value instanceof Blob) {
+                parts.push('; filename="' + (filename || 'blob') + '"\r\nContent-Type: ' + value.type + '\r\n\r\n');
+                parts.push(value);
+            }
+            else {
+                parts.push('\r\n\r\n' + value);
+            }
+            parts.push('\r\n');
+        };
+        // Override XHR send()
+        XMLHttpRequest.prototype.send = function(val) {
+            var fr,
+                data,
+                oXHR = this;
+            if (val === o) {
+                // Append the final boundary string
+                parts.push('--' + boundary + '--\r\n');
+                // Create the blob
+                data = getBlob(parts);
+                // Set up and read the blob into an array to be sent
+                fr = new FileReader();
+                fr.onload = function() {
+                    oldSend.call(oXHR, fr.result);
+                };
+                fr.onerror = function(err) {
+                    throw err;
+                };
+                fr.readAsArrayBuffer(data);
+                // Set the multipart content type and boudary
+                this.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+                XMLHttpRequest.prototype.send = oldSend;
+            }
+            else {
+                oldSend.call(this, val);
+            }
+        };
+    }
+</script>
+</html>

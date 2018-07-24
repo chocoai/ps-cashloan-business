@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_user_bank_bill_resp表:用户网银账单响应记录模块 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TCWindModelMapper">
+    <!--&lt;!&ndash;返回Map&ndash;&gt;-->
+    <!--<resultMap id="BaseResultMap" type="com.fans.api.tcwind.RiskAssmentReqParams">-->
+        <!--<result column="idcard" property="idcard" jdbcType="VARCHAR"/>-->
+        <!--<result column="mobile" property="mobile" jdbcType="VARCHAR"/>-->
+        <!--<result column="name" property="name" jdbcType="VARCHAR"/>-->
+        <!--<result column="bankcard_num" property="bankcard_num" jdbcType="VARCHAR"/>-->
+    <!--</resultMap>-->
+
+
+    <!--<select id="getParamsByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">-->
+        <!--select-->
+        <!--info.id_no AS idcard, info.phone AS mobile,info.real_name AS name,bank.card_no AS bankcard_num-->
+        <!--from cl_user_base_info info-->
+        <!--LEFT JOIN cl_bank_card bank ON info.`user_id` = bank.`user_id`-->
+        <!--WHERE info.user_id = #{userId,jdbcType=BIGINT}-->
+    <!--</select>-->
+
+
+
+</mapper>

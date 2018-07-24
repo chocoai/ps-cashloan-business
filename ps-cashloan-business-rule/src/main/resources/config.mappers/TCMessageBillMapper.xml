@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TCMessageBillMapper">
+	  <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.tianchuang.MessageBill">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+        <result column="sms_time" property="smsTime" jdbcType="VARCHAR" />
+        <result column="sms_addr" property="smsAddr" jdbcType="VARCHAR" />
+        <result column="other_num" property="otherNum" jdbcType="VARCHAR" />
+        <result column="bus_type" property="busType" jdbcType="VARCHAR" />
+        <result column="busi_name" property="busiName" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="VARCHAR" />
+        <result column="sms_save_type" property="smsSaveType" jdbcType="VARCHAR" />
+        <result column="sms_type" property="smsType" jdbcType="VARCHAR" />
+        <result column="package_dis" property="packageDis" jdbcType="VARCHAR" />
+        <result column="other_num_area" property="otherNumArea" jdbcType="VARCHAR" />
+    </resultMap>
+	
+	 <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,orderId,sms_time,sms_addr,other_num,bus_type,busi_name,amount,sms_save_type,sms_type,package_dis,other_num_area 
+    </sql>
+	
+	<insert id="batchInsert" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.tianchuang.MessageBill">
+	
+		INSERT INTO `cl_tc_message_bill`(`orderId`, `sms_time`, 
+		`sms_addr`, `other_num`, 
+		`bus_type`, `busi_name`, 
+		`amount`, `sms_save_type`, 
+		`sms_type`, `package_dis`, 
+		`other_num_area`) 
+		VALUES 
+	    <foreach collection ="messageBills" item="messageBill" index= "index" separator =",">
+		    (#{messageBill.orderId}, #{messageBill.smsTime}, #{messageBill.smsAddr}, 
+		    #{messageBill.otherNum}, #{messageBill.busType}, 
+		    #{messageBill.busiName}, #{messageBill.amount}, 
+		    #{messageBill.smsSaveType}, #{messageBill.smsType}, 
+		    #{messageBill.packageDis}, #{messageBill.otherNumArea})
+	    </foreach>
+	</insert>
+	
+	<select id="selectByOrderId" resultType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.tianchuang.MessageBill"
+		parameterType="java.util.HashMap">
+		select `other_num` otherNum, `sms_save_type` smsSaveType, `sms_time` smsTime from cl_tc_message_bill where orderId = #{orderId}
+	</select>
+
+
+	<delete id="deleteByOrderId" >
+		delete from cl_tc_message_bill where orderId in
+		<foreach item="idItem" collection="list" open="(" separator="," close=")">
+			#{idItem}
+		</foreach>
+	</delete>
+	
+	<select id="selectByOrderIdRecord" resultMap="BaseResultMap"  parameterType="java.util.HashMap">
+			select 
+			 <include refid="Base_Column_List" /> 
+			 from cl_tc_message_bill 
+			 where 
+			 orderId = #{orderId,jdbcType=VARCHAR} 
+	</select>
+	
+</mapper>

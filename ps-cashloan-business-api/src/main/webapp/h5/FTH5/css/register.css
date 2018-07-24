@@ -1,0 +1,214 @@
+@charset "UTF-8";
+body,html{font-size: 100px;padding: 0;margin: 0;}
+.body {
+    font-family: "Microsoft YaHei";
+    font-size: .16rem;
+    padding: 0 .1rem; 
+    background-size: contain; 
+    display: none;
+}
+.body .step{
+    width: 100%;
+    height: 82px;
+    border-bottom: 4px solid #f5f5f5;
+}
+.stepImg{
+    position: fixed;
+    width: 100%;
+    height: 82px;
+    top: 0px;
+    left: 0px;
+}
+.stepImg img{
+    width: 100%;
+    height: 100%;
+}
+.body .login{
+    margin-top: .2rem;
+    /*display: none;*/
+}
+.body .second{
+    display: none;
+}
+ label{
+    display: block;
+    border-bottom: 1px solid #f5f5f5;
+    height: .5rem;
+    line-height: .5rem;
+}
+.body .login .txbox{
+    position: relative;
+}
+.body .login .txbox .getPic{
+    position: absolute;
+    height: .5rem;
+}
+.body .login .txbox .getPic img{
+    /*width: 100%;height: 100%;*/
+}
+.body .login .dxbox{
+    position: relative;
+}
+.body .login .dxbox .getCode{
+    position: absolute;
+    /*height: .5rem;*/
+    color: #fd743e;
+    text-align: center;
+    border:1px solid #fd743e;
+    border-radius: .5rem;
+    height: .3rem;
+    line-height:.3rem;
+    margin-top: .1rem;
+}
+label span{
+    display: inline-block;
+    width: 30%;
+}
+label input{
+    border:none;
+    outline: none;
+    width: 40%;
+}
+.body .login{
+    
+}
+.body .login{
+    
+}
+.body .login{
+    
+}
+
+.firstPage{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    /*display: none;*/
+}
+.firstPage .msfq{
+    width: 80%;margin-left: 10%;height: .5rem;
+    line-height: .5rem;text-align: center;
+    background-color: #fff11a;color: #ed441b;
+    font-size: .20rem;border-radius: .25rem;
+    position: absolute;
+    top: 50vh;
+}
+.firstPage img{
+    width: 100%;
+    height: 100%;
+}
+
+#js_ljsq{
+    width: 94%;margin-left: 3%;height: .5rem;
+    line-height: .5rem;text-align: center;
+    background-color: #ec4018;color: #fff;
+    font-size: .20rem;border-radius: .25rem;
+
+}
+
+.popup .overlay { width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); position: fixed; top: 0; left: 0; }
+
+.popup .dialog { -webkit-transform: translate3d(0, 0, 0); background: #f2f2f2; width: 3rem; height: 1.8rem; position: fixed; top: 50%; left: 50%; margin: -.78rem -1.5rem; line-height: 1.5em; text-align: center; border-radius: 0.04rem; }
+
+.popup .dialog h2 { font-size: 0.14rem; height: 1rem; line-height: 1rem; }
+
+.popup .dialog p { border-top: 1px solid #ccc; height: .25rem; line-height: .5rem;margin: 0;padding: 0 }
+
+.popup .dialog p a { font-size: 0.2rem; color: #48cafb; text-decoration: none; display:block;}
+
+.popup .dialog span.close { display: inline-block; position: absolute; right: 0.13rem; top: 0.13rem; width: 0.2rem; height: 0.4rem; cursor: pointer; }
+
+.popup .dialog span.close:before, .popup .dialog span.close:after { content: ''; position: absolute; height: 1px; width: 100%; top: 50%; left: 0; margin-top: -1px; background: #666; }
+
+.popup .dialog span.close:before { -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg); }
+
+.popup .dialog span.close:after { -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg); }
+
+.download-button { display: block; background: #48cafb; width: 3.4rem; border: none; color: #fff; font-size: 0.22rem; line-height: .5rem; height: .5rem; margin: 1.4rem auto; border-radius: 0.2rem; box-shadow: 3px 2px 8px #333333; -webkit-box-shadow: 4px 2px 8px #333333; -moz-box-shadow: 3px 2px 8px #333333; text-decoration: none; text-align: center; }
+
+
+.tel-icon{
+    display: inline-block;
+    width:0.16rem;
+    height:0.16rem;
+    vertical-align: sub;
+}
+.agree{
+    width:100%;
+    /*padding: 0 0.2rem 0.1rem 0.4rem;*/
+    /*box-sizing: border-box;*/
+    height: 0.5rem;
+    line-height: 0.5rem
+}
+.agree span{
+    margin-left: 0.06rem;
+    font-size: 0.12rem;
+    color: #fd743e;
+}
+.agree a{
+    font-size: 0.12rem;
+    color: #fd743e;
+    text-decoration: none;
+}
+.yes-agree{
+    background: url(../regimage/yes.png) 0 0 no-repeat;
+    /*background: url(../regimage/dui.png) 0 0 no-repeat;*/
+    background-size: contain;
+    /*background-color: #fff;*/
+}
+.dis-agree{
+    background: url(../regimage/no.png) 0 0 no-repeat;
+    background-size: contain;
+}
+#protocol{
+    vertical-align: middle;
+    /*background-color: #ec4018;*/
+}
+
+
+
+.pglk{
+    width: 90%;margin-left: 5%;height: .5rem;
+    line-height: .5rem;text-align: center;
+    background-color: #ec4018;color: #fff;
+    font-size: .20rem;border-radius: .25rem;
+    margin-top: .5rem;
+}
+
+.wxtip{
+    background:rgba(0,0,0,0.8);
+    text-align:center;
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    z-index:998;
+    display:none;
+}
+.wxtip-icon{
+    width:52px;
+    height:67px;
+    background:url(../regimage/weixin-tip.png) 0 0 no-repeat;
+    background-size: contain;
+    display:block;
+    position:absolute;
+    right:20px;
+    top:20px;
+}
+.wxtip-txt{
+    margin-top:107px;
+    color:#fff;
+    font-size:16px;
+    line-height:1.5;
+}
+
+
+#education{
+    width: 40%;
+    border: none;
+}
+
+
+
+/*# sourceMappingURL=map/register.css.map */

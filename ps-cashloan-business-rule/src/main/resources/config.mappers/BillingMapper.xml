@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_billing表:账单信息  -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.BillingMapper">
+
+    <select id="existsByUserIdAndType" resultType="Boolean">
+        select 1 from cl_billing where user_id = #{userId} and type = #{type} limit 1
+    </select>
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.Billing">
+    	INSERT INTO `cl_billing` (`user_id`, `type`, `transId`, `count`, `transaction_time`) 
+    	VALUES (#{userId}, #{type}, #{transId}, #{count}, #{transactionTime});
+    </insert>
+
+</mapper>

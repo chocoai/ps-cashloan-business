@@ -1,10 +1,8 @@
 package com.adpanshi.cashloan.business.controller;
 
 import com.adpanshi.cashloan.dispatch.run.bo.DispatchRunResponseBo;
-import com.adpanshi.cashloan.dispatch.run.bo.OperatorBo;
 import com.adpanshi.cashloan.dispatch.run.domain.DispatchRunDomain;
 import com.adpanshi.cashloan.dispatch.run.enums.StatusCode;
-import com.alibaba.fastjson.JSON;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -41,8 +39,8 @@ public class CashloanDispatchController {
             if(StringUtils.isBlank(user_id) || StringUtils.isBlank(user_id)){
                 return DispatchRunResponseBo.error(StatusCode.PARAMS_WRONG);
             }
-            OperatorBo operatorBo = dispatchRunDomain.getOperatorByUserId(Integer.valueOf(user_id));
-            return DispatchRunResponseBo.success(JSON.toJSONString(operatorBo));
+//            OperatorBo operatorBo = dispatchRunDomain.getOperatorByUserId(Integer.valueOf(user_id));
+            return DispatchRunResponseBo.success();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return DispatchRunResponseBo.error(StatusCode.OTHER_ERROR,e.getMessage());

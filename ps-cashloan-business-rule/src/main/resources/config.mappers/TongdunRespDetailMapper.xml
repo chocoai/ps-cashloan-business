@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_tongdun_resp_detail表:同盾审核报告详细信息模块 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TongdunRespDetailMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TongdunRespDetail">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="req_id" property="reqId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="report_id" property="reportId" jdbcType="VARCHAR" />
+        <result column="query_params" property="queryParams" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,req_id,order_no,report_id,query_params 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="reqId != null and reqId != '' ">
+                and req_id = #{reqId,jdbcType=BIGINT}
+            </if>
+            <if test="orderNo != null and orderNo != '' ">
+                and order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="reportId != null and reportId != '' ">
+                and report_id = #{reportId,jdbcType=VARCHAR}
+            </if>
+            <if test="queryParams != null and queryParams != '' ">
+                and query_params = #{queryParams,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save">
+        insert into ${tableName} (req_id,order_no,report_id,query_params)values(#{item.reqId,jdbcType=BIGINT},#{item.orderNo,jdbcType=VARCHAR},#{item.reportId,jdbcType=VARCHAR},#{item.queryParams,jdbcType=VARCHAR})
+    </insert>
+
+    
+    <update id="update">
+        update ${tableName} set
+            req_id = #{item.reqId,jdbcType=BIGINT},
+            order_no = #{item.orderNo,jdbcType=VARCHAR},
+            report_id = #{item.reportId,jdbcType=VARCHAR},
+            query_params = #{item.queryParams,jdbcType=VARCHAR}
+        where id = #{item.id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update ${tableName}
+          <set>
+            <if test="reqId != null and reqId != '' ">        
+                req_id = #{reqId,jdbcType=BIGINT},                
+            </if>
+            <if test="orderNo != null and orderNo != '' ">        
+                order_no = #{orderNo,jdbcType=VARCHAR},                
+            </if>
+            <if test="reportId != null and reportId != '' ">        
+                report_id = #{reportId,jdbcType=VARCHAR},                
+            </if>
+            <if test="queryParams != null and queryParams != '' ">        
+                query_params = #{queryParams,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="findByBorrow" resultType="java.lang.String" parameterType="java.util.HashMap">
+        select d.query_params
+        from ${tableName} q
+        JOIN ${tableNameDetail} d ON d.order_no = q.order_no
+        where q.borrow_id = #{borrowId,jdbcType=INTEGER} AND q.user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    
+</mapper>

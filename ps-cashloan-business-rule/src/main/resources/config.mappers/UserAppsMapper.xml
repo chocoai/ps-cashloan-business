@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.UserAppsMapper">
+	<resultMap type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.UserApps" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="appName" column="app_name" javaType="String"/>
+        <result property="packageName" column="package_name" javaType="String"/>
+        <result property="iexpress" column="iexpress" javaType="Integer"/>
+        <result property="systemType" column="system_type" javaType="Integer"/>
+        <result property="state" column="state" javaType="Integer"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.user_id,
+        t.app_name,
+        t.package_name,
+        t.iexpress,
+        t.system_type,
+        t.state,
+        t.gmt_create_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="null != item.id and item.id !=''">
+            AND t.id = #{item.id}
+         </if>
+		 <if test="null !=item.userId and item.userId !=''">
+            AND t.user_id = #{item.userId}
+         </if>
+		 <if test="null !=item.appName and item.appName !=''">
+            AND t.app_name = #{item.appName}
+         </if>
+		 <if test="null !=item.packageName and item.packageName !=''">
+            AND t.package_name = #{item.packageName}
+         </if>
+		 <if test="null !=item.iexpress and item.iexpress !=''">
+            AND t.iexpress = #{item.iexpress}
+         </if>
+		 <if test="null !=item.systemType and item.systemType !=''">
+            AND t.system_type = #{item.systemType}
+         </if>
+		 <if test="null !=item.state and item.state !=''">
+            AND t.state = #{item.state}
+         </if>
+		 <if test="null !=item.gmtCreateTime and item.gmtCreateTime !=''">
+            AND t.gmt_create_time = #{item.gmtCreateTime}
+         </if>
+		 <if test="null !=item.remarks and item.remarks !=''">
+            AND t.remarks = #{item.remarks}
+         </if>
+	</sql>
+
+	<insert id="save">
+		<![CDATA[
+	        INSERT INTO ${tableName} (
+	            user_id ,
+	            app_name ,
+	            package_name ,
+	            iexpress ,
+	            system_type ,
+	            state ,
+	            gmt_create_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{item.userId},
+	        	#{item.appName},
+	        	#{item.packageName},
+	        	#{item.iexpress},
+	        	#{item.systemType},
+	        	0,
+	        	now(),
+	        	#{item.remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<insert id="insertBatch" >
+	        INSERT INTO ${tableName} (
+	            user_id ,
+	            app_name ,
+	            package_name ,
+	            iexpress ,
+	            system_type ,
+	            state ,
+	            gmt_create_time ,
+	            remarks 
+	        )VALUES 
+	        <foreach collection ="userAppsList" item="app" index= "index" separator =",">
+	        (
+	        	#{app.userId},
+	        	#{app.appName},
+	        	#{app.packageName},
+	        	#{app.iexpress},
+	        	#{app.systemType},
+	        	0,
+	        	now(),
+	        	#{app.remarks}
+	        )
+	        </foreach>
+	</insert>
+	
+	<update id="deleteById">
+        UPDATE ${tableName} SET state=1 
+        WHERE state=0 AND
+        	id = #{id}
+	</update>
+	
+	<select id="findByPrimary" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM ${tableName} t
+       	WHERE t.state=0 AND t.id = #{id}
+    </select>
+	
+	<update id="updateSelective">
+        UPDATE ${tableName} 
+        <set>
+        	<if test="null !=item.userId and item.userId !=''">
+	            user_id = #{item.userId},
+	        </if>
+        	<if test="null !=item.appName and item.appName !=''">
+	            app_name = #{item.appName},
+	        </if>
+        	<if test="null !=item.packageName and item.packageName !=''">
+	            package_name = #{item.packageName},
+	        </if>
+        	<if test="null !=item.iexpress and item.iexpress !=''">
+	            iexpress = #{item.iexpress},
+	        </if>
+        	<if test="null !=item.systemType and item.systemType !=''">
+	            system_type = #{item.systemType},
+	        </if>
+        	<if test="null != item.state and item.state !=''">
+	            state = #{item.state},
+	        </if>
+        	<if test="null !=item.gmtCreateTime and item.gmtCreateTime !=''">
+	            gmt_create_time = #{item.gmtCreateTime},
+	        </if>
+        	<if test="null !=item.remarks and item.remarks !=''">
+	            remarks = #{item.remarks},
+	        </if>
+        </set>
+        WHERE state=0
+        	AND id = #{item.id}
+	</update>
+	
+	<select id="queryCount" resultType="java.lang.Integer">
+		select count(id) FROM ${tableName} t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<select id="listSelective" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM ${tableName} t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+	
+</mapper>

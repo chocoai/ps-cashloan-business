@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- arc_user表:用户管理模块 -->
+<mapper namespace="mapper.UserMapper">
+
+  <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.domain.User">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+        <result column="login_pwd" property="loginPwd" jdbcType="VARCHAR" />
+        <result column="loginpwd_modify_time" property="loginpwdModifyTime" jdbcType="TIMESTAMP" />
+        <result column="regist_time" property="registTime" jdbcType="TIMESTAMP" />
+        <result column="register_client" property="registerClient" jdbcType="VARCHAR" />
+        <result column="trade_pwd" property="tradePwd" jdbcType="VARCHAR" />
+        <result column="tradepwd_modify_time" property="tradepwdModifyTime" jdbcType="TIMESTAMP" />
+        <result column="uuid" property="uuid" jdbcType="VARCHAR" />
+        <result column="channel_id" property="channelId" jdbcType="BIGINT" />
+        <result column="level" property="level" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="INTEGER" />
+    </resultMap>
+    <!--返回用户的基本信息Map-->        
+    <resultMap id="BaseInfoModelMap"  extends="BaseResultMap"  type="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.model.CloanUserModel">
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+        <result column="id_addr" property="idAddr" jdbcType="VARCHAR" />
+        <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="company_addr" property="companyAddr" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="live_addr" property="liveAddr" jdbcType="VARCHAR" />
+        <result column="live_time" property="liveTime" jdbcType="VARCHAR" />
+        <result column="marry_state" property="marryState" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="phone_server_pwd" property="phoneServerPwd" jdbcType="VARCHAR" />
+        <result column="national" property="national" jdbcType="VARCHAR" />
+        <result column="education" property="education" jdbcType="VARCHAR" />
+        <result column="working_years" property="workingYears" jdbcType="VARCHAR" />
+        <result column="salary" property="salary" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,login_name,login_pwd,loginpwd_modify_time,regist_time,register_client,trade_pwd,tradepwd_modify_time,uuid,invitation_code,level,channel_id,state 
+    </sql>
+    
+    <!--用户的基本信息的sql查询字段 公共引用...-->
+    <sql id="Base_User_Column_List">
+        u.id,u.login_name,u.login_pwd,u.loginpwd_modify_time,u.regist_time,u.register_client,u.trade_pwd,u.tradepwd_modify_time,u.uuid,u.invitation_code,
+        a.real_name,a.id_no,a.id_addr,a.company_name,a.company_addr,a.sex,a.live_addr,a.live_time,a.marry_state,a.phone,a.phone_server_pwd,a.national,a.education,a.working_years,a.salary,a.create_time,a.update_time
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null and id != ''">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="loginName !=null and loginName != ''">
+                and login_name = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="loginNameEmail !=null and loginNameEmail != ''">
+                and login_name_email = #{loginNameEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="loginPwd !=null and loginPwd != ''">
+                and login_pwd = #{loginPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="loginpwdModifyTime != null">
+                and loginpwd_modify_time = #{loginpwdModifyTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="registTime != null">
+                and regist_time = #{registTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startTime != null">
+                and regist_time &gt; #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime  != null">
+                and regist_time &lt; #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="registerClient != null and registerClient != ''">
+                and register_client = #{registerClient,jdbcType=VARCHAR}
+            </if>
+            <if test="tradePwd != null and tradePwd != ''">
+                and trade_pwd = #{tradePwd,jdbcType=VARCHAR}
+            </if>
+            <if test="tradepwdModifyTime != null">
+                and tradepwd_modify_time = #{tradepwdModifyTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="uuid != null and uuid != ''">
+                and uuid = #{uuid,jdbcType=VARCHAR}
+            </if>
+            <if test="invitationCode != null and invitationCode != ''">
+                and invitation_code = #{invitationCode,jdbcType=VARCHAR}
+            </if>
+            <if test="channelId != null and channelId != ''">
+                and channel_id = #{channelId,jdbcType=BIGINT}
+            </if>
+            <if test="level != null and level != ''">
+                and level = #{level,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.domain.User" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        cl_user(login_name,login_name_email,login_pwd,loginpwd_modify_time,regist_time,register_client,trade_pwd,tradepwd_modify_time,uuid,invitation_code,level,channel_id,state)
+        values(#{loginName,jdbcType=VARCHAR},#{loginNameEmail,jdbcType=VARCHAR},#{loginPwd,jdbcType=VARCHAR},#{loginpwdModifyTime,jdbcType=TIMESTAMP},#{registTime,jdbcType=TIMESTAMP},#{registerClient,jdbcType=VARCHAR},#{tradePwd,jdbcType=VARCHAR},#{tradepwdModifyTime,jdbcType=TIMESTAMP},#{uuid,jdbcType=VARCHAR},#{invitationCode,jdbcType=VARCHAR},#{level,jdbcType=VARCHAR},#{channelId,jdbcType=BIGINT},#{state,jdbcType=INTEGER})
+    </insert>
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.domain.User">
+        update cl_user set 
+            login_name = #{loginName,jdbcType=VARCHAR},
+            login_pwd = #{loginPwd,jdbcType=VARCHAR},
+            loginpwd_modify_time = #{loginpwdModifyTime,jdbcType=TIMESTAMP},
+            regist_time = #{registTime,jdbcType=TIMESTAMP},
+            register_client = #{registerClient,jdbcType=VARCHAR},
+            trade_pwd = #{tradePwd,jdbcType=VARCHAR},
+            tradepwd_modify_time = #{tradepwdModifyTime,jdbcType=TIMESTAMP},
+            uuid = #{uuid,jdbcType=VARCHAR},
+            invitation_code = #{invitationCode,jdbcType=VARCHAR},
+            level = #{level,jdbcType=VARCHAR},
+            channel_id=#{channelId,jdbcType=BIGINT}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_user
+          <set>
+            <if test="loginName != null and loginName != '' ">        
+                login_name = #{loginName,jdbcType=VARCHAR},                
+            </if>
+            <if test="loginPwd != null and loginPwd != '' ">        
+                login_pwd = #{loginPwd,jdbcType=VARCHAR},                
+            </if>
+            <if test="loginpwdModifyTime != null">        
+                loginpwd_modify_time = #{loginpwdModifyTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="registTime != null ">        
+                regist_time = #{registTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="registerClient != null and registerClient != '' ">        
+                register_client = #{registerClient,jdbcType=VARCHAR},                
+            </if>
+            <if test="tradePwd != null and tradePwd != '' ">        
+                trade_pwd = #{tradePwd,jdbcType=VARCHAR},                
+            </if>
+            <if test="tradepwdModifyTime != null and tradepwdModifyTime != '' ">        
+                tradepwd_modify_time = #{tradepwdModifyTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="uuid != null and uuid != '' ">        
+                uuid = #{uuid,jdbcType=VARCHAR},                
+            </if>
+            <if test="invitationCode != null and invitationCode != '' ">        
+                invitation_code = #{invitationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null and level != ''">
+                level = #{level,jdbcType=VARCHAR}
+            </if>
+            <if test="channelId != null and channelId != ''">
+                and channel_id = #{channelId,jdbcType=BIGINT}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user
+        <include refid="searchBy"/>
+    </select>
+    
+    <!-- 基本用户信息的sql查询条件公共引用 -->
+    <sql id="searchBaseBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="loginName !='' and loginName !=null">
+                and u.login_name like concat("%",#{loginName,jdbcType=VARCHAR},"%")
+               </if>
+            <if test="registTime !=null and registTime != ''">
+                and DATE_FORMAT(u.regist_time,'%Y-%m-%d') = #{registTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startTime  != null and startTime != ''">
+                <![CDATA[
+             AND u.regist_time >= CONCAT(#{startTime},' 00:00:00')
+                ]]>
+            </if>
+            <if test="endTime  != null and endTime != ''">
+                <![CDATA[
+             AND u.regist_time <= CONCAT(#{endTime},' 23:59:59')
+                 ]]>
+            </if>
+            <if test="realName !='' and realName !=null">
+                and a.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="idNo !='' and idNo !=null">
+                and a.id_no  like concat("%",#{idNo,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="state !='' and state !=null">
+                and a.state  =#{state,jdbcType=VARCHAR}
+            </if>
+            <if test="registerClient != null and registerClient != '' ">
+                and u.register_client = #{registerClient,jdbcType=VARCHAR}
+            </if>
+            <if test="channelId != null and channelId != ''">
+                and u.channel_id = #{channelId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- @remark: 用户管理.用户列表! @author: nmnl @date:2017-12-27 新变更 -->
+    <select id="listModel" resultMap="BaseInfoModelMap" parameterType="java.util.HashMap">
+        SELECT
+        u.id ,
+        u.login_name ,
+        u.regist_time ,
+        u.register_client ,
+        u.channel_id ,
+        a.real_name ,
+        a.id_no ,
+        a.education ,
+        a.salary ,
+        a.state ,
+        channel.`name` as channel_name
+        FROM
+        cl_user u
+        LEFT JOIN cl_user_base_info a ON u.id = a.user_id
+        LEFT JOIN cl_channel channel ON u.channel_id = channel.id
+        <include refid="searchBaseBy"/>
+       	order by u.id desc
+    </select>
+
+    <select id="reListModel" resultMap="BaseInfoModelMap" parameterType="java.util.HashMap">
+        SELECT
+        a3.id,
+        a3.login_name,
+        a3.regist_time,
+        a3.register_client,
+        a3.channel_id,
+        a1.fjcs,
+        a2.create_time as fjsj,
+        a5.name as channel_name,
+        a4.real_name,
+        a4.id_no,
+        a4.company_name,
+        a4.education,
+        a4.working_years,
+        a4.salary,
+        a4.state
+        FROM
+            (SELECT
+                 user_id,
+                 sum(if(state = 10, 1, 0)) fjcs,
+                 max(borrow_id) borrowId
+             FROM cl_borrow_repay
+             GROUP BY user_id
+             HAVING count(borrow_id) > 1) a1
+            LEFT JOIN
+            cl_borrow a2 ON a1.borrowId = a2.id
+            LEFT JOIN cl_user a3 ON a1.user_id = a3.id
+            LEFT JOIN cl_user_base_info a4 ON a4.user_id = a1.user_id
+            LEFT JOIN cl_channel a5 ON a5.id = a3.channel_id
+        WHERE 1 = 1
+        <if test="realName !='' and realName !=null">
+            and a4.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="loginName !='' and loginName !=null">
+            and a3.login_name like concat("%",#{loginName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="channelId != null and channelId != ''">
+            and a3.channel_id = #{channelId,jdbcType=BIGINT}
+        </if>
+        ORDER BY a1.fjcs DESC
+    </select>
+
+    <!-- 复借用户查询 2017-12-27 优化复借  -->
+    <select id="reListModelNew" resultMap="BaseInfoModelMap" parameterType="java.util.HashMap">
+
+        SELECT
+        cu.id ,
+        cu.login_name ,
+        cu.regist_time ,
+        cu.register_client ,
+        cu.channel_id ,
+        cubi.real_name ,
+        cubi.id_no ,
+        cubi.state ,
+        cubi.education ,
+        chn.name as channel_name,
+        count(1) AS fjcs
+        FROM
+        cl_borrow_main t ,
+        cl_user cu ,
+        cl_user_base_info cubi,
+        cl_channel chn
+        WHERE
+        t.state IN('40' , '41')
+        AND cu.id = t.user_id
+        AND cubi.user_id = t.user_id
+        AND chn.id = cu.channel_id
+        <if test="realName !='' and realName !=null">
+            and cubi.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="loginName !='' and loginName !=null">
+            and cu.login_name like concat("%",#{loginName,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="channelId != null and channelId != ''">
+            and cu.channel_id = #{channelId,jdbcType=BIGINT}
+        </if>
+        <if test="registerClient != null and registerClient != ''">
+            and cu.register_client = #{registerClient,jdbcType=BIGINT}
+        </if>
+        <if test="state != null and state != ''">
+            and cubi.state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo != ''">
+            and cubi.id_no like concat("%",#{idNo,jdbcType=VARCHAR},"%")
+        </if>
+        <if test="startTime != null and startTime != ''">
+            <![CDATA[
+             AND cu.regist_time >= CONCAT(#{startTime},' 00:00:00')
+                ]]>
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[
+             AND cu.regist_time <= CONCAT(#{endTime},' 23:59:59')
+                 ]]>
+        </if>
+        GROUP BY
+        t.user_id
+        ORDER BY fjcs DESC
+
+    </select>
+
+    
+    <select id="getModel" resultMap="BaseInfoModelMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_User_Column_List" />
+        from  cl_user  u  left join  cl_user_base_info  a  on u.id=a.user_id  
+        where u.id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <resultMap id="sysDictDetailResultMap" type="java.util.HashMap">
+		<result column="item_code" property="itemCode" />
+		<result column="item_value" property="itemValue" />
+		<result column="type_code" property="typeCode" />
+		<result column="type_name" property="typeName" />
+	</resultMap>
+	
+    <select id="queryAllDic" resultMap="sysDictDetailResultMap">
+	 	SELECT
+		    dic.type_code,
+		    dic.type_name,
+		    dd.item_code,
+		    dd.item_value
+		FROM
+		    arc_sys_dict dic
+		JOIN arc_sys_dict_detail dd ON dd.parent_id = dic.id where  dd.state=10
+	    and type_code in ('RANK_TYPE','CONTACT_RELATION','EDUCATIONAL_STATE','MARITAL_STATE','LIVE_TIME','WORK_TIME','SALARY_RANGE')
+ 	</select>
+ 	
+    <select id="findByLoginName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM `cl_user` WHERE login_name like concat("%",#{loginName,jdbcType=VARCHAR},"%")
+    </select>
+    
+    <select id="getUserByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List" /> FROM `cl_user` 
+        	WHERE login_name =#{loginName,jdbcType=VARCHAR} AND state=1
+    </select>
+
+    <select id="getUserByEmail" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List" /> FROM `cl_user`
+        WHERE login_name_email =#{loginName,jdbcType=VARCHAR} AND state=1
+    </select>
+
+	<update id="updateLevel" parameterType="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.domain.User">
+        update cl_user set 
+            level = #{level,jdbcType=INTEGER}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+    
+    <select id="findUserLevel" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT id, login_name,level,regist_time FROM `cl_user` 
+        WHERE `level` = 3 
+        <if test="loginName != null and loginName != '' ">        
+               AND login_name LIKE #{loginName,jdbcType=VARCHAR}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+	<update id="updateByUuid" parameterType="java.util.HashMap">
+		update cl_user
+		<set>
+			<if test="loginName != null and loginName != '' ">
+				login_name = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="loginPwd != null and loginPwd != '' ">
+				login_pwd = #{loginPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="loginpwdModifyTime != null ">
+				loginpwd_modify_time = #{loginpwdModifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="registTime != null ">
+				regist_time = #{registTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="registerClient != null and registerClient != '' ">
+				register_client = #{registerClient,jdbcType=VARCHAR},
+			</if>
+			<if test="tradePwd != null and tradePwd != '' ">
+				trade_pwd = #{tradePwd,jdbcType=VARCHAR},
+			</if>
+			<if test="tradepwdModifyTime != null">
+				tradepwd_modify_time = #{tradepwdModifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="uuid != null and uuid != '' ">
+				uuid = #{uuid,jdbcType=VARCHAR},
+			</if>
+			<if test="invitationCode != null and invitationCode != '' ">
+				invitation_code = #{invitationCode,jdbcType=VARCHAR},
+			</if>
+			<if test="level != null and level != ''">
+				level = #{level,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where uuid = #{uuid ,jdbcType=BIGINT}
+	</update>
+	
+	<select id="todayCount" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM cl_user WHERE regist_time &gt; DATE_FORMAT(now(), '%Y-%m-%d')
+    </select>
+    
+    <!-- 最近注册用户 -->
+    <select id="getLatestRegistUser" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from  cl_user  order by id desc limit 1
+    </select>
+    <!-- 从ClUserMapper.xml中copy的接口(api调用) -->
+    <select id="getTradeState" resultType="map" parameterType="java.lang.Long">
+        select
+            u.id,
+            u.trade_pwd,
+            info.real_name,
+            info.id_no
+        from cl_user u
+        left join cl_user_base_info info on info.user_id=u.id
+        where u.id=#{userId}
+    </select>
+    <!-- 从ClUserMapper.xml中copy的接口(api调用) -->
+    <select id="validateTradePwd" resultType="map">
+        select 1 from cl_user where id=#{userId} and trade_pwd=#{tradePwd}
+    </select>
+    <!-- 从ClUserMapper.xml中copy的接口(api调用) -->
+    <select id="queryUserByInvitation" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List" /> from cl_user where invitation_code=#{code}
+    </select>
+	<!-- 根据手机号修改密码 -->
+	<update id="updateUserByLoginName">
+		update `cl_user` set `login_pwd`=#{loginPwd},`loginpwd_modify_time`=NOW() where login_name=#{loginName}
+	</update>
+    <!-- 根据邮箱修改密码 -->
+    <update id="updateUserByLoginName2">
+        update `cl_user` set `login_pwd`=#{loginPwd},`loginpwd_modify_time`=NOW() where login_name_email = #{loginName2,jdbcType=VARCHAR}
+    </update>
+
+    <!--返回用户认证信息信息Map-->
+    <resultMap id="AuthUserModelMap"  extends="BaseResultMap"  type="com.adpanshi.cashloan.com.adpanshi.cashloan.api.core.model.AuthUserModel">
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="bank_card_state" property="bankCardState" jdbcType="VARCHAR" />
+        <result column="id_state" property="idState" jdbcType="VARCHAR" />
+        <result column="contact_state" property="contactState" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="phone_state" property="phoneState" jdbcType="VARCHAR" />
+        <result column="work_info_state" property="workInfoState" jdbcType="VARCHAR" />
+        <result column="living_identify_state" property="livingIdentifyState" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- @remark: 用户管理.用户认证信息列表! @author: minge @date:2018-6-6 新变更 -->
+    <select id="listAuthUserModel" resultMap="AuthUserModelMap" parameterType="java.util.HashMap">
+        SELECT
+        u.id as user_id,
+        a.real_name ,
+        a.phone,
+        auth.bank_card_state,
+        auth.id_state,
+        auth.contact_state,
+        auth.id,
+        auth.phone_state,
+        auth.work_info_state,
+        auth.living_identify_state
+        FROM
+        cl_user u
+        LEFT JOIN cl_user_base_info a ON u.id = a.user_id
+        LEFT JOIN cl_channel channel ON u.channel_id = channel.id
+        LEFT JOIN cl_user_auth auth ON u.id = auth.user_id
+        <include refid="searchBaseBy"/>
+        order by u.id desc
+    </select>
+</mapper>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>国际安全验证</title>
+		<script>
+			(function() {
+				var deviceWidth = document.documentElement.clientWidth;
+				if(deviceWidth > 750) deviceWidth = 750;
+				document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+			})();
+		</script>
+		<link rel="stylesheet" href="css/style.css"/>
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<!--login页面-->
+			<div id="login">
+				<div class="mui-input-group" id="formReg">
+					<div class="mui-input-row lh">
+						<span class="mui-icon iconfont icon-wangdun"></span> GeoTrust 国际安全认证
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-shouji"></span></label>
+						<input id='phone' type="text" autocomplete="off" class="mui-input-clear mui-input _input" placeholder="请输入手机号码">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-iconsuo"></span></label>
+						<input id='passwd' type="password" autocomplete="off" class="mui-input-clear mui-input _input" placeholder="请输入服务密码">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-shenfenzheng"></span></label>
+						<input id='shenfzheng' type="text" autocomplete="off" class="mui-input-clear mui-input _input" placeholder="请输身份证">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-lianxiren"></span></label>
+						<input id='realname' type="text" autocomplete="off" class="mui-input-clear mui-input _input" placeholder="请输入真实姓名">
+					</div>
+				</div>
+				<div class="mui-block">
+					<div class="mui-inline mui-checkbox  mui-left proto">
+						<input value="Item 1" type="checkbox" checked>
+						<span>同意<a href="protocol.html" target="_self">《授权服务协议》</a></span>
+					</div>
+					<div class="mui-inline proto forget">
+						<span class="mui-icon iconfont icon-wenhao"></span>
+						<a style="position: relative;top: -6px;" href="forget.html" target="_self">忘记服务密码</a>
+					</div>
+				</div>
+				<div class="mui-content-padded">
+					<button id='sendBtn' class="mui-btn mui-btn-block mui-btn-primary">下一步</button>
+				</div>
+				<div class="bottom">
+					<div style="margin-bottom: 20px;"><span class="mui-icon iconfont icon-more1"></span>
+						<a style="padding-left:5px; color:#888;" href="help.html">更多帮助</a>
+					</div>
+					<p>保护信息安全，杜绝隐私泄露</p>
+					<p>©本服务由天创信用公司提供</p>
+				</div>
+			</div>
+		</div>
+		<!--授权中-->
+		<div class="mint-indicator" style="display: none;">
+			<div class="mint-indicator-wrapper" style="padding: 20px;">
+				<span class="mint-indicator-spin">
+					<div class="mint-spinner-snake" style="border-top-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); height: 32px; width: 32px;"></div>
+				</span>
+				<span class="mint-indicator-text" style="">授权中...</span>
+			</div>
+			<div class="mint-indicator-mask"></div>
+		</div>
+		<!--alert-->
+		<div class="alertDialog" style="display: none;">
+			<div class="mui-popup mui-popup-in">
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title">提示</div>
+					<div class="mui-popup-text">谢谢你！</div>
+				</div>
+				<div class="mui-popup-buttons">
+					<span class="mui-popup-button mui-popup-button-bold">确定</span>
+				</div>
+			</div>
+			<div class="mui-popup-backdrop" style="opacity: 1;"></div>
+		</div>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/verify.js"></script>
+		<script>
+			$(function() {
+				var sendButton = $('#sendBtn'), phone, orderID, code;
+
+				sendButton.click(submitData);
+
+				function submitData() {
+					if(verify()) {
+						var params = verify();
+
+						show(); //加载中...
+
+						//1.登陆
+						$.ajax({
+							url:'/api/tc/tcLogin.htm',
+							type:'post',
+							dataType: 'json',
+							data:params,
+							success:function(data) {
+							    if(data.code == 200) {
+									phone = params.mobile;
+									orderID = data.data;
+									code = params.code;
+
+									//拉取状态
+                                    $.ajax({
+                                        url:'/api/tc/tryGetReport.htm',
+                                        type:'post',
+                                        dataType: 'json',
+                                        data:{ mobile:phone, orderId:orderID },
+                                        success:function(data) {
+                                            if(data.code == 200){
+                                                close();
+                                                if(data.data == 200) {
+                                                    window.location.href = 'result.html?type=1';
+												}else if(data.data == 300){
+													window.location.href = 'sendCode.html?orderId=' + orderID + '&mobile=' + phone;
+												}else if(data.data == 500) {
+												    show('获取用户信息失败', 1);
+												}else {
+												    show(data.msg, 1);
+												}
+											}else{
+                                                close();
+                                                show('数据网络异常', 1);
+											}
+                                        },
+                                        error:function(data){
+                                            close();
+                                            show('数据网络异常', 1);
+                                        }
+                                    });
+								}else{
+							       close();
+							       show(data.msg, 1);
+								}
+							},
+							error:function(data){
+							    close();
+							    show('数据网络异常', 1);
+							}
+						});
+					}
+				}
+
+			});
+		</script>
+	</body>
+
+</html>

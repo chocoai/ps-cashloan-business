@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>91买呗-完善资料</title>
+    <link rel="shortcut icon" href="img/xiaoeqiandai_favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" href="css/perfect.css">
+    <style>
+        .srzm,.zfht,.fczm{width: 100vw;height: 100vh;position: fixed;z-index: 999;top: 0px;left:0px;display: none;background-color: #fff;}
+        .srzm img,.zfht img,.fczm img{width: 100%;}
+    </style>
+    <script type="text/javascript">
+    (function() {
+        var deviceWidth = document.documentElement.clientWidth;
+        if (deviceWidth > 750) deviceWidth = 750;
+        document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    })();
+    </script>
+    <style>
+    .tab-check {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc;
+        padding: 0 10%;
+    }
+
+    .tab-check li {
+        width: 40%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+    }
+
+    .tab-check li:nth-child(1) {
+        border-bottom: 2px solid #00cfbb;
+    }
+
+    .form-list {
+        padding: 6px 16px;
+    }
+
+    .form-list label {
+        display: flex;
+        justify-content: space-between;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .form-list label input {
+        border: none;
+        outline: none;
+        width: 60%;
+    }
+
+    .form-list label .label-right {
+        width: 60%;
+    }
+
+    .form-list label .label-right select {
+        outline: none;
+        width: 60%;
+        border: 1px solid #ccc;
+    }
+
+    .form-list label .label-right input[type=radio] {
+        display: inline-block;
+        width: 10%;
+    }
+
+    .self {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <ul class="tab-check suc-hide">
+            <li onclick="tabChange('other')" class="other-bottom">租房详情</li>
+            <li onclick="tabChange('self')" class="self-bottom">自有房产</li>
+        </ul>
+        <div class="con">
+            <div class="form-list">
+                <label>
+                    <span>居住城市</span>
+                    <input type="text" placeholder="请输入居住城市" id="livingCity" maxlength="32">
+                </label>
+                <label>
+                    <span>小区名称</span>
+                    <input type="text" placeholder="请输入小区名称" id="communityName" maxlength="32">
+                </label>
+                <label>
+                    <span>楼层单元</span>
+                    <input type="text" placeholder="例：1幢2号楼1100室" id="floorUnit" maxlength="32">
+                </label>
+                <label class="other">
+                    <span>押金方式</span>
+                    <div class="label-right">
+                        <select name="depositType" id="depositType">
+                        </select>
+                    </div>
+                </label>
+                <label class="other">
+                    <span>租      金</span>
+                    <div class="label-right">
+                        <input type="text" placeholder="请输入租金" id="rent" maxlength="32">
+                        <span>元/月</span>
+                    </div>
+                </label>
+                <label class="other">
+                    <span>租房面积</span>
+                    <div class="label-right">
+                        <input type="text" placeholder="请填写建筑面积" id="rentArea" maxlength="32">
+                        <span>㎡</span>
+                    </div>
+                </label>
+                <!--///////////////////////////////////////自有房产-->
+                <label class="self">
+                    <span>是否抵押</span>
+                    <div class="label-right">
+                        <input id="r1" type="radio" value="1" name="isPress" checked>是</input>
+                        <input id="r2" type="radio" value="0" name="isPress">否</input>
+                    </div>
+                </label>
+                <label class="self">
+                    <span>产权性质</span>
+                    <div class="label-right">
+                        <select name="natureProperty" id="natureProperty">
+                            <option value="">请选择</option>
+                            <option value="3">住宅</option>
+                            <option value="2">酒店式公寓</option>
+                            <option value="1">别墅</option>
+                        </select>
+                    </div>
+                </label>
+                <label class="self">
+                    <span>户型</span>
+                    <div class="label-right">
+                        <select name="houseType" id="houseType">
+                            <option value="">请选择</option>
+                            <option value="1">农村</option>
+                            <option value="0">城镇</option>
+                        </select>
+                    </div>
+                </label>
+                <!--//////////////////////////////////////////////////////自有房产-->
+            </div>
+            <!--//////////////////////////////////////////////上传图片容器-->
+            <div class="tenement other">
+                <div class="ten-top">
+                    <p>租房合同</p>
+                    <p class="tipe"><span>请上传5兆以内的租房合同 <a onclick="sfsm(1)">示范说明</a></span></p>
+                </div>
+                <div class="ten-con">
+                    <ul class="t-img">
+                        <!-- <li>
+                        <img src="" alt="">
+                    </li> -->
+                        <li class="add tipe suc-hide" id="filebox2">
+                            <span>+</span>
+                            <span class="uploading uploading2">
+                            <img src="img/loding.gif" alt="">
+                            <p>上传中...</p>
+                        </span>
+                            <!--<span class="uploading">-->
+                            <!--<div class="spinner">-->
+                            <!--<div class="double-bounce1"></div>-->
+                            <!--<div class="double-bounce2"></div>-->
+                            <!--<p>上传中</p>-->
+                            <!--</div>-->
+                            <!--</span>-->
+                            <input type="file" multiple="true" onchange="imgChange(event,'2')">
+                        </li>
+                    </ul>
+                </div>
+                <div class="ten-time">
+                    <p>
+                        <span>合同起止日期</span>
+                        <input type="date" class="start" onchange="startTime(event)" /> <span>&nbsp;至&nbsp; </span>
+                        <input type="date" class="end" onchange="endTime(event)" />
+                    </p>
+                    <!-- <span class="again-push">过期后需重新提交</span> -->
+                </div>
+            </div>
+            <div class="income self">
+                <div class="ten-top">
+                    <p>房产证明</p>
+                    <p class="tipe"><span>请上传5M以内的房产证明<a onclick="sfsm(3)">示范说明</a></span></p>
+                </div>
+                <div class="ten-con">
+                    <ul class="imgbox">
+                        <li class="addincome suc-hide" id="filebox4">
+                            <span>+</span>
+                            <span class="uploading uploading4">
+                            <img src="img/loding.gif" alt="">
+                            <p>上传中...</p>
+                        </span>
+                            <input type="file" onchange="imgChange(event,4)">
+                        </li>
+                    </ul>
+                </div>
+                <div class="ten-time">
+                    <p style="display: block;">
+                        <span>房屋购买日期</span>
+                        <input type="date" class="buyData" />
+                    </p>
+                    <!-- <span class="again-push">过期后需重新提交</span> -->
+                </div>
+            </div>
+            <div class="income">
+                <div class="ten-top">
+                    <p>收入证明</p>
+                    <p class="tipe"><span>请上传5兆以内的收入证明<a onclick="sfsm(2)">示范说明</a></span></p>
+                </div>
+                <div class="ten-con">
+                    <ul class="imgbox">
+                        <li class="addincome suc-hide" id="filebox3">
+                            <span>+</span>
+                            <span class="uploading uploading3">
+                            <img src="img/loding.gif" alt="">
+                            <p>上传中...</p>
+                        </span>
+                            <input type="file" onchange="imgChange(event,3)">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--////////////////////////////////////////////////上传图片容器-->
+        </div>
+        <footer id="push">
+            <p class="push">提交</p>
+        </footer>
+    </div>
+    <div class="loading">
+        <p>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </p>
+    </div>
+    <div class="tips">
+        <div class="dialog">
+            <span class="close"></span>
+            <h2 id="confirm"></h2>
+            <p><a href="javascript:;" class="yes">确定</a></p>
+        </div>
+    </div>
+    <div class="zfht" onclick="hideImg(1)">
+        <img  src="./img/zfht.jpg" alt="">
+    </div>
+    <div class="srzm" onclick="hideImg(2)">
+        <img  src="./img/srzm.jpg" alt="">
+    </div>
+    <div class="fczm" onclick="hideImg(3)">
+        <img  src="./img/house_zm.jpg" alt="">
+    </div>
+</body>
+<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="js/upload-plugin.js"></script>
+<script type="text/javascript">
+     // $('#filebox' + classify).before('<li id="' + res.data.id + '" class="file"><span class="del suc-hide" onclick="delImg(event,' + res.data.id + ',' + classify + ')">×</span><img src="http://192.168.0.253:4092/readFile.htm?path=' + res.data.filePath + '" ></li>');
+var init={
+    depositType:'',
+    natureProperty:'',
+    houseType:''
+};
+var selfHouse = false;
+    if(sceneType==4){
+        selfHouse =true;
+        tabChange('self')
+    } 
+    suc = false; //租房详情与自有房产识别  true私有房产  false租房详情
+var Num2 = 0,//租房合同
+    Num3 = 0,//收入证明
+    Num4 = 0,//房产
+    arrOther = [],
+    arrSelf = [];
+
+    function sfsm(id) {
+        if(id==1){
+            $('.zfht').show();
+        }else if(id==2){
+            $('.srzm').show();
+        }else if(id==3){
+            $('.fczm').show();
+        }
+    };
+    function hideImg(id) {
+        if(id==1){
+            $('.zfht').hide();
+        }else if(id==2){
+            $('.srzm').hide();
+        }else if(id==3){
+            $('.fczm').hide();
+        }
+    };
+$.ajax({
+    url: '/api/act/pettyLoanScene/intoScene.htm',
+    type: 'post',
+    data: { userId: id,'sceneType': sceneType},
+    dataType: 'json',
+    async: false,
+    success: function(result) {
+        
+        if(result.data.files && result.data.state!=0){
+            var filesData = result.data.files,dataList = filesData.dataList;
+            init = filesData.scene;
+            $('.tab-check').hide();
+            $('#livingCity').val(init.livingCity); //居住城市
+            $('#communityName').val(init.communityName); //小区名称
+            $('#floorUnit').val(init.floorUnit); //楼层单元
+
+
+            // $('#depositType').val(init.depositType); //押金方式
+            if(sceneType == 1){
+                // debugger;
+                $('#rent').val(init.rent); //租金
+                $('#rentArea').val(init.rentArea); //租房面积
+                $(".start").val(filesData.startTime.split(' ')[0]); //开始时间
+                $(".end").val(filesData.validityTime.split(' ')[0]); //到期时间
+                for (var i = 0; i < dataList.length; i++) {
+                    var classify = dataList[i].classify;
+                    $('#filebox' + classify).before('<li id="' + dataList[i].id + '" class="file"><span class="del suc-hide" onclick="delImg(event,' + dataList[i].id + ',' + classify + ')">×</span><img src="' + dataList[i].path + '" ></li>');
+
+                    arrOther.push(dataList[i].id);
+                    if(classify == 2){  
+                        Num2++;
+                        if(Num2>=6){
+                            $('#filebox2').hide();
+                        }
+                    }else if(classify ==3){
+                        Num3++;
+                        if(Num3>=6){
+                            $('#filebox3').hide();
+                        }
+                    }
+                }
+            }else if(sceneType == 4){
+                if(init.isPress=="1"){
+                    $("input[value=1]").attr('checked','checked')
+                }else{
+                    $("input[value=0]").attr('checked','checked')
+                }
+                $(".buyData").val(init.startTime.split(' ')[0]); //到期时间
+                for (var i = 0; i < dataList.length; i++) {
+                    var classify = dataList[i].classify;
+                    $('#filebox' + classify).before('<li id="' + dataList[i].id + '" class="file"><span class="del suc-hide" onclick="delImg(event,' + dataList[i].id + ',' + classify + ')">×</span><img src="' + dataList[i].path + '" ></li>');
+                    arrSelf.push(dataList[i].id);
+                    if(classify == 4){  
+                        Num4++;
+                        if(Num4>=6){
+                            $('#filebox4').hide();
+                        }
+                    }else if(classify ==3){
+                        Num3++;
+                        if(Num3>=6){
+                            $('#filebox3').hide();
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if(result.data.state == 1){
+            $('.push').text('重新提交')
+        }else if(result.data.state == 2){
+            $('#push').hide();
+            $('.suc-hide').hide();
+        }
+    },
+    error: function(data) {
+        show("网络连接错误!");
+    }
+});
+
+var path = '',imgSRC = '';
+// var path = 'http://192.168.0.140:8070';
+
+$.ajax({
+    url: '/api/act/user/userAuth/tenementIncome.htm',
+    type: 'post',
+    data: { 'userId': id},
+    dataType: 'json',
+    async: false,
+    success: function(result) {
+        if (result.code == 200) {
+            var data = result.data,
+                depositTypeHtml = "<option value=''>请选择</option>";
+            for (var i = 0; i < data.DEPOSIT_TYPE.length; i++) {
+                if(result.data.state!=0 && sceneType == 1 && data.DEPOSIT_TYPE[i].value == init.depositType){
+                    depositTypeHtml += "<option value=" + data.DEPOSIT_TYPE[i].value + " selected>" + data.DEPOSIT_TYPE[i].text + "</option>"
+                }else{
+                    depositTypeHtml += "<option value=" + data.DEPOSIT_TYPE[i].value + ">" + data.DEPOSIT_TYPE[i].text + "</option>"
+                } 
+            }
+            $("#depositType").html(depositTypeHtml)
+
+            var naturePropertyHtml = "<option value=''>请选择</option>";
+            for (var j = 0; j < data.HOUSE_TYPE.length; j++) {
+                if(result.data.state!=0 && sceneType == 4 && data.HOUSE_TYPE[j].value == init.natureProperty){
+                    naturePropertyHtml += "<option value=" + data.HOUSE_TYPE[j].value + " selected>" + data.HOUSE_TYPE[j].text + "</option>"
+                }else{
+                    naturePropertyHtml += "<option value=" + data.HOUSE_TYPE[j].value + ">" + data.HOUSE_TYPE[j].text + "</option>"
+                }      
+            }
+            $("#natureProperty").html(naturePropertyHtml)
+
+            var houseTypeHtml = "<option value=''>请选择</option>";
+            for (var k = 0; k < data.NATURE_PROPERTY.length; k++) {
+                if(result.data.state!=0 && sceneType == 4 && data.NATURE_PROPERTY[k].value == init.houseType){
+                    houseTypeHtml += "<option value=" + data.NATURE_PROPERTY[k].value + " selected>" + data.NATURE_PROPERTY[k].text + "</option>"
+                }else{
+                    houseTypeHtml += "<option value=" + data.NATURE_PROPERTY[k].value + ">" + data.NATURE_PROPERTY[k].text + "</option>"
+                }
+            }
+            $("#houseType").html(houseTypeHtml)
+        } else {
+            show(result.msg);
+        }
+    },
+    error: function(data) {
+        show("网络连接错误!");
+    }
+});
+
+checkSelf(selfHouse);
+// -------------------------------------tab切换
+function tabChange(type) {
+    if (type == 'other') {
+        selfHouse = false;
+        $('.other-bottom').css("border-bottom", "2px solid #00cfbb");
+        $('.self-bottom').css("border-bottom", "none");
+    } else if (type == 'self') {
+        selfHouse = true;
+        $('.self-bottom').css("border-bottom", "2px solid #00cfbb");
+        $('.other-bottom').css("border-bottom", "none");
+    }
+    checkSelf(selfHouse)
+}
+
+function imgChange(e, classify) {
+    var maxsize = 300 * 1024; //1M
+    var file = e.target.files[0]; //图片对象
+    if (!/\/(?:jpeg|png)/i.test(file.type)) {
+        show('只支持jpg/png 格式');
+        return;
+    }
+    if (!file) {
+        return;
+    }
+    if (classify == "2") {
+        $('.uploading2').show();
+    } else if (classify == "3") {
+        $('.uploading3').show();
+    } else if (classify == "4") {
+        $('.uploading4').show();
+    }
+    imgSRC = URL.createObjectURL(file);  //将img对象转成二进制流（blob）
+    // $('#filebox').before('<li class="file1"><span class="del" onclick="delImg(event)">×</span><img src="' + imgSRC + '" ></li>');
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+        var result = this.result;
+        var img = new Image();
+        img.src = result;
+        //图片大小小于1M，则直接上传
+        if (result.length <= maxsize) {
+            var basestr = result
+            var text = window.atob(basestr.split(",")[1]);
+            var buffer = new Uint8Array(text.length);
+            for (var i = 0; i < text.length; i++) {
+                buffer[i] = text.charCodeAt(i);
+            }
+            var blob = getBlob([buffer], file.type);
+            upFile(blob, classify);
+            return;
+        }
+        //      图片加载完毕之后进行压缩，然后上传
+        if (img.complete) {
+            callback();
+        } else {
+            img.onload = callback;
+        }
+
+        function callback() {
+            var basestr = compress(img);
+            var text = window.atob(basestr.split(",")[1]);
+            var buffer = new Uint8Array(text.length);
+            for (var i = 0; i < text.length; i++) {
+                buffer[i] = text.charCodeAt(i);
+            }
+            var blob = getBlob([buffer], file.type);
+            upFile(blob, classify);
+        }
+    };
+
+}
+
+function checkSelf(selfHouse) {
+    if (selfHouse) {
+        $('.other').hide();
+        $('.self').show();
+    } else {
+        $('.other').show();
+        $('.self').hide();
+    }
+}
+var startc, endc;
+
+function startTime(e) {
+    startc = e.target.value;
+    if (!endc) {
+
+    } else {
+        if (e.target.value >= endc) {
+            show('起始时间应该小于起始时间')
+            e.target.value = '';
+            startc = '';
+        }
+    }
+
+};
+
+function endTime(e) {
+    endc = e.target.value;
+    if (!startc) {
+
+    } else {
+        if (e.target.value <= startc) {
+            show('到期时间应该大于起始时间')
+            e.target.value = '';
+            endc = '';
+        }
+    }
+};
+// function buyData(e) {
+//
+// }
+function upFile(file, classify) {
+    var xhr = new XMLHttpRequest();
+
+    var formdata = getFormData();
+
+    formdata.append('file', file);
+    formdata.append('userId', id);
+    formdata.append('classify', classify);
+    // formdata.append('validityTime',end);
+    xhr.open('POST', '/api/act/file/upload.htm');
+    xhr.send(formdata);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            xhr.responseText = xhr.responseText.replace(/"/, "'");
+            xhr.responseText = xhr.responseText.substring(0, xhr.responseText.length - 1)
+            xhr.responseText += "'"
+            // console.log(xhr.responseText)
+            var res = JSON.parse(xhr.responseText);
+            if (res.code == 200) {
+                if (classify == "2") {
+                    Num2++
+                    if (Num2 >= 6) {
+                        $('#filebox2').hide();
+                    }
+                } else if (classify == "3") {
+                    Num3++
+                    if (Num3 >= 6) {
+                        $('#filebox3').hide();
+                    }
+                } else if (classify == "4") {
+                    Num4++
+                    if (Num4 >= 6) {
+                        $('#filebox4').hide();
+                    }
+                }
+                $('#filebox' + classify).before('<li id="' + res.data.id + '" class="file"><span class="del suc-hide" onclick="delImg(event,' + res.data.id + ',' + classify + ')">×</span><img src="'+imgSRC+'" ></li>');
+                // show('上传成功');
+                if (selfHouse) {
+                    arrSelf.push(res.data.id)
+                } else {
+                    arrOther.push(res.data.id)
+                }
+            } else {
+                show('上传失败,请重新提交!');
+            }
+        }
+        $('.uploading').hide();
+    };
+}
+
+function delImg(e, id, classify) {
+    if (classify == 2) {
+        Num2--;
+        $('#filebox2').show();
+        arrOther = remove(arrOther, id);
+    } else if (classify == 3) {
+        Num3--;
+        $('#filebox3').show();
+        arrOther = remove(arrOther, id);
+    } else if (classify == 4) {
+        Num4--;
+        $('#filebox4').show();
+        arrSelf = remove(arrSelf, id);
+    }
+    // $.ajax({
+    //     url: '/com.adpanshi.com.adpanshi.cashloan.api/act/file/remove.htm',
+    //     type: 'post',
+    //     data: { id: id },
+    //     dataType: 'json',
+    //     async: false,
+    //     success: function(result) {
+    //         if (result.code == 200) {
+                $('#' + id).remove();
+    //         } else {
+    //             show(result.msg);
+    //         }
+    //     },
+    //     error: function(data) {
+    //         show("网络连接错误!");
+    //     }
+    // });
+};
+
+
+$('.push').on('touchstart', function() {
+    if (suc) {
+        show('已提交成功!')
+        return;
+    }
+    var jsonData = {},
+        attachmentIds = [];
+    var livingCity = $.trim($('#livingCity').val()); //居住城市
+    var communityName = $.trim($('#communityName').val()); //小区名称
+    var floorUnit = $.trim($('#floorUnit').val()); //楼层单元
+    var depositType = $.trim($('#depositType').val()); //押金方式
+    var rent = $.trim($('#rent').val()); //租金
+    var rentArea = $.trim($('#rentArea').val()); //租房面积
+    var isPress = $("input[name='isPress']:checked").val(); //是否抵押
+    var natureProperty = $.trim($('#natureProperty').val()); //产权性质
+    var houseType = $.trim($('#houseType').val()); //户型
+    var start = $(".start").val(); //开始时间
+    var end = $(".end").val(); //到期时间
+    var buyData = $(".buyData").val(); //房屋购买日期
+    if (!livingCity || !communityName || !floorUnit) {
+        $('.tips').fadeIn('500').find('h2').text("请完善资料！")
+        $('.loading').css('display', 'none');
+        return;
+    };
+    jsonData.livingCity = livingCity;
+    jsonData.communityName = communityName;
+    jsonData.floorUnit = floorUnit;
+    if (selfHouse) {
+        if (!isPress || !natureProperty || !houseType) {
+            $('.tips').fadeIn('500').find('h2').text("请完善资料！")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        if (Num4 <= 0) {
+            $('.tips').fadeIn('500').find('h2').text("请上传房产证明!")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        if (!buyData) {
+            $('.tips').fadeIn('500').find('h2').text("请选择房屋购买日期")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        jsonData.isPress = isPress;
+        jsonData.natureProperty = natureProperty;
+        jsonData.houseType = houseType;
+        jsonData.startDate = buyData;
+        jsonData.sceneType = 4;
+        attachmentIds = arrSelf;
+    } else {
+        if (!depositType || !rent || !rentArea) {
+            $('.tips').fadeIn('500').find('h2').text("请完善资料!")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        if (Num2 <= 0) {
+            $('.tips').fadeIn('500').find('h2').text("请上传租房合同!")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        if (!start || !end) {
+            $('.tips').fadeIn('500').find('h2').text("请选择时间")
+            $('.loading').css('display', 'none');
+            return;
+        };
+        jsonData.depositType = depositType;
+        jsonData.rent = rent;
+        jsonData.rentArea = rentArea;
+        jsonData.startDate = start;
+        jsonData.endDate = end;
+        jsonData.sceneType = 1;
+        attachmentIds = arrOther;
+    }
+
+    if (Num3 <= 0) {
+        $('.tips').fadeIn('500').find('h2').text("请上传收入证明!")
+        $('.loading').css('display', 'none');
+        return;
+    };
+    // console.log({jsonData : JSON.stringify(jsonData),attachmentIds : JSON.stringify(attachmentIds),userId : id})
+    $('.loading').css('display', 'block');
+    
+    $.ajax({
+        url: '/api/act/pettyLoanScene/savePettyLoanScene.htm',
+        type: 'post',
+        data: { jsonData: JSON.stringify(jsonData), 'attachmentIds': attachmentIds, userId: id },
+        dataType: 'json',
+        async: false,
+        success: function(result) {
+            if (result.code == 200) {
+                // show("上传成功")
+                $('.loading').css('display', 'none');
+                $('.suc-hide').hide();
+                $('.push').text('上传成功');
+                suc = true;
+                try{
+                    window.android.getResult(true);
+                }catch(err){
+                    setupWebViewJavascriptBridge(function(bridge) {
+
+                        /* Initialize your app here */
+
+                        bridge.registerHandler('JS Echo', function(data, responseCallback) {
+                            console.log("JS Echo called with:", data)
+                            responseCallback(data)
+                        })
+                        bridge.callHandler('ObjC Echo', {'result':'success'}, function responseCallback(responseData) {
+                            console.log("JS received response:", responseData)
+                        })
+                    });
+                }
+            } else {
+                show(result.msg);
+                $('.loading').css('display', 'none');
+            }
+        },
+        error: function(data) {
+            show("网络连接错误!");
+        }
+    });
+})
+
+
+</script>
+
+</html>

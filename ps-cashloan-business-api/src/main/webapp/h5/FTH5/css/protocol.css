@@ -1,0 +1,87 @@
+body {
+	font-family: arial 'Heiti SC';
+	font-size: .2rem;
+	line-height: .5rem;
+	padding: .15rem;
+}
+
+header>h1 {
+	text-align: center;
+	font-size: .32rem;
+	font-weight: bold;
+	padding-bottom: .4rem;
+}
+
+h3 {
+	font-weight: bold;
+	padding: .2rem 0;
+}
+
+p {
+	padding-bottom: .2rem;
+	text-indent: 2em;
+	text-align: justify;
+	text-justify: inter-ideograph;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	*+height: 1%;
+	border: 1px solid #ccc;
+	border-bottom: none;
+}
+
+.clearfix:last-child {
+	border-bottom: 1px solid #ccc;
+}
+
+.clearfix>div {
+	font-size: .3rem;
+	line-height: .6rem;
+	font-family: arial;
+}
+
+.fl {
+	width: 30%;
+	float: left;
+	border-right: 1px solid #ccc;
+	box-sizing: border-box;
+	padding-left: .2rem;
+}
+
+.fr {
+	width: 70%;
+	float: right;
+	padding-left: .2rem;
+	box-sizing: border-box;
+}
+
+#tableHTML {
+	border-collapse:collapse;
+	width:7rem;
+}
+
+#tableHTML td,th{
+	border:1px solid #ccc;
+	padding: .05rem .1rem;
+	font-size: .2rem;
+}
+
+#tableHTML th{
+	font-weight: bold;
+}
+
+#tableHTML>tbody>tr>td:first-child{
+	width:1.5rem;
+}

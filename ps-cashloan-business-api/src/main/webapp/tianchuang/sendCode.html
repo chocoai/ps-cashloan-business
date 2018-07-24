@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>发送验证码</title>
+		<link href="css/iconfont.css" rel="stylesheet" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				margin-top: 1px;
+			}
+			
+			.mui-input-row.lh {
+				height: 90px;
+				line-height: 90px;
+				text-align: center;
+				color: #888;
+			}
+			
+			.mui-input-row.lh::after {
+				left: 0;
+			}
+			
+			._input {
+				font-size: 16px;
+			}
+			
+			label .iconfont {
+				margin-left: 8px;
+				margin-top: -4px;
+			}
+			
+			.icon-wenhao:before {
+				top: 2px;
+			}
+			
+			.proto {
+				font-size: 12px;
+				padding-top: 8px;
+			}
+			
+			.mui-checkbox.mui-left span {
+				padding-left: 24px;
+			}
+			
+			.bottom {
+				position: absolute;
+				bottom: 35px;
+				left: 0;
+				right: 0;
+				text-align: center;
+				color: #888;
+				z-index: 1;
+			}
+			
+			.bottom p{
+				font-size: 12px;
+				margin: 0;
+				padding: 0;
+			}
+
+			input:-webkit-autofill{
+				-webkit-box-shadow: 0 0 0px 1000px white inset !important;
+				-webkit-text-fill-color: #fff !important;
+			}
+		</style>
+	</head>
+
+	<body style="background: #efeff4;">
+		<div class="mui-content" style="min-height: 540px; position: relative;">
+			<!--forget-->
+			<div class="mui-page">
+				<div class="mui-input-group" id="formReg">
+					<div class="mui-input-row lh">
+						<span class="mui-icon iconfont icon-wangdun"></span> GeoTrust 国际安全认证
+					</div>
+					<div class="mui-input-row lh js_result">
+						验证码发送成功
+					</div>
+					<div class="mui-input-row" style="position: relative;">
+						<label>验证码</label>
+						<input id='code' type="text" autocomplete="off" class="mui-input-clear mui-input _input" placeholder="请输入手机验证码">
+						<button type="button" class="mui-btn mui-btn-warning sendCode" style="position: absolute; right:20px; width: auto; padding: 8px 15px;
+    top: 3px;">点击刷新</button>
+					</div>
+				</div>
+				<div class="mui-block">
+					<div class="mui-inline mui-checkbox  mui-left proto">
+						<span class="mui-icon iconfont icon-wenhao"></span><a style="position: relative;top: -2px;" href="moreCode.html">为什么多次验证码</a>
+					</div>
+				</div>
+				<div class="mui-content-padded">
+					<button id='sendBtn' class="mui-btn mui-btn-block mui-btn-primary">下一步</button>
+				</div>
+				<div class="bottom">
+					<p>保护信息安全，杜绝隐私泄露</p>
+					<p>©本服务由天创信用公司提供</p>
+				</div>
+			</div>
+		</div>
+
+		<!--授权中-->
+		<div class="mint-indicator" style="display: none;">
+			<div class="mint-indicator-wrapper" style="padding: 20px;">
+				<span class="mint-indicator-spin">
+					<div class="mint-spinner-snake" style="border-top-color: rgb(204, 204, 204); border-left-color: rgb(204, 204, 204); border-bottom-color: rgb(204, 204, 204); height: 32px; width: 32px;"></div>
+				</span>
+				<span class="mint-indicator-text" style="">授权中...</span>
+			</div>
+			<div class="mint-indicator-mask"></div>
+		</div>
+		<!--alert-->
+		<div class="alertDialog" style="display: none;">
+			<div class="mui-popup mui-popup-in">
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title">提示</div>
+					<div class="mui-popup-text"></div>
+				</div>
+				<div class="mui-popup-buttons">
+					<span class="mui-popup-button mui-popup-button-bold">确定</span>
+				</div>
+			</div>
+			<div class="mui-popup-backdrop" style="opacity: 1;"></div>
+		</div>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/verify.js"></script>
+		<script>
+			$(function(){
+				var sendButton = $('#sendBtn'),
+                    orderID = Request('orderId'),
+					mobile = Request('mobile');
+
+                //sendMsgCode(orderID);
+
+				sendButton.click(function(ev) {
+				    var code = verifyCode();
+
+				    show();  //加载中...
+
+					if(code) {
+						$.ajax({
+							url: '/api/tc/verifyCode.htm',
+							type: 'post',
+							dataType: 'json',
+							data: {code: code, orderId: orderID},
+							success: function(data){
+								if(data.code == 200) {
+
+								    //拉取状态
+                                    $.ajax({
+                                        url:'/api/tc/tryGetReport.htm',
+                                        type:'post',
+                                        dataType: 'json',
+                                        data:{ mobile:mobile, orderId:orderID },
+                                        success:function(data) {
+                                            if(data.code == 200){
+                                                close();
+                                                if(data.data == 200) {
+                                                    window.location.href = 'result.html?type=1';
+                                                }else if(data.data == 300){
+                                                    //window.location.href('sendCode.html?isR=1');       
+                                                    $('.js_result').html('验证码已重新发送');
+                                                    $('#code').val('');
+                                                }else{
+                                                    window.location.href = 'result.html?type=2';
+                                                }
+                                            }else{
+                                                show('数据网络异常', 1);
+                                            }
+                                        },
+                                        error:function(data){
+                                            close();
+                                            show('数据网络异常', 1);
+                                        }
+                                    });
+
+								}else{
+								    show('数据网络异常', 1);
+								}
+							},
+							error: function(error) {
+                                show('数据网络异常', 1);
+							}
+						});
+					}else{
+					    close();
+					}
+				});
+
+                //刷新验证码
+                $('.sendCode').click(function(ev) {
+                    if($(this).html() == '点击刷新') {
+                        sendCode($('.sendCode'), 59, function(){
+                            sendMsgCode(orderID);
+						});
+					}
+                });
+
+                //发送验证码
+                function sendMsgCode(orderID){
+                    $.ajax({
+                        url:'/api/tc/againSendCode.htm',
+                        type:'post',
+                        dataType: 'json',
+                        data:{orderId: orderID},
+                        success:function(data) {
+							if(data.code == 200) {
+							    $('.js_result').html('验证码发送成功');
+							}else{
+                                $('.js_result').html('验证码发送失败');
+							}
+                        },
+                        error:function(data){
+                            $('.js_result').html('验证码发送失败');
+                        }
+                    });
+                }
+
+				//刷新跑秒方法封装
+				function sendCode(obj, cur, fn) {
+					obj = $(obj);
+					clearInterval(obj.timer);
+					obj.timer = setInterval(function() {
+						if(cur > 0) {
+							obj.html('(' + (cur--) + 's后刷新)');
+						} else {
+							clearInterval(obj.timer);
+							obj.html('点击刷新');
+						}
+					}, 1000);
+
+					fn && fn();
+				}
+
+                function Request(strName) {
+                    var strHref = document.location.href;
+                    var intPos = strHref.indexOf("?");
+                    var strRight = strHref.substr(intPos + 1);
+                    var arrTmp = strRight.split("&");
+                    for (var i = 0; i < arrTmp.length; i++) {
+                        var arrTemp = arrTmp[i].split("=");
+                        if (arrTemp[0].toUpperCase() == strName.toUpperCase())
+                            return arrTemp[1];
+                    }
+                    return undefined;
+                }
+			});
+		</script>
+	</body>
+</html>

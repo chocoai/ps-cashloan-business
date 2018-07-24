@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_tcwind_req_log表:大风策请求记录表模块 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TcwindReqLogMapper">
+    <!--返回Map-->
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TcwindReqLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="service" property="service" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="params" property="params" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="resp_params" property="respParams" jdbcType="VARCHAR"/>
+        <result column="resp_time" property="respTime" jdbcType="TIMESTAMP"/>
+        <result column="success" property="success" jdbcType="BIT"/>
+    </resultMap>
+
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+    id,service,user_id,params,create_time,resp_params,resp_time,success
+    </sql>
+
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="service != null and service != '' ">
+                and service = #{service,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="params != null and params != '' ">
+                and params = #{params,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="respParams != null and respParams != '' ">
+                and resp_params = #{respParams,jdbcType=VARCHAR}
+            </if>
+            <if test="respTime != null">
+                and resp_time = #{respTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="success != null and success != '' ">
+                and success = #{success,jdbcType=BIT}
+            </if>
+        </trim>
+    </sql>
+
+
+    <insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TcwindReqLog">
+        insert into cl_tcwind_req_log(service,user_id,params,create_time,resp_params,resp_time,success)values(#{service,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{params,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{respParams,jdbcType=VARCHAR},#{respTime,jdbcType=TIMESTAMP},#{success,jdbcType=BIT})
+    </insert>
+
+
+    <update id="update" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TcwindReqLog">
+        update cl_tcwind_req_log set
+        service = #{service,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=BIGINT},
+        params = #{params,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        resp_params = #{respParams,jdbcType=VARCHAR},
+        resp_time = #{respTime,jdbcType=TIMESTAMP},
+        success = #{success,jdbcType=BIT}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective" parameterType="java.util.HashMap">
+        update cl_tcwind_req_log
+        <set>
+            <if test="service != null and service != '' ">
+                service = #{service,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="params != null and params != '' ">
+                params = #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="respParams != null and respParams != '' ">
+                resp_params = #{respParams,jdbcType=VARCHAR},
+            </if>
+            <if test="respTime != null">
+                resp_time = #{respTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="success != null and success != '' ">
+                success = #{success,jdbcType=BIT}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from cl_tcwind_req_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cl_tcwind_req_log
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cl_tcwind_req_log
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="findLastSuccessOne" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cl_tcwind_req_log
+        WHERE success = '1'
+        and service = #{service,jdbcType=VARCHAR}
+        and user_id = #{userId,jdbcType=BIGINT}
+        <if test="lastTime != null">
+            and resp_time &gt;= #{lastTime,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY resp_time DESC limit 1
+    </select>
+
+    <select id="findLastOneByUserId" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cl_tcwind_req_log
+        WHERE  service = #{service,jdbcType=VARCHAR}
+        and user_id = #{userId,jdbcType=BIGINT}
+        <if test="lastTime != null">
+            and resp_time &gt;= #{lastTime,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY resp_time DESC limit 1
+    </select>
+
+
+
+</mapper>

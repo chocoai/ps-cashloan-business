@@ -11,5 +11,23 @@
 
     <artifactId>ps-cashloan-business-center</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-business-marketing-service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-dispatch-run-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wordnik</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.3.12</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

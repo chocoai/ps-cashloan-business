@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>完善资料</title>
+	<link rel="shortcut icon" href="img/xiaoeqiandai_favicon.ico">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" href="css/perfect.css">
+	<style>
+	</style>
+	<script type="text/javascript">
+        (function() {
+            var deviceWidth = document.documentElement.clientWidth;
+            if (deviceWidth > 750) deviceWidth = 750;
+            document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+        })();
+	</script>
+</head>
+
+<body style="overflow: hidden;">
+<section class="">
+	<p>
+		<span>iso</span>
+		<span>Android</span>
+	</p>
+</section>
+
+<div class="popup tips" style="display:none">
+	<div class="overlay"></div>
+	<div class="dialog">
+		<span class="close"></span>
+		<h2 id="confirm">...</h2>
+		<p>
+			<a href="javascript:;" class="yes">确定</a>
+		</p>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+</body>
+<script>
+    //判断访问终端 @copyRight fl
+    var browser={
+        versions:function(){
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+                iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+                weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2017-07-03新增）
+                qq: u.match(/\sQQ/i) == " qq" //是否QQ
+            };
+        }(),
+        language:(navigator.browserLanguage || navigator.language).toLowerCase()
+    }
+
+	var downloadURL = 'https://api.xiaoeqiandai.com/api/h5/app/latestDownload.htm';
+
+    var blockScript = function(downloadURL) { /**将脚本写入全局js*/
+    var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = downloadURL;
+        document.body.appendChild(script);
+        setTimeout(function(){
+            document.getElementsByTagName('body')[0].removeChild(script);
+        }, 600);
+    };
+
+    var pStr = 'ios', appType = 1;
+
+    if(browser.versions.iPhone) {
+        pStr = 'ios';
+    }else if(browser.versions.android){
+        pStr = 'android';
+    }
+    // blockScript(downloadURL + '?systemType=' + pStr + '&callback=download' + '&appType=' + appType);
+
+    //jsonp回调
+    window.download = function(data){
+        if(data.code == 200) {
+            window.location.href = data.url;
+        }else{
+            show(data.msg);
+        }
+    };
+
+</script>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>完善资料</title>
+	<link rel="shortcut icon" href="img/xiaoeqiandai_favicon.ico">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" href="css/perfect.css">
+	<script type="text/javascript">
+        (function() {
+            var deviceWidth = document.documentElement.clientWidth;
+            if (deviceWidth > 750) deviceWidth = 750;
+            document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+        })();
+	</script>
+	<style>
+		.stepBox{
+			width: 100%;
+			height: 82px;
+			margin-top: .5rem;
+		}
+		.stepBox img{
+			width: 100%;
+			height: 100%;
+		}
+		.tp{
+			text-align: center;
+			margin-top: .8rem;
+		}
+		.ed{
+			display: inline-block;
+			width: 3rem;height: 3rem;
+			border-radius: 50%;
+		}
+		.ed img{width: 100%;height: 100%;}
+		.icon{
+			display: inline-block;
+			width: 2rem;height: 2rem;
+			border-radius: 50%;
+		}
+		.icon img{width: 100%;height: 100%;}
+		.msgpg{
+			text-align: center;
+			height: .8rem;line-height: .8rem;
+		}
+		.now{
+		    width: 90%;margin-left: 5%;height: 1rem;
+		    line-height: 1rem;text-align: center;
+		    background-color: #ec4018;color: #fff;
+		    font-size: .4rem;border-radius: .5rem;
+		    margin-top: .5rem;display: none;
+		}
+		/*.setp3{display: none;}*/
+		.step4{display: none;}
+		.iosandroid{
+			width: 80%;
+			margin-left: 10%;
+			display: flex;
+			justify-content: space-around;
+			margin-top: 1rem;
+		}
+		.iosandroid span{
+			display: inline-block;
+			width: 	2.6rem;
+			height: 0.8rem;
+		}
+		.iosandroid span img{
+			width: 100%;height: 100%;
+		}
+		.tp91{
+
+		}
+		.tp91 div{
+			width: 80vw;
+			margin-left: 10vw;
+			height:52.8vw;
+			margin-top: 1.6rem;
+		}
+		.tp91 div img{
+			width: 100%;
+			height: 100%;
+		}
+		.tipmsg{
+			text-align: center;
+			margin-top: 50px;
+			color: rgba(0,0,0,0.4);
+		}
+	</style>
+</head>
+
+<body style="overflow: hidden;">
+<section class="setp3">
+	<div class="stepBox">
+		<img src="./regimage/step2.png" alt="">
+	</div>
+	<div class="tp">
+		<span class="ed">
+			<img src="./regimage/cio@2x.png" alt="">
+		</span>
+	</div>
+	<p class="msgpg msg1" style="margin-top: 30px;">正在评估您的分期额度，请稍等</p>
+	<p class="msgpg msg2" style="font-weight: 700"><span class="miao">3</span>S</p>
+
+	<p class="now">马上领款</p>
+</section>
+<section class="step4">
+	<div class="tp">
+		<span class="icon"><img src="./regimage/3@2x.png" alt=""></span>
+	</div>
+	<p class="iosandroid">
+		<span class="iso"><img src="./regimage/IOS@2x.png" alt=""></span>
+		<span class="android" onclick="downloadapp()"><img src="./regimage/Android@2x.png" alt=""></span>
+	</p>
+	<p class="tipmsg">
+		点击下载APP 立即领取<span class="showmoney"></span>元
+	</p>
+	<div class="tp91">
+		<!-- <p>91买呗应用市场图</p> -->
+		<div>
+			<img src="./regimage/91tp.png" alt="">
+		</div>
+	</div>
+</section>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+</body>
+<script>
+	//判断访问终端 @copyRight fl
+	var browser={
+		versions:function(){
+			var u = navigator.userAgent, app = navigator.appVersion;
+			return {
+				trident: u.indexOf('Trident') > -1, //IE内核
+				presto: u.indexOf('Presto') > -1, //opera内核
+				webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+				gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+				mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+				ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+				android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+				iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+				iPad: u.indexOf('iPad') > -1, //是否iPad
+				webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+				weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2017-07-03新增）
+				qq: u.match(/\sQQ/i) == " qq" //是否QQ
+			};
+		}(),
+		language:(navigator.browserLanguage || navigator.language).toLowerCase()
+	}
+	var money= RandomNumBoth(4,7)*1000;
+	$('.now').on('click',function(){
+		$('.setp3').hide();
+		$('.step4').show();
+	})
+	function RandomNumBoth(Min,Max){
+	    var Range = Max - Min;
+	    var Rand = Math.random();
+	    var num = Min + Math.round(Rand * Range); //四舍五入
+	    return num;
+	}
+ function sendCode(obj, cur, fn) {
+        clearInterval(obj.timer);
+        obj.timer = setInterval(function() {
+            if(cur >= 0) {
+                obj.html(cur--);
+            } else {
+                clearInterval(obj.timer);
+                // obj.html('获取验证码');
+                fn&&fn();
+            }
+        }, 1000);
+    }
+sendCode($('.miao'), 2, function(){
+        $('.msg1').html('您当前的预授信金额为')
+        $('.msg2').html(money+'.00元')
+        $('.now').show();
+    });
+
+var blockScript = function(downloadURL) { /**将脚本写入全局js*/
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = downloadURL;
+        document.body.appendChild(script);
+        setTimeout(function(){
+            document.getElementsByTagName('body')[0].removeChild(script);
+        }, 600);
+    };
+
+function downloadapp(){
+	var pStr = 'ios', appType = 1,downloadURL = '/api/h5/app/latestDownload.htm';
+
+        if(browser.versions.iPhone) {
+            pStr = 'ios';
+            return;
+        }else if(browser.versions.android){
+            pStr = 'android';
+        }
+
+        blockScript(downloadURL + '?systemType=' + pStr + '&callback=download' + '&appType=' + appType);
+}
+//jsonp回调
+    window.download = function(data){
+        if(data.code == 200) {
+            window.location.href = data.url;
+        }else{
+            show(data.msg);
+        }
+    };
+    $('.showmoney').html(money+'.00')
+</script>
+</html>

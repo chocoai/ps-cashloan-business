@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 风控数据-平台数据日报 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.TCOrderLogMapper">
+
+    <insert id="insert" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TCOrderLog">
+		INSERT INTO `cl_tc_orders_log`(`orderId`, `user_id`, `mobile`, `password`, `name`, `code`, `status`, `create_time`) 
+		VALUES (#{orderId}, #{userId}, #{mobile}, #{password}, #{name}, #{code}, #{status}, now()); 
+	</insert>
+
+    <select id="getNewestByMobile" resultType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TCOrderLog"
+            parameterType="java.util.HashMap">
+		select * from cl_tc_orders_log where mobile = #{mobile} and status = '20' order by create_time desc limit 1
+	</select>
+
+    <update id="updateOrderSuccess">
+		update cl_tc_orders_log set status = #{successStatus} where orderId = #{orderId}
+	</update>
+
+    <select id="findByOrderId" resultType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.TCOrderLog">
+		select * from cl_tc_orders_log where orderId = #{orderId} limit 1;
+	</select>
+
+    <select id="findNewOrderIdByUserId" resultType="java.lang.String" parameterType="java.lang.Long">
+		select orderId from cl_tc_orders_log where user_id = #{userId} and status = '20' order by create_time desc limit 1
+	</select>
+
+    <delete id="deleteByUserId">
+        delete from cl_tc_orders_log where user_id in
+        <foreach item="idItem" collection="list" open="(" separator="," close=")">
+            #{idItem}
+        </foreach>
+    </delete>
+
+    <select id="listOrderIdByUserId" resultType="String">
+        select
+        orderId
+        from cl_tc_orders_log
+        where user_id in
+        <foreach item="idItem" collection="list" open="(" separator="," close=")">
+            #{idItem}
+        </foreach>
+    </select>
+
+</mapper>

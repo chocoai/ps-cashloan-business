@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_borrow_template表:借款模板信息表模块 -->
+<mapper namespace="com.adpanshi.cashloan.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.mapper.BorrowTemplateMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.BorrowTemplate">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="borrow_rule" property="borrowRule" jdbcType="VARCHAR" />
+        <result column="time_limit" property="timeLimit" jdbcType="VARCHAR" />
+        <result column="cycle" property="cycle" jdbcType="VARCHAR" />
+        <result column="fee_detail" property="feeDetail" jdbcType="VARCHAR" />
+        <result column="cut_type" property="cutType" jdbcType="INTEGER" />
+        <result column="penalty" property="penalty" jdbcType="DECIMAL" />
+        <result column="max_penalty" property="maxPenalty" jdbcType="DECIMAL" />
+        <result column="penalty_type" property="penaltyType" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+        <result column="day_rate" property="dayRate" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,borrow_rule,time_limit,cycle,fee_detail,cut_type,penalty,max_penalty,penalty_type,create_time,
+        update_time,remark,pay_type,day_rate
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="borrowRule != null and borrowRule != ''">
+                and borrow_rule = #{borrowRule,jdbcType=VARCHAR}
+            </if>
+            <if test="timeLimit != null and timeLimit != '' ">
+                and time_limit = #{timeLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="cycle != null and cycle != '' ">
+                and cycle = #{cycle,jdbcType=VARCHAR}
+            </if>
+            <if test="feeDetail != null and feeDetail != '' ">
+                and fee_detail = #{feeDetail,jdbcType=VARCHAR}
+            </if>
+            <if test="cutType != null ">
+                and cut_type = #{cutType,jdbcType=INTEGER}
+            </if>
+            <if test="penalty != null ">
+                and penalty = #{penalty,jdbcType=DECIMAL}
+            </if>
+            <if test="maxPenalty != null ">
+                and max_penalty = #{maxPenalty,jdbcType=DECIMAL}
+            </if>
+            <if test="penaltyType != null ">
+                and penalty_type = #{penaltyType,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null and remark != '' ">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="payType != null and payType != '' ">
+                and pay_type = #{payType,jdbcType=VARCHAR}
+            </if>
+            <if test="dayRate != null ">
+                and day_rate = #{dayRate,jdbcType=DECIMAL}
+            </if>
+
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.BorrowTemplate">
+        insert into
+        cl_borrow_template(borrow_rule,time_limit,cycle,fee_detail,cut_type,penalty,max_penalty,
+        penalty_type,create_time,update_time,remark,pay_type,day_rate)values
+        (#{borrowRule,jdbcType=VARCHAR},#{timeLimit,jdbcType=VARCHAR},
+        #{cycle,jdbcType=VARCHAR},#{feeDetail,jdbcType=VARCHAR},#{cutType,jdbcType=INTEGER},
+        #{penalty,jdbcType=DECIMAL},#{maxPenalty,jdbcType=DECIMAL},#{penaltyType,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{remark,jdbcType=VARCHAR},
+        #{payType,jdbcType=VARCHAR},#{dayRate,jdbcType=DECIMAL})
+    </insert>
+
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.domain.BorrowTemplate">
+        update cl_borrow_template set
+                borrow_rule = #{borrowRule,jdbcType=VARCHAR},
+                time_limit = #{timeLimit,jdbcType=VARCHAR},
+                cycle = #{cycle,jdbcType=VARCHAR},
+                fee_detail = #{feeDetail,jdbcType=VARCHAR},
+                cut_type = #{cutType,jdbcType=INTEGER},
+                penalty = #{penalty,jdbcType=DECIMAL},
+                max_penalty = #{maxPenalty,jdbcType=DECIMAL},
+                penalty_type = #{penaltyType,jdbcType=INTEGER},
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                remark = #{remark,jdbcType=VARCHAR},
+                pay_type = #{payType,jdbcType=VARCHAR},
+                day_rate = #{dayRate,jdbcType=DECIMAL}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_borrow_template
+          <set>
+           <if test="borrowRule != null and borrowRule != ''">
+               borrow_rule = #{borrowRule,jdbcType=VARCHAR},
+           </if>
+           <if test="timeLimit != null and timeLimit != '' ">
+                time_limit = #{timeLimit,jdbcType=VARCHAR},
+           </if>
+           <if test="cycle != null and cycle != '' ">
+                cycle = #{cycle,jdbcType=VARCHAR},
+           </if>
+            <if test="feeDetail != null and feeDetail != '' ">
+                fee_detail = #{feeDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="cutType != null ">
+                cut_type = #{cutType,jdbcType=INTEGER},
+            </if>
+            <if test="penalty != null ">
+                penalty = #{penalty,jdbcType=DECIMAL},
+            </if>
+            <if test="maxPenalty != null ">
+                max_penalty = #{maxPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="penaltyType != null ">
+                penalty_type = #{penaltyType,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null and remark != '' ">        
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="payType != null and payType != '' ">
+                pay_type = #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="dayRate != null ">
+                day_rate = #{dayRate,jdbcType=DECIMAL}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_template
+        where id = #{id ,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_template
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_template
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="getScaleList" resultType="com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.rule.model.ScaleShowModel">
+        select DISTINCT time_limit,cycle
+        FROM cl_borrow_template
+        ORDER BY CAST(time_limit AS SIGNED) ASC
+    </select>
+
+    <select id="findSelectiveOrderByTimeLimit" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_template
+        <include refid="searchBy"/>
+        ORDER BY CAST(time_limit AS SIGNED) ASC
+    </select>
+</mapper>

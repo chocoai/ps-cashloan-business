@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"   
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+	xmlns:aop="http://www.springframework.org/schema/aop"   
+	xmlns:context="http://www.springframework.org/schema/context"   
+	xmlns:p="http://www.springframework.org/schema/p"   
+	xmlns:tx="http://www.springframework.org/schema/tx"     
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+	http://www.springframework.org/schema/beans/spring-beans.xsd   
+	http://www.springframework.org/schema/aop    
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+	http://www.springframework.org/schema/context    
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache.xsd"  default-autowire="byName">
+
+	<!-- 此文件暂时配置不多，在以后如果需要开放接口或者调用别的项目开放接口的时候，最好采用scoket通信模式，将配置文件配置到这里 -->
+
+	<!-- 强制使用CGLIB动态代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<!-- Security不支持自定义注解注入service -->
+	<context:component-scan base-package="com.adpanshi.com.adpanshi.cashloan,com.adpanshi.creditrank">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan> 
+    
+	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效(此处使用cache，但也可以task，但是task无cache高效) -->  
+	<cache:annotation-driven cache-manager="cacheManager"/>
+
+	<!--将日志类注入到bean中。-->
+	<bean id="logAspect" class="com.adpanshi.com.adpanshi.cashloan.com.adpanshi.cashloan.api.aspects.LogAspect"></bean>
+
+	<aop:config>
+		<!--调用日志类-->
+		<aop:aspect id="LogAspect" ref="logAspect">
+			<!--配置在controller包下所有的类在调用之前都会被拦截-->
+			<aop:pointcut id="log" expression="execution(* com.adpanshi.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.com.adpanshi.cashloan.api.cr.controller..*.*(..))"/>
+			<!-- 方法后触发 --><aop:after-returning pointcut-ref="log" method="after" returning="rtv"/>
+		</aop:aspect>
+	</aop:config>
+
+
+
+</beans>

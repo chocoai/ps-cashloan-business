@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>91买呗-注册</title>
+	<link rel="shortcut icon" href="img/xiaoeqiandai_favicon.ico">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telphone=no"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<link rel="stylesheet" type="text/css" href="css/register.css"/>
+</head>
+
+<body style="overflow: hidden;width: 100vw;height: 100vh;">
+<div class="firstPage">
+	<p class="msfq">马上分期</p>
+	<img src="./regimage/beij@2x.png" alt="">
+</div>
+<section class="body">
+	<div class="step">
+		<div class="stepImg"><img src="./regimage/step1.png" alt=""></div>
+	</div>
+	<div class="login">
+		<label>
+			<span>手机号</span>
+			<input type="text" id="js_phone" placeholder="请输入手机号"/>
+		</label>
+		<label class="txbox">
+			<span>图形验证码</span>
+			<input type="text" placeholder="请输入图形验证码" id="js_imgCode"/>
+			<span class="getPic"><img id="imgObj" alt="验证码"  src="/api/h5/imgCode/generate.htm?timestamp=1000"/></span>
+		</label>
+		<label class="dxbox">
+			<span>短信验证码</span>
+			<input type="text" placeholder="收到的验证码" id="js_msgCode"/>
+			<span class="getCode boxCode" id="js_code">获取验证码</span>
+		</label>
+		<label>
+			<span>登陆密码</span>
+			<input type="password" placeholder="请设置登陆密码" id="js_passwd"/>
+		</label>
+		<div class="agree">
+			<i class="tel-icon yes-agree" id="protocol"></i>
+			<span>我已阅读并同意</span>
+			<a href="../protocol_register.jsp" target="_self">《91买呗》注册协议</a>
+		</div>	
+		<p id="js_ljsq">下一步</p>
+	</div>
+	<div class="second">
+		<label>
+			<span>出生日期</span>
+			<input type="date" id="dateBirthday" />
+		</label>
+		<label>
+			<span>学历</span>
+			<select name="education" id="education">
+				<option value="初中及小学以下">初中及小学以下</option>
+				<option value="中专/职高/高中">中专/职高/高中</option>
+				<option value="高职/大专">高职/大专</option>
+				<option value="本科">本科</option>
+				<option value="研究生">研究生</option>
+				<option value="硕士">硕士</option>
+				<option value="博士">博士</option>
+				<option value="博士后">博士后</option>
+			</select>
+		</label>
+		<label>
+			<span>居住城市</span>
+			<input id="liveAddr" type="text" placeholder="请输入居住城市"/>
+		</label>
+
+		<p class="pglk">评估领款</p>
+	</div>
+</section>
+
+<div class="popup tips" style="display:none">
+	<div class="overlay"></div>
+	<div class="dialog">
+		<span class="close"></span>
+		<h2 id="confirm">...</h2>
+		<p>
+			<a href="javascript:;" class="yes">确定</a>
+		</p>
+	</div>
+</div>
+
+<div class="popup pop" style="display:none">
+	<div class="overlay"></div>
+	<div class="dialog">
+		<span class="close"></span>
+		<h2>...</h2>
+		<p>
+			<a href="user/getAppUrl">立即下载APP，一键提现</a>
+		</p>
+	</div>
+</div>
+<div class="wxtip">
+	<div class="wxtip-icon"></div>
+	<p class="wxtip-txt">点击右上角<br/>选择在浏览器中打开</p>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.md5.js"></script>
+<script type="text/javascript" src="js/iCheck/icheck.min.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
+</body>
+<script>
+	$('.msfq').on('click',function(){
+		$('.firstPage').hide();
+		$('.body').show();
+	})
+	 //协议复选框的勾选
+    $('#protocol').on('click',function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        if($(this).hasClass('dis-agree')){
+            $(this).removeClass('dis-agree').addClass('yes-agree')
+        }else{
+            $(this).removeClass('yes-agree').addClass('dis-agree')
+        }
+        return false;
+    });
+</script>
+</html>

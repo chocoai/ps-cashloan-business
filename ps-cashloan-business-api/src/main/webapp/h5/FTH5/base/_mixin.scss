@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+//清浮动
+@mixin clearfix {
+    & {
+        *zoom: 1;
+        /*兼容ie6,7*/
+    }
+    &:after,
+    &:before {
+        display: table;
+        content: "";
+    }
+    &:after {
+        clear: both;
+        overflow: hidden;
+    }
+}
+
+// 扩展版圆角mixin，可设置情况分3种：
+// $property:top-left, top-right, bottom-right, bottom-left
+// $property一次只接收一个key
+// 不是全角配置样式一定要传入$val
+// 1.全方向，只需传$val
+$htc-url:'../plugin/PIE/PIE.htc';
+@mixin border-radius($val,$property:null) {
+    @if $property == top-left{
+        border-#{$property}-radius: $val;
+        behavior:url($htc-url);
+    }@else if $property == bottom-left{
+        border-#{$property}-radius: $val;
+        behavior:url($htc-url);
+    }@else if $property == bottom-right{
+        border-#{$property}-radius: $val;
+    }@else if $property == top-right{
+        border-#{$property}-radius: $val;
+    }@else{
+        border-radius:$val;
+        behavior:url($htc-url);
+    }
+}
+
+
+//解决ie8不支持background-size
+@mixin bgCover($bd) {
+    background-size: $bd; 
+    -ms-behavior: url("../plugin/backgroundsize.min.htc");
+    behavior: url("../plugin/backgroundsize.min.htc");
+}
+
+//多行文本省略...  clp：行数
+@mixin line-clamp($clp) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $clp;
+    -webkit-box-orient: vertical;
+}
+
+//透明度
+@mixin opacity($opy) {
+    filter:alpha(opacity=$opy);
+    /* IE */
+    -moz-opacity: $opy/100;
+    /* 老版Mozilla */
+    -khtml-opacity: $opy/100;
+    /* 老版Safari */
+    opacity: $opy/100;
+}
+
+//控制input下的placeholder的属性
+@mixin ipt-font-color {
+    ::-moz-placeholder {
+        color: $color;
+    }
+    :-ms-input-placeholder {
+        color: $color;
+    }
+    ::-webkit-input-placeholder {
+        color: $color;
+    }
+    ::placeholder {
+        color: $color;
+    }
+}
+
+//兼容IE6的盒子阴影
+@mixin IE-box-shadow($color) {
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=#{$color}, Direction=135, Strength=5);
+    /*for ie6,7,8*/
+}
+
+//兼容IE6的元素放大镜属性
+@mixin IE-filter-scale($file) {
+    $url: "'../img/#{$file}.png'";
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=#{$url}, sizingMethod='scale');
+}
