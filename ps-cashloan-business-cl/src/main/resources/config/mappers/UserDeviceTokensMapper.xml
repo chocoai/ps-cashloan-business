@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.UserDeviceTokensMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.UserDeviceTokens" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="deviceTokens" column="device_tokens" javaType="String"/>
+        <result property="ctime" column="ctime" javaType="Date"/>
+        <result property="etime" column="etime" javaType="Date"/>
+        <result property="state" column="state" javaType="Integer"/>
+         <result property="mobileType" column="mobile_type" javaType="Integer"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.user_id,
+        t.device_tokens,
+        t.ctime,
+        t.etime,
+        t.state,
+        t.mobile_type
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="id!=null and id !=''">
+            AND t.id = #{id}
+         </if>
+		 <if test="userId!=null and userId !=''">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="deviceTokens!=null and deviceTokens !=''">
+            AND t.device_tokens = #{deviceTokens}
+         </if>
+		 <if test="ctime!=null and ctime !=''">
+            AND t.ctime = #{ctime}
+         </if>
+         <if test="etime!=null and etime !=''">
+            AND t.etime = #{etime}
+         </if>
+		 <if test="state!=null and state !=''">
+            AND t.state = #{state}
+         </if>
+         <if test="mobileType!=null and mobileType !=''">
+            AND t.mobile_type = #{mobileType}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.UserDeviceTokens" >
+		<![CDATA[
+	        INSERT INTO cl_user_device_tokens (
+	            user_id ,
+	            device_tokens ,
+	            ctime ,
+	            etime ,
+	            state ,
+	            mobile_type
+	        ) VALUES (
+	        	#{userId},
+	        	#{deviceTokens},
+	        	now(),
+	        	now(),
+	        	#{state},
+	        	#{mobileType}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="updateSelective" parameterType="java.util.HashMap">
+        UPDATE cl_user_device_tokens 
+        <set>
+        	etime = now()
+        	<if test="userId !=null and userId !=''">
+	            ,user_id = #{userId}
+	        </if>
+        	<if test="deviceTokens !=null and deviceTokens !=''">
+	            ,device_tokens = #{deviceTokens}
+	        </if>
+        	<if test="state !=null and state !=''">
+	            ,state = #{state}
+	        </if>
+	        <if test="mobileType!=null and mobileType !=''">
+	            ,mobile_type = #{mobileType}
+	        </if>
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_user_device_tokens t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+    
+    <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_device_tokens t
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_device_tokens t
+        <include refid="searchBy"/>
+    </select>
+    
+    <!-- 根据给定id和状态查询最近一次登陆的设备记录 -->
+    <select id="getLastTimeByUserIdWithState" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_device_tokens t
+        where t.user_id=#{userId}
+        <if test="state !=null and state !=''">
+           AND t.state = #{state}
+        </if>
+        ORDER BY t.etime desc LIMIT 1;
+    </select>
+	
+	<select id="getByUserIdWithTokens" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_device_tokens t
+        where t.user_id=#{userId}
+        <if test="deviceTokens !=null and deviceTokens !=''">
+           AND t.device_tokens=#{deviceTokens}
+        </if>
+        <if test="state !=null and state !=''">
+           AND t.state = #{state}
+        </if>
+    </select>
+</mapper>

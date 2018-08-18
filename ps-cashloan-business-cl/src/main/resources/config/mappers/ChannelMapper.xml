@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_channel表:渠道信息模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.ChannelMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.Channel">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="linker" property="linker" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,code,name,linker,phone,type,state,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id !='' and id !=null">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="code !='' and code !=null">
+                and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="name !='' and name !=null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="linker !='' and linker !=null">
+                and linker = #{linker,jdbcType=VARCHAR}
+            </if>
+            <if test="phone !='' and phone !=null">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="type !='' and type !=null">
+                and type = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="state !='' and state !=null">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime !=null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+      <!-- 基本的模糊sql查询条件公共引用 -->
+    <sql id="searchLikeBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="code !='' and code !=null">
+                 code like  concat("%",#{code,jdbcType=VARCHAR},"%")  
+            </if>
+            <if test="name !='' and name !=null">
+                and name like  concat("%",#{name,jdbcType=VARCHAR},"%")   
+            </if>
+            <if test="linker !='' and linker !=null">
+                and linker  like  concat("%",#{linker,jdbcType=VARCHAR},"%") 
+            </if>
+            <if test="phone !='' and phone !=null">
+                and phone like  concat("%",#{phone,jdbcType=VARCHAR},"%") 
+            </if>
+        </trim>
+    </sql>
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.Channel">
+        insert into cl_channel(code,name,linker,phone,type,state,create_time)values(#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{linker,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.Channel">
+        update cl_channel
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="linker != null">
+                linker = #{linker,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_channel
+          <set>
+            <if test="code != null and code != '' ">        
+                code = #{code,jdbcType=VARCHAR},                
+            </if>
+            <if test="name != null and name != '' ">        
+                name = #{name,jdbcType=VARCHAR},                
+            </if>
+            <if test="linker != null and linker != '' ">        
+                linker = #{linker,jdbcType=VARCHAR},                
+            </if>
+            <if test="phone != null and phone != '' ">        
+                phone = #{phone,jdbcType=VARCHAR},                
+            </if>
+            <if test="type != null and type != '' ">        
+                type = #{type,jdbcType=VARCHAR},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findIdSelective" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        select
+        id 
+        from cl_channel
+        <include refid="searchBy"/>
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_channel
+        <include refid="searchBy"/>
+    </select>
+
+	<select id="listChannel" resultMap="BaseResultMap">
+		select
+        <include refid="Base_Column_List" />
+        from cl_channel
+	</select>
+	
+	<select id="page" resultType="com.adpanshi.cashloan.cl.model.ChannelModel" parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from cl_channel
+		<include refid="searchLikeBy" />
+	</select>
+
+	<select id="listChannelWithoutApp" resultMap="BaseResultMap">
+		select c.id, c.name from cl_channel c where not exists (select DISTINCT
+		a.channel_id from cl_channel_app a where a.channel_id = c.id) and state = 10
+	</select>
+    <!--统计注册人数和渠道名称-->
+    <select id="channelUserNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        c.id as channelId,
+        c.`code` as code,
+        c.`name` as name,
+        u.regist_member as registerCount,
+        DATE_FORMAT(u.regist_time, '%Y-%m-%d') AS time
+        FROM
+        (
+        SELECT
+        channel_id,
+        count(1) AS regist_member,
+        regist_time
+        FROM
+        cl_user
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+        </trim>
+        GROUP BY channel_id
+        ) AS u
+        LEFT JOIN cl_channel c ON u.channel_id = c.id
+
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" name !='' and name !=null ">
+                and c.name like concat("%",#{name,jdbcType=VARCHAR},"%")
+            </if>
+            and u.channel_id != 0
+        </trim>
+        ORDER BY
+        u.regist_member DESC
+    </select>
+    <!--获取注册用户的id-->
+    <select id="channelUserIdByTime" resultType="java.lang.Long" parameterType="java.util.HashMap">
+        SELECT
+        u.id as userId
+        FROM
+        cl_user u
+        LEFT JOIN cl_channel c ON u.channel_id = c.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+            <if test=" name !='' and name !=null ">
+            and c.name like concat("%",#{name,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="channelId !=null and channelId.size > 0">
+                and u.channel_id in
+                <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and u.channel_id != 0
+        </trim>
+    </select>
+    <!--认证数量的统计-->
+    <select id="channelUserAuthNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        u.channel_id as channelId,
+        COUNT(CASE ua.id_state WHEN '30' THEN ua.id_state ELSE NULL END) AS idMember,
+        COUNT(CASE ua.bank_card_state WHEN '30' THEN ua.bank_card_state ELSE NULL END) AS bankCardMember,
+        COUNT(CASE ua.phone_state WHEN '30' THEN ua.phone_state ELSE NULL END) AS phoneMember,
+        COUNT(CASE ua.contact_state WHEN '30' THEN ua.contact_state ELSE NULL END) AS contactMember,
+        COUNT(CASE ua.zhima_state WHEN '30' THEN ua.zhima_state ELSE NULL END) AS zhiMaMember
+        FROM
+        cl_user u
+        LEFT JOIN cl_user_auth ua ON u.id = ua.user_id
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test=" beforeTime !=null ">
+                    and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+                </if>
+                <if test=" afterTime !=null ">
+                    and  u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+                </if>
+                <if test="channelId !=null and channelId.size > 0">
+                    and u.channel_id in
+                    <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                and EXISTS(
+                SELECT
+                u.id
+                FROM
+                cl_user u
+                LEFT JOIN cl_channel c ON u.channel_id = c.id
+                <trim prefix="where" prefixOverrides="and|or">
+                    <if test=" beforeTime !=null ">
+                        and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+                    </if>
+                    <if test=" afterTime !=null ">
+                        and u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+                    </if>
+                    <if test=" name !='' and name !=null ">
+                        and c.name like concat("%",#{name,jdbcType=VARCHAR},"%")
+                    </if>
+                    <if test="channelId !=null and channelId.size > 0">
+                        and u.channel_id in
+                        <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                            #{item}
+                        </foreach>
+                    </if>
+                    and u.channel_id != 0
+                </trim>
+                )
+            </trim>
+        GROUP BY
+        u.channel_id
+    </select>
+    <!--申请人数的统计-->
+    <select id="channelUserBorrowNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        u.channel_id AS channelId,
+        COUNT(b.user_id) AS borrowMember
+        FROM
+        cl_user u
+        LEFT JOIN cl_user_auth ua ON u.id = ua.user_id
+        LEFT JOIN
+        (
+        SELECT
+        user_id
+        FROM
+        cl_borrow_main
+        GROUP BY
+        user_id
+        ) b ON u.id = b.user_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and  u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+            <if test="channelId !=null and channelId.size > 0">
+                and u.channel_id in
+                <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+        GROUP BY
+        u.channel_id
+    </select>
+    <!--获取放款用户人数-->
+    <select id="channelUserLoanNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        u.channel_id AS channelId,
+        COUNT(br.user_id) as loanMember
+        FROM
+        (
+        SELECT
+        user_id
+        FROM
+        cl_borrow_repay
+        GROUP BY
+        user_id
+        ) br
+        LEFT JOIN cl_user u ON br.user_id = u.id
+        <trim prefix="where" prefixOverrides="and|or">
+        <if test=" beforeTime !=null ">
+            and u.regist_time &gt;= CONCAT(#{beforeTime},' 00:00:00')
+        </if>
+        <if test=" afterTime !=null ">
+            and  u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+        </if>
+        <if test="channelId !=null and channelId.size > 0">
+            and u.channel_id in
+            <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </trim>
+        GROUP BY
+        u.channel_id
+    </select>
+    <!--老用户的统计-->
+    <select id="channelUserOldNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        u.channel_id AS channelId,
+        count(br.user_id) AS oldMember
+        FROM
+        (
+        SELECT
+        user_id
+        FROM
+        cl_borrow_main
+        WHERE state NOT IN ('21','27')
+        GROUP BY
+        user_id
+        HAVING
+        (count(1) > 1)
+        ) br
+        LEFT JOIN cl_user u ON u.id = br.user_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+            <if test="channelId !=null and channelId.size > 0">
+                and u.channel_id in
+                <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+        GROUP BY
+        u.channel_id
+    </select>
+    <!--统计详情注册人数/认证人数-->
+    <select id="channelUserInfoNum" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        DATE_FORMAT(u.regist_time, '%Y-%m-%d') AS time,
+        COUNT(1) AS registerCount,
+        COUNT(CASE ua.id_state WHEN '30' THEN ua.id_state ELSE NULL END) AS idMember,
+        COUNT(CASE ua.bank_card_state WHEN '30' THEN ua.bank_card_state ELSE NULL END) AS bankCardMember,
+        COUNT(CASE ua.phone_state WHEN '30' THEN ua.phone_state ELSE NULL END) AS phoneMember,
+        COUNT(CASE ua.contact_state WHEN '30' THEN ua.contact_state ELSE NULL END) AS contactMember,
+        COUNT(CASE ua.zhima_state WHEN '30' THEN ua.zhima_state ELSE NULL END) AS zhiMaMember
+        FROM
+        cl_user u left join cl_user_auth ua
+        on u.id = ua.user_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and u.regist_time &gt;= CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+            <if test="channelId !=null and channelId.size > 0">
+                and u.channel_id in
+                <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="userId !=null and userId.size > 0">
+                and u.id in
+                <foreach item="item" index="index" collection="userId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+        GROUP BY
+        DATE_FORMAT(u.regist_time, '%Y-%m-%d')
+        ORDER BY
+        COUNT(1) DESC
+    </select>
+    <!--统计导出注册人数/认证人数-->
+    <select id="channelUserInfoNumByChannelId" resultType="com.adpanshi.cashloan.cl.model.ChannelCountModel" parameterType="java.util.HashMap">
+        SELECT
+        u.channel_id AS channelId,
+        c.name as name,
+        DATE_FORMAT(u.regist_time, '%Y-%m-%d') AS time,
+        COUNT(1) AS registerCount,
+        COUNT(CASE ua.id_state WHEN '30' THEN ua.id_state ELSE NULL END) AS idMember,
+        COUNT(CASE ua.bank_card_state WHEN '30' THEN ua.bank_card_state ELSE NULL END) AS bankCardMember,
+        COUNT(CASE ua.phone_state WHEN '30' THEN ua.phone_state ELSE NULL END) AS phoneMember,
+        COUNT(CASE ua.contact_state WHEN '30' THEN ua.contact_state ELSE NULL END) AS contactMember,
+        COUNT(CASE ua.zhima_state WHEN '30' THEN ua.zhima_state ELSE NULL END) AS zhiMaMember
+        FROM
+        cl_user u left join cl_user_auth ua
+        on u.id = ua.user_id
+        left join cl_channel c on u.channel_id = c.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" beforeTime !=null ">
+                and u.regist_time &gt;=  CONCAT(#{beforeTime},' 00:00:00')
+            </if>
+            <if test=" afterTime !=null ">
+                and  u.regist_time &lt;= CONCAT(#{afterTime},' 23:59:59')
+            </if>
+            <if test="channelId !=null and channelId.size > 0">
+                and u.channel_id in
+                <foreach item="item" index="index" collection="channelId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="userId !=null and userId.size > 0">
+                and u.id in
+                <foreach item="item" index="index" collection="userId" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+        GROUP BY c.id,c.name,
+        DATE_FORMAT(u.regist_time, '%Y-%m-%d')
+        ORDER BY
+        COUNT(1) DESC
+        <if test="totalCount !='' and totalCount !=null">
+            limit #{totalCount,jdbcType = BIGINT}
+        </if>
+    </select>
+
+	<select id="findCodeByUserId" resultType="java.lang.String">
+		select c.code from cl_user u, cl_channel c where u.channel_id = c.id and u.id = #{userId} limit 1
+	</select>
+
+</mapper>

@@ -27,9 +27,16 @@
             <artifactId>ps-cashloan-business-cr</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
-
-
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-data-thirdparty-equifax-interface</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adpanshi</groupId>
+            <artifactId>ps-cashloan-dispatch-run-interface</artifactId>
+            <version>1.0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

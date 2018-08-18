@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.CreditsUpgradeMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.CreditsUpgrade" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="creditsLeve" column="credits_leve" javaType="Integer"/>
+        <result property="credits" column="credits" javaType="Double"/>
+        <result property="used" column="used" javaType="Double"/>
+        <result property="sendStatus" column="send_status" javaType="Integer"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="expiredTime" column="expired_time" javaType="Date"/>
+        <result property="gmtCreaterTime" column="gmt_creater_time" javaType="Date"/>
+        <result property="gmtUpdateTime" column="gmt_update_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.user_id,
+        t.credits_leve,
+        t.credits,
+        t.used,
+        t.status,
+        t.send_status,
+        t.expired_time,
+        t.gmt_creater_time,
+        t.gmt_update_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="id !=null and id !=''">
+            AND t.id = #{id}
+         </if>
+		 <if test="userId !=null and userId !=''">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="creditsLeve !=null and creditsLeve !=''">
+            AND t.credits_leve = #{creditsLeve}
+         </if>
+		 <if test="credits !=null and credits !=''">
+            AND t.credits = #{credits}
+         </if>
+         <if test="used !=null and used !=''">
+            AND t.used = #{used}
+         </if>
+		 <if test="status !=null and status !=''">
+            AND t.status = #{status}
+         </if>
+         <if test="sendStatus !=null and sendStatus !=''">
+            AND t.send_status = #{sendStatus}
+         </if>
+         <if test="expiredTime !=null">
+            AND t.expired_time = #{expiredTime}
+         </if>
+		 <if test="gmtCreaterTime !=null">
+            AND t.gmt_creater_time = #{gmtCreaterTime}
+         </if>
+		 <if test="gmtUpdateTime !=null">
+            AND t.gmt_update_time = #{gmtUpdateTime}
+         </if>
+		 <if test="remarks !=null and remarks !=''">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.CreditsUpgrade" >
+		<![CDATA[
+	        INSERT INTO arc_credits_upgrade (
+	            credits_leve ,
+	            credits ,
+	            used ,
+	            status ,
+	            send_status ,
+	            expired_time ,
+	            user_id,
+	            gmt_creater_time ,
+	            gmt_update_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{creditsLeve},
+	        	#{credits},
+	        	#{used},
+	        	#{status},
+	        	#{sendStatus},
+	        	#{expiredTime},
+	        	#{userId},
+	        	#{gmtCreaterTime,javaType=Date},
+	        	now(),
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="updateSelective"  parameterType="java.util.HashMap">
+        update arc_credits_upgrade
+          <set>
+            <if test="userId != null and userId != '' ">        
+                user_id = #{userId},                
+            </if>
+            <if test="creditsLeve != null and creditsLeve != '' ">        
+                credits_leve = #{creditsLeve},                
+            </if>
+            <if test="credits != null">        
+                credits = #{credits},                
+            </if>
+            <if test="used !=null">
+	            used = #{used},
+	        </if>
+            <if test="status != null and status != '' ">        
+                status = #{status},                
+            </if>
+            <if test="sendStatus !=null and sendStatus !=''">
+	            send_status = #{sendStatus},
+	         </if>
+            <if test="expiredTime !=null">
+                expired_time = #{expiredTime,javaType=Date},
+        	</if>
+            <if test="gmtUpdateTime != null">
+                gmt_update_time = #{gmtUpdateTime,javaType=Date},                
+            </if>
+            <if test="remarks != null and remarks != '' ">        
+                remarks = #{remarks},              
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+	
+	<update id="updateSelectiveByUserId">
+        update arc_credits_upgrade
+          <set>
+            <if test="entity.creditsLeve != null and entity.creditsLeve != '' ">        
+                credits_leve = #{entity.creditsLeve},                
+            </if>
+            <if test="entity.credits != null and entity.credits != '' ">        
+                credits = #{entity.credits},                
+            </if>
+            <if test="entity.used !=null">
+	            used = #{entity.used},
+	        </if>
+            <if test="entity.status != null and entity.status != '' ">        
+                status = #{entity.status},                
+            </if>
+            <if test="entity.sendStatus !=null and entity.sendStatus !=''">
+	            send_status = #{entity.sendStatus},
+	         </if>
+            <if test="entity.expiredTime !=null">
+                expired_time = #{entity.expiredTime,javaType=Date},
+        	</if>
+        	<if test="entity.gmtUpdateTime != null">
+                gmt_update_time = #{entity.gmtUpdateTime,javaType=Date},                
+            </if>
+            <if test="entity.remarks != null and entity.remarks != '' ">        
+                remarks = #{entity.remarks},              
+            </if>
+        </set>    
+        where user_id = #{userId} AND status=#{status}
+	</update>
+	
+	<!-- 重置用户已使用额度为0 -->
+	<update id="updateUserTmpUsedResetDefault">
+        update arc_credits_upgrade
+        	SET used=0
+        where user_id = #{userId} AND status=#{status} AND used IS NOT NULL AND used >0
+	</update>
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM arc_credits_upgrade t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+	
+	<select id="listSelective" parameterType="map" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM arc_credits_upgrade t
+		<where> <include refid="searchBy"/>  </where>
+		ORDER BY t.gmt_update_time DESC
+	</select>
+	
+	<!-- 根据给定userID、status查询记录,并根据 额度级别进行倒序排序 -->
+	<select id="queryByUserIdWithStatus" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM arc_credits_upgrade t
+		WHERE t.user_id= #{userId} AND t.status  IN
+		<foreach item="statusTmp" index="index" collection="statusList" open="(" separator="," close=")">
+	       #{statusTmp}
+        </foreach>
+        <if test="null !=sendStatusList and sendStatusList.size() !=0 ">
+        	AND t.send_status  IN
+        	<foreach item="statusTmp" index="index" collection="sendStatusList" open="(" separator="," close=")">
+        			#{statusTmp}
+        	</foreach>
+        </if>
+		ORDER BY t.credits_leve DESC
+	</select>
+	
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM arc_credits_upgrade t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	
+	<!-- 查询用户临时额度  -->
+	<select id="queryCreditsUpgradeByUserId" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM arc_credits_upgrade t
+		WHERE t.user_id= #{userId} AND t.status =#{status}
+		 ORDER BY t.credits_leve 
+	</select>
+	
+	<!-- ok 查询临时额度正常的数据并且以userId进行分组、最后以等级进行倒序排序(需要查询临时额度过期前一天的用户进行短信及推送通知...) -->
+	<select id="queryCreditsByStatusWithGroupUserId" resultMap="BaseResultMap">
+		SELECT DISTINCT <include refid="Base_Column_List" />
+	    FROM (SELECT _tmp.* FROM  arc_credits_upgrade _tmp  WHERE _tmp.status=1  ORDER BY _tmp.credits_leve desc,_tmp.expired_time DESC) as t 
+	    INNER JOIN cl_borrow_repay br ON t.user_id=br.user_id AND br.state=#{borrowRepayState} AND br.penalty_day=0
+		WHERE t.status=#{creditsUpgradeStatus} AND t.send_status IN 
+			<foreach item="statusTmp" index="index" collection="sendStatusList" open="(" separator="," close=")">
+		       #{statusTmp}
+	        </foreach>
+		GROUP BY t.user_id HAVING DATE(now())=DATE(DATE_SUB(t.expired_time,interval 1 day))
+	</select>
+	
+	<!-- ok 查询临时额度已失效的用户并进行去重处理(前置条件是用户没有未还的订单)、按阶段、过期时间倒序排序最后对user_id进行分组 -->
+	<select id="queryCreditsInvalidByParams" resultMap="BaseResultMap">
+		SELECT DISTINCT <include refid="Base_Column_List" />
+	    FROM (SELECT _tmp.* FROM  arc_credits_upgrade _tmp  WHERE _tmp.status=#{creditsUpgradeStatus}  ORDER BY _tmp.credits_leve DESC,_tmp.expired_time DESC) as t 
+		WHERE t.status=#{creditsUpgradeStatus}   AND NOT EXISTS(
+				SELECT b.id FROM cl_borrow_repay b WHERE b.state=20 AND b.user_id=t.user_id
+		) GROUP BY t.user_id HAVING now()>=t.expired_time 
+	</select>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.PettyLoanSceneBorrowMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.PettyLoanSceneBorrow" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="pettyLoanSceneId" column="petty_loan_scene_id" javaType="Long"/>
+        <result property="borrowId" column="borrow_id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="gmtUpdateTimes" column="gmt_update_times" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.petty_loan_scene_id,
+        t.borrow_id,
+        t.user_id,
+        t.gmt_create_time,
+        t.gmt_update_times,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="@OGNL@isNotEmpty(id)">
+            AND t.id = #{id}
+         </if>
+		 <if test="@OGNL@isNotEmpty(pettyLoanSceneId)">
+            AND t.petty_loan_scene_id = #{pettyLoanSceneId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(borrowId)">
+            AND t.borrow_id = #{borrowId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(userId)">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtCreateTime)">
+            AND t.gmt_create_time = #{gmtCreateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtUpdateTimes)">
+            AND t.gmt_update_times = #{gmtUpdateTimes}
+         </if>
+		 <if test="@OGNL@isNotEmpty(remarks)">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.PettyLoanSceneBorrow" >
+		<![CDATA[
+	        INSERT INTO cl_petty_loan_scene_borrow (
+	            petty_loan_scene_id ,
+	            borrow_id ,
+	            user_id ,
+	            gmt_create_time ,
+	            gmt_update_times ,
+	            remarks 
+	        ) VALUES (
+	        	#{pettyLoanSceneId},
+	        	#{borrowId},
+	        	#{userId},
+	        	NOW(),
+	        	NOW(),
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.adpanshi.cashloan.cl.domain.PettyLoanSceneBorrow">
+        UPDATE cl_petty_loan_scene_borrow 
+        <set>
+        	<if test="@OGNL@isNotEmpty(pettyLoanSceneId)">
+	            petty_loan_scene_id = #{pettyLoanSceneId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(borrowId)">
+	            borrow_id = #{borrowId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(userId)">
+	            user_id = #{userId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(gmtUpdateTimes)">
+	            gmt_update_times = #{gmtUpdateTimes},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(remarks)">
+	            remarks = #{remarks},
+	        </if>
+        </set>
+        WHERE 1=1
+        	AND id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_petty_loan_scene_borrow t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+	
+	<select id="listSelective" parameterType="map" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_petty_loan_scene_borrow t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_petty_loan_scene_borrow t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+</mapper>

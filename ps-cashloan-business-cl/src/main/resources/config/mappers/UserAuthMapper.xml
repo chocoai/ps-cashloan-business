@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_user_auth表:用户认证模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.UserAuthMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.UserAuth">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="id_state" property="idState" jdbcType="VARCHAR" />
+        <result column="zhima_state" property="zhimaState" jdbcType="VARCHAR" />
+        <result column="phone_state" property="phoneState" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="contact_state" property="contactState" jdbcType="VARCHAR" />
+        <result column="bank_card_state" property="bankCardState" jdbcType="VARCHAR" />
+        <result column="work_info_state" property="workInfoState" jdbcType="VARCHAR" />        
+		<result column="other_info_state" property="otherInfoState" jdbcType="VARCHAR" />  
+		<result column="living_identify_state" property="livingIdentifyState" jdbcType="VARCHAR" />
+		<result column="tenement_income_state" property="tenementIncomeState" jdbcType="VARCHAR" />
+        <result column="tenement_income_time" property="tenementIncomeTime" jdbcType="TIMESTAMP" />
+		<result column="tongdun_state" property="tongdunState" jdbcType="VARCHAR" />
+        <result column="tongdun_state_time" property="tongdunStateTime" jdbcType="TIMESTAMP" />
+        <result column="gong_ji_jin_state" property="gongJiJinState" jdbcType="VARCHAR" />
+        <result column="gong_ji_jin_time" property="gongJiJinTime" jdbcType="TIMESTAMP" />
+        <result column="she_bao_state" property="sheBaoState" jdbcType="VARCHAR" />
+        <result column="she_bao_time" property="sheBaoTime" jdbcType="TIMESTAMP" />
+        <result column="pan_state" property="panState" jdbcType="VARCHAR" />
+        <result column="pan_state_time" property="panStateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+       
+    <resultMap id="ModelResultMap" type="com.adpanshi.cashloan.cl.model.UserAuthModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="id_state" property="idState" jdbcType="VARCHAR" />
+        <result column="zhima_state" property="zhimaState" jdbcType="VARCHAR" />
+        <result column="phone_state" property="phoneState" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="contact_state" property="contactState" jdbcType="VARCHAR" />
+        <result column="bank_card_state" property="bankCardState" jdbcType="VARCHAR" />
+        <result column="bank_card_bill_state" property="bankCardBillState" jdbcType="VARCHAR" />
+		<result column="work_info_state" property="workInfoState" jdbcType="VARCHAR" />
+		<result column="other_info_state" property="otherInfoState" jdbcType="VARCHAR" /> 
+		<result column="living_identify_state" property="livingIdentifyState" jdbcType="VARCHAR" />
+		<result column="tenement_income_state" property="tenementIncomeState" jdbcType="VARCHAR" />
+        <result column="tenement_income_time" property="tenementIncomeTime" jdbcType="TIMESTAMP" />
+        <result column="tongdun_state" property="tongdunState" jdbcType="VARCHAR" />
+        <result column="tongdun_state_time" property="tongdunStateTime" jdbcType="TIMESTAMP" />
+        <result column="gong_ji_jin_state" property="gongJiJinState" jdbcType="VARCHAR" />
+        <result column="gong_ji_jin_time" property="gongJiJinTime" jdbcType="TIMESTAMP" />
+        <result column="she_bao_state" property="sheBaoState" jdbcType="VARCHAR" />
+        <result column="she_bao_time" property="sheBaoTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <resultMap id="ModelResultWithVersionMap" type="com.adpanshi.cashloan.cl.model.UserAuthModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="id_state" property="idState" jdbcType="VARCHAR" />
+        <result column="zhima_state" property="zhimaState" jdbcType="VARCHAR" />
+        <result column="phone_state" property="phoneState" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="contact_state" property="contactState" jdbcType="VARCHAR" />
+        <result column="bank_card_state" property="bankCardState" jdbcType="VARCHAR" />
+        <result column="bank_card_bill_state" property="bankCardBillState" jdbcType="VARCHAR" />
+        <result column="work_info_state" property="workInfoState" jdbcType="VARCHAR" />
+        <result column="other_info_state" property="otherInfoState" jdbcType="VARCHAR" />
+        <result column="living_identify_state" property="livingIdentifyState" jdbcType="VARCHAR" />
+        <result column="tenement_income_state" property="tenementIncomeState" jdbcType="VARCHAR" />
+        <result column="tenement_income_time" property="tenementIncomeTime" jdbcType="TIMESTAMP" />
+        <result column="tongdun_state" property="tongdunState" jdbcType="VARCHAR" />
+        <result column="tongdun_state_time" property="tongdunStateTime" jdbcType="TIMESTAMP" />
+        <result column="new_version" property="newVersion" jdbcType="INTEGER" />
+        <result column="gong_ji_jin_state" property="gongJiJinState" jdbcType="VARCHAR" />
+        <result column="gong_ji_jin_time" property="gongJiJinTime" jdbcType="TIMESTAMP" />
+        <result column="she_bao_state" property="sheBaoState" jdbcType="VARCHAR" />
+        <result column="she_bao_time" property="sheBaoTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,id_state,zhima_state,phone_state,user_id,contact_state,bank_card_state,work_info_state,other_info_state,living_identify_state ,tongdun_state,tongdun_state_time,tenement_income_state,tenement_income_time,bank_card_bill_state,gong_ji_jin_state,gong_ji_jin_time,she_bao_state,she_bao_time, pan_state, pan_state_time
+    </sql>
+    
+    <!--带new_version的字段列表-wwpan  -->
+    <sql id="Base_Column_List_With_Version">
+        id,id_state,zhima_state,phone_state,user_id,contact_state,bank_card_state,work_info_state,other_info_state,living_identify_state,tongdun_state,tongdun_state_time,new_version,tenement_income_state,tenement_income_time,bank_card_bill_state,gong_ji_jin_state,gong_ji_jin_time,she_bao_state,she_bao_time
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+             <if test="id != null and id != ''">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="idState != null and idState != ''">
+                and id_state = #{idState,jdbcType=VARCHAR}
+            </if>
+            <if test="zhimaState != null and zhimaState != ''">
+                and zhima_state = #{zhimaState,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneState != null and phoneState != ''">
+                and phone_state = #{phoneState,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="contactState != null and contactState != ''">
+                and contact_state = #{contactState,jdbcType=VARCHAR}
+            </if>
+            <if test="bankCardState != null and bankCardState != ''">
+                and bank_card_state = #{bankCardState,jdbcType=VARCHAR}
+            </if>
+            <if test="bankCardBillState != null and bankCardBillState != ''">
+                and bank_card_bill_state = #{bankCardBillState,jdbcType=VARCHAR}
+            </if>
+            <if test="workInfoState != null and workInfoState != ''">
+				and work_info_state = #{workInfoState,jdbcType=VARCHAR}
+			</if>
+			<if test="otherInfoState != null and otherInfoState != ''">
+				and other_info_state = #{otherInfoState,jdbcType=VARCHAR}
+			</if>
+			<if test="livingIdentifyState != null and livingIdentifyState != ''">
+                and living_identify_state = #{livingIdentifyState,jdbcType=VARCHAR}
+            </if>
+            <if test="tongdunState != null and tongdunState != ''">
+                and tongdun_state = #{tongdunState,jdbcType=VARCHAR}
+            </if>
+            <if test="tenementIncomeState != null and tenementIncomeState != ''">
+                and tenement_income_state = #{tenementIncomeState,jdbcType=VARCHAR}
+            </if>
+            <if test="gongJiJinState != null and gongJiJinState != ''">
+                and gong_ji_jin_state = #{gongJiJinState,jdbcType=VARCHAR}
+            </if>
+            <if test="sheBaoState != null and sheBaoState != ''">
+                and she_bao_state = #{sheBaoState,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </sql>
+
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.UserAuth">
+        insert into cl_user_auth(
+        id_state,zhima_state,phone_state,user_id,contact_state,bank_card_state,work_info_state,
+        other_info_state,living_identify_state,tongdun_state,bank_card_bill_state,tenement_income_state,new_version,gong_ji_jin_state,she_bao_state
+        )values(
+        #{idState,jdbcType=VARCHAR},#{zhimaState,jdbcType=VARCHAR},#{phoneState,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT},#{contactState,jdbcType=VARCHAR},#{bankCardState,jdbcType=VARCHAR},
+		#{workInfoState,jdbcType=VARCHAR}, #{otherInfoState,jdbcType=VARCHAR},#{livingIdentifyState,jdbcType=VARCHAR},
+		#{tongdunState,jdbcType=VARCHAR},#{bankCardBillState,jdbcType=VARCHAR},#{tenementIncomeState,jdbcType=VARCHAR}, #{newVersion,jdbcType=INTEGER},
+		#{gongJiJinState,jdbcType=VARCHAR},#{sheBaoState,jdbcType=VARCHAR}
+		)
+    </insert>
+
+    <insert id="saveWithVersion" parameterType="com.adpanshi.cashloan.cl.domain.UserAuth">
+        insert into cl_user_auth(
+        id_state,zhima_state,phone_state,user_id,contact_state,bank_card_state,work_info_state,other_info_state,living_identify_state, 
+        tongdun_state,bank_card_bill_state,tenement_income_state,new_version,gong_ji_jin_state,she_bao_state
+        )values(
+        #{idState,jdbcType=VARCHAR},#{zhimaState,jdbcType=VARCHAR},#{phoneState,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT},#{contactState,jdbcType=VARCHAR},#{bankCardState,jdbcType=VARCHAR},
+        #{workInfoState,jdbcType=VARCHAR}, #{otherInfoState,jdbcType=VARCHAR}, #{livingIdentifyState,jdbcType=VARCHAR},
+        #{tongdunState,jdbcType=VARCHAR},#{bankCardBillState,jdbcType=VARCHAR},#{tenementIncomeState,jdbcType=VARCHAR},#{newVersion,jdbcType=INTEGER},
+        #{gongJiJinState,jdbcType=VARCHAR},#{sheBaoState,jdbcType=VARCHAR}
+        )
+ 	</insert>
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.UserAuth">
+        update cl_user_auth set 
+            id_state = #{idState,jdbcType=VARCHAR},
+            zhima_state = #{zhimaState,jdbcType=VARCHAR},
+            phone_state = #{phoneState,jdbcType=VARCHAR},
+            user_id = #{userId,jdbcType=BIGINT},
+            contact_state = #{contactState,jdbcType=VARCHAR},
+		    bank_card_state = #{bankCardState,jdbcType=VARCHAR},
+			work_info_state = #{workInfoState,jdbcType=VARCHAR},
+			other_info_state = #{otherInfoState,jdbcType=VARCHAR},
+			living_identify_state = #{livingIdentifyState,jdbcType=VARCHAR},
+			tongdun_state = #{tongdunState,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<update id="updateByUserId" parameterType="com.adpanshi.cashloan.cl.domain.UserAuth">
+        update cl_user_auth  
+          <set>
+            <if test="idState != null and idState != '' ">        
+                id_state = #{idState,jdbcType=VARCHAR},
+                id_state_time = NOW(),
+            </if>
+            <if test="zhimaState != null and zhimaState != '' ">        
+                zhima_state = #{zhimaState,jdbcType=VARCHAR},
+                zhima_state_time = NOW(),
+            </if>
+            <if test="phoneState != null and phoneState != '' ">        
+                phone_state = #{phoneState,jdbcType=VARCHAR},
+                phone_state_time = NOW(),
+            </if>
+            <if test="contactState != null and contactState != ''">
+                contact_state = #{contactState,jdbcType=VARCHAR},
+                contact_state_time = NOW(),
+            </if>
+            <if test="bankCardState != null and bankCardState != ''">
+				bank_card_state = #{bankCardState,jdbcType=VARCHAR},
+                bank_card_state_time = NOW(),
+			</if>
+			<if test="bankCardBillState != null and bankCardBillState != ''">
+				bank_card_bill_state = #{bankCardBillState,jdbcType=VARCHAR},
+                bank_card_bill_time = NOW(),
+			</if>
+			<if test="workInfoState != null and workInfoState != ''">
+             	work_info_state = #{workInfoState,jdbcType=VARCHAR},
+                work_info_state_time = NOW(),
+            </if>
+            <if test="otherInfoState != null and otherInfoState != ''">
+            	other_info_state = #{otherInfoState,jdbcType=VARCHAR},
+                other_info_state_time = NOW(),
+           	</if>
+           	<if test="livingIdentifyState != null and livingIdentifyState != ''">
+                living_identify_state = #{livingIdentifyState,jdbcType=VARCHAR},
+                living_identify_state_time = NOW(),
+            </if>
+            <if test="tongdunState != null and tongdunState != ''">
+                  tongdun_state = #{tongdunState,jdbcType=VARCHAR},
+                  tongdun_state_time = NOW()
+            </if>
+            <if test="tenementIncomeState != null and tenementIncomeState != ''">
+                  tenement_income_state = #{tenementIncomeState,jdbcType=VARCHAR},
+                  tenement_income_time = NOW()
+            </if>
+            <if test="gongJiJinState != null and gongJiJinState != ''">
+			    gong_ji_jin_state = #{gongJiJinState,jdbcType=VARCHAR},
+			    gong_ji_jin_time = NOW()
+			</if>
+			<if test="sheBaoState != null and sheBaoState != ''">
+			    she_bao_state = #{sheBaoState,jdbcType=VARCHAR},
+			    she_bao_time = NOW()
+			</if>
+            <if test="panState != null and panState != ''">
+                pan_state = #{panState,jdbcType=VARCHAR},
+                pan_state_time = NOW()
+            </if>
+        </set>    
+        where user_id = #{userId ,jdbcType=INTEGER}
+        <!-- 20170706 M ，添加该内容 合并 updatePhoneState -->
+        <!-- 20170711 M ，增加最大状态变更 -->
+        <if test=" phoneState=='30' ">
+            and  phone_state IN (10,20,25,40)
+        </if>
+        <if test=" phoneState=='20' ">
+            and  phone_state IN (10,40)
+        </if>
+        <if test=" phoneState=='25' ">
+            and  phone_state IN (10,20,40)
+        </if>
+    </update>
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_user_auth
+        <set>
+            <if test="idState != null and idState != '' ">
+                id_state = #{idState,jdbcType=VARCHAR},
+                id_state_time = NOW(),
+            </if>
+            <if test="zhimaState != null and zhimaState != '' ">
+                zhima_state = #{zhimaState,jdbcType=VARCHAR},
+                zhima_state_time = NOW(),
+            </if>
+            <if test="phoneState != null and phoneState != '' ">
+                phone_state = #{phoneState,jdbcType=VARCHAR},
+                phone_state_time = NOW(),
+            </if>
+            <if test="contactState != null and contactState != ''">
+                contact_state = #{contactState,jdbcType=VARCHAR},
+                contact_state_time = NOW(),
+            </if>
+            <if test="bankCardState != null and bankCardState != ''">
+                bank_card_state = #{bankCardState,jdbcType=VARCHAR},
+                bank_card_state_time = NOW(),
+            </if>
+            <if test="bankCardBillState != null and bankCardBillState != ''">
+				bank_card_bill_state = #{bankCardBillState,jdbcType=VARCHAR},
+                bank_card_bill_time = NOW(),
+			</if>
+            <if test="workInfoState != null and workInfoState != ''">
+                work_info_state = #{workInfoState,jdbcType=VARCHAR},
+                work_info_state_time = NOW(),
+            </if>
+            <if test="otherInfoState != null and otherInfoState != ''">
+                other_info_state = #{otherInfoState,jdbcType=VARCHAR},
+                other_info_state_time = NOW(),
+            </if>
+            <if test="livingIdentifyState != null and livingIdentifyState != ''">
+                living_identify_state = #{livingIdentifyState,jdbcType=VARCHAR},
+                living_identify_state_time = NOW(),
+            </if>
+            <if test="tongdunState != null and tongdunState != ''">
+                tongdun_state = #{tongdunState,jdbcType=VARCHAR},
+                tongdun_state_time = NOW()
+            </if>
+            <if test="tenementIncomeState != null and tenementIncomeState != ''">
+                  tenement_income_state = #{tenementIncomeState,jdbcType=VARCHAR},
+                  tenement_income_time = NOW()
+            </if>
+            <if test="gongJiJinState != null and gongJiJinState != ''">
+			    gong_ji_jin_state = #{gongJiJinState,jdbcType=VARCHAR},
+			    gong_ji_jin_time = NOW()
+			</if>
+			<if test="sheBaoState != null and sheBaoState != ''">
+			    she_bao_state = #{sheBaoState,jdbcType=VARCHAR},
+			    she_bao_time = NOW()
+			</if>
+        </set>
+        where id = #{id ,jdbcType=BIGINT}
+
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_auth
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_auth
+        <include refid="searchBy"/>
+    </select>
+    
+     <select id="findSelectiveWithVersion" resultMap="ModelResultWithVersionMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List_With_Version" />
+        from cl_user_auth
+        <include refid="searchBy"/>
+    </select>
+    
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_user_auth
+        <include refid="searchBy"/>
+    </select>
+    
+           
+     <!-- 用户关键信息查询条件公共引用 -->
+    <sql id="searchUserBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userId !='' and userId !=null">
+                and au.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+             <if test="loginName !='' and loginName !=null">
+                and u.login_name like concat(#{loginName,jdbcType=VARCHAR},"%")
+            </if>
+              <if test="realName != null and realName != '' ">        
+                and  b.real_name  like concat("%",#{realName,jdbcType=VARCHAR},"%")             
+            </if>
+            <if test="phone != null and phone != '' ">        
+                and  b.phone like  concat("%",#{phone,jdbcType=VARCHAR},"%")                  
+            </if>
+            <if test="idState !='' and idState !=null">
+				and au.id_state = #{idState,jdbcType=VARCHAR} 
+			</if>
+			<if test="zhimaState !='' and zhimaState !=null">
+				and au.zhima_state = #{zhimaState,jdbcType=VARCHAR} 
+			</if>
+			<if test="phoneState !='' and phoneState !=null">
+				and au.phone_state = #{phoneState,jdbcType=VARCHAR} 
+			</if>
+			<if test="contactState !='' and contactState !=null">
+				and au.contact_state = #{contactState,jdbcType=VARCHAR} 
+			</if>
+			<if test="bankCardState !='' and bankCardState !=null">
+				and au.bank_card_state = #{bankCardState,jdbcType=VARCHAR} 
+			</if>
+			<if test="bankCardBillState != null and bankCardBillState != ''">
+				and au.bank_card_bill_state = #{bankCardBillState,jdbcType=VARCHAR}
+			</if>
+            <if test="livingIdentifyState !='' and livingIdentifyState !=null">
+                and au.living_identify_state = #{livingIdentifyState,jdbcType=VARCHAR}
+            </if>
+            <if test="tongdunState !='' and tongdunState !=null">
+                and au.tongdun_state = #{tongdunState,jdbcType=VARCHAR}
+            </if>
+            <if test="tenementIncomeState !='' and tenementIncomeState !=null">
+                and au.tenement_income_state = #{tenementIncomeState,jdbcType=VARCHAR}
+            </if>
+            <if test="gongJiJinState != null and gongJiJinState != ''">
+			    and gong_ji_jin_state = #{gongJiJinState,jdbcType=VARCHAR}
+			</if>
+			<if test="sheBaoState != null and sheBaoState != ''">
+			    and she_bao_state = #{sheBaoState,jdbcType=VARCHAR}
+			</if>
+        </trim>
+    </sql>
+    
+     <select id="listUserAuthModel" resultMap="ModelResultMap" parameterType="java.util.HashMap">
+        select  au.user_id,u.login_name,b.real_name,b.phone,au.id_state,au.zhima_state,au.phone_state,au.contact_state,au.bank_card_state,au.work_info_state,au.other_info_state,
+         au.living_identify_state,au.tongdun_state,au.tenement_income_state,au.gong_ji_jin_state,au.she_bao_state
+        from  cl_user u join cl_user_auth  au  on u.id=au.user_id  join  cl_user_base_info  b  on u.id=b.user_id
+        <include refid="searchUserBy"/>
+    </select>
+    
+    <!-- 根据配置项查询用户认证项(可配置) -->
+    <select id="getUserAuthWithConfigByUserId" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+    	SELECT
+			(
+				<foreach item="totalAuthSQL" index="index" collection="total_auth_sql" separator="+">
+					IF (${totalAuthSQL} = 30, 1, 0)
+				</foreach>
+			) AS result,
+			#{total_auth_qualified} AS total,
+		IF ((
+				<foreach item="requiredSQL" index="index" collection="required_sql" separator="+">
+					IF (${requiredSQL} = 30, 1, 0)
+				</foreach>
+			) = #{required_qualified},1,0) AS qualified,
+		IF ((
+				<foreach item="chooseSQL" index="index" collection="choose_sql" separator="+">
+					IF (${chooseSQL} = 30, 1, 0)
+				</foreach>
+			) >=1,1,0) AS choose
+		<foreach item="hiddenSQL" index="index" collection="hidden_sql">
+			,${hiddenSQL}
+		</foreach>
+		FROM cl_user_auth
+		WHERE  user_id = #{userId}
+    </select>
+
+      <!-- 更新紧急联系人状态 -->
+      <update id="updateContractStateByUserId">
+		update cl_user_auth  set contact_state = #{state,jdbcType=VARCHAR} where  contact_state = '30' and user_id in
+		<foreach item="idItem" collection="list" open="(" separator="," close=")">
+		#{idItem}
+		</foreach>
+	</update>
+     
+     <select id="listByContactTime" resultType="Long">
+        select
+        cua.user_id
+        from cl_user_auth cua
+                	left join (
+select cb.user_id,cb.state from 	cl_borrow cb, (
+select max(id) id from cl_borrow GROUP BY user_id) cbn where cb.id = cbn.id
+) cb on cua.user_id=cb.user_id
+        where cua.contact_state_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} and cua.contact_state = '30'
+             and (cb.state in (21,27,40,41) or cb.user_id is null) limit 200
+    </select>
+    
+     <!-- 更新运营商状态 -->
+      <update id="updatePhoneStateByTime" >
+        update cl_user_auth set phone_state = #{state,jdbcType=VARCHAR}  where 
+         phone_state = '30' and user_id in
+		<foreach item="idItem" collection="list" open="(" separator="," close=")">
+		#{idItem}
+		</foreach>
+     </update>
+     
+     <select id="listByPhoneTime" resultType="Long">
+        select
+        cua.user_id
+        from cl_user_auth cua
+        	left join (
+select cb.user_id,cb.state from 	cl_borrow cb, (
+select max(id) id from cl_borrow GROUP BY user_id) cbn where cb.id = cbn.id
+) cb on cua.user_id=cb.user_id
+        where cua.phone_state_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} and cua.phone_state = '30'
+        and (cb.state in (21,27,40,41) or cb.user_id is null) limit 200
+    </select>
+    
+    <!-- 更新合同收入证明状态 -->
+    <update id="updateTenementIncomeStateWithTime" >
+        update cl_user_auth set tenement_income_time = NOW(),tenement_income_state = #{tenementIncomeState} 
+         where user_id = #{userId}
+    </update>
+    
+    <!-- 根据给定条件统计记录条数 -->
+    <select id="queryCount" resultType="java.lang.Integer">
+		select count(id) FROM cl_user_auth 
+        <include refid="searchBy"/>
+	</select>
+	
+</mapper>

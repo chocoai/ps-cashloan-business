@@ -13,17 +13,44 @@
     <modules>
         <module>ps-cashloan-business-marketing</module>
         <module>ps-cashloan-business-center</module>
-        <module>ps-cashloan-business-report</module>
-        <module>ps-cashloan-business-api</module>
         <module>ps-cashloan-business-cl</module>
         <module>ps-cashloan-business-core</module>
         <module>ps-cashloan-business-cr</module>
         <module>ps-cashloan-business-rc</module>
         <module>ps-cashloan-business-rule</module>
+        <module>ps-cashloan-business-user</module>
     </modules>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
 
+        </profile>
+        <profile>
+            <id>pre</id>
+            <properties>
+                <profiles.active>pre</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
-    <groupId>com.adpanshi</groupId>
     <artifactId>ps-cashloan-business</artifactId>
     <version>1.0.0.1-SNAPSHOT</version>
 
@@ -31,7 +58,7 @@
         <dependency>
             <groupId>com.adpanshi</groupId>
             <artifactId>common</artifactId>
-            <version>1.0.0.1</version>
+            <version>1.0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -57,11 +84,6 @@
             <groupId>com.rongdu</groupId>
             <artifactId>jxl</artifactId>
             <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -140,6 +162,12 @@
                     <groupId>commons-logging</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- 添加 redis 支持  begin-->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
 
     </dependencies>

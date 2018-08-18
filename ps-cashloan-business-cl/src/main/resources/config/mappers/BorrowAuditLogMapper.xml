@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_bank_card表:银行卡模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.BorrowAuditLogMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.BorrowAuditLog">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="audit_data" property="auditLog" jdbcType="VARCHAR" />
+        <result column="json_data" property="jsonData" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findOne" parameterType="long" resultMap="BaseResultMap">
+        SELECT id,borrow_id,audit_data,json_data FROM cl_borrow_audit_log WHERE borrow_id = #{borrowId} LIMIT 1
+    </select>
+
+    <insert id="addOne" parameterType="java.util.Map" >
+        INSERT INTO cl_borrow_audit_log
+        (borrow_id, create_time, update_time, audit_data,json_data)
+        VALUES
+        (#{borrowId,jdbcType=BIGINT},now(),now(),#{auditLog,jdbcType=VARCHAR},#{jsonData,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateOne" parameterType="java.util.Map">
+        UPDATE cl_borrow_audit_log SET
+        audit_data = #{auditLog,jdbcType=VARCHAR},
+        update_time = now(),
+        json_data = #{jsonData,jdbcType=VARCHAR}
+        WHERE borrow_id = #{borrowId,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.BorrowAuditLog">
+        UPDATE cl_borrow_audit_log
+        <set>
+            <if test="auditLog != null and auditLog != '' ">
+                audit_data = #{auditLog,jdbcType=VARCHAR}
+            </if>
+            <if test="jsonData != null and jsonData != '' ">
+                json_data = CONCAT_WS("|",#{jsonData,jdbcType=VARCHAR},json_data)
+            </if>
+        </set>
+        WHERE borrow_id = #{borrowId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

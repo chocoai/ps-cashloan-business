@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.EnjoysignRecordMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.EnjoysignRecord" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="borId" column="bor_id" javaType="Long"/>
+        <result property="borName" column="bor_name" javaType="String"/>
+		<result property="email" column="email" javaType="String"/>
+		<result property="orderId" column="order_id" javaType="String"/>
+        <result property="resParameter" column="res_parameter" javaType="String"/>
+        <result property="interfaceType" column="interface_type" javaType="Integer"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="gmtUpdateTime" column="gmt_update_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+
+	<resultMap id="EnjoysignRecordMap" extends="BaseResultMap" type="com.adpanshi.cashloan.cl.model.EnjoysignRecordModel">
+		<result property="filePath" column="file_path" javaType="String"/>
+		<result property="originName" column="origin_name" javaType="String"/>
+		<result property="suffix" column="suffix" javaType="String"/>
+		<result property="targetId" column="target_id" javaType="Long"/>
+		<result property="classify" column="classify" javaType="String"/>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+        t.id,
+        t.bor_id,
+        t.bor_name,
+        t.order_id,
+        t.email,
+        t.res_parameter,
+        t.interface_type,
+        t.status,
+        t.gmt_create_time,
+        t.gmt_update_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="null != id and id !=''">
+            AND t.id = #{id}
+         </if>
+		 <if test="null != borId and borId !=''">
+            AND t.bor_id = #{borId}
+         </if>
+		 <if test="null !=borName and borName !=''">
+            AND t.bor_name = #{borName}
+         </if>
+		 <if test="null != orderId and orderId !=''">
+            AND t.order_id = #{orderId}
+         </if>
+		<if test="null != email and email !=''">
+			AND t.email = #{email}
+		</if>
+		 <if test="null !=resParameter and resParameter !=''">
+            AND t.res_parameter = #{resParameter}
+         </if>
+		 <if test="null !=interfaceType and interfaceType !=''">
+            AND t.interface_type = #{interfaceType}
+         </if>
+		 <if test="null !=status and status !=''">
+            AND t.status = #{status}
+         </if>
+		 <if test="null !=gmtCreateTime and gmtCreateTime !=''">
+            AND t.gmt_create_time = #{gmtCreateTime}
+         </if>
+		 <if test="null !=gmtUpdateTime and gmtUpdateTime !=''">
+            AND t.gmt_update_time = #{gmtUpdateTime}
+         </if>
+		 <if test="null != remarks and remarks !=''">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+	
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.EnjoysignRecord" useGeneratedKeys="true" keyProperty="id">
+	        INSERT INTO cl_enjoysign_record (
+	            bor_id ,
+	            bor_name ,
+	            order_id ,
+	            email ,
+	            res_parameter ,
+	            interface_type ,
+	            status ,
+	            gmt_create_time ,
+	            gmt_update_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{borId},
+	        	#{borName},
+	        	#{orderId},
+	        	#{email},
+	        	#{resParameter},
+	        	#{interfaceType},
+	        	#{status},
+	        	now(),
+	        	now(),
+	        	#{remarks}
+	        )
+	</insert>
+	
+	<update id="updateSelective" parameterType="com.adpanshi.cashloan.cl.domain.EnjoysignRecord">
+        UPDATE cl_enjoysign_record 
+        <set>
+			<if test="null != borId and borId !=''">
+			     bor_id = #{borId},
+			 </if>
+			<if test="null !=borName and borName !=''">
+			     bor_name = #{borName},
+			 </if>
+			<if test="null != orderId and orderId !=''">
+			     order_id = #{orderId},
+			 </if>
+			<if test="null != email and email !=''">
+				email = #{email},
+			</if>
+			<if test="null !=resParameter and resParameter !=''">
+			     res_parameter = #{resParameter},
+			 </if>
+			<if test="null !=interfaceType and interfaceType !=''">
+			     interface_type = #{interfaceType},
+			 </if>
+			<if test="null !=status and status !=''">
+			     status = #{status},
+			 </if>
+			<if test="null !=remarks and remarks !=''">
+			     remarks = #{remarks},
+			</if>
+			 gmt_update_time = now()
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_enjoysign_record t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+    
+    <select id="getEnjoysignRecordByBorId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_enjoysign_record t
+       	WHERE t.bor_id = #{value}
+		]]>
+    </select>
+	
+	<select id="listSelective" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_enjoysign_record t
+		<where> <include refid="searchBy"/>  </where>
+		ORDER BY t.gmt_update_time DESC
+	</select>
+	
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_enjoysign_record t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+	
+	<!-- 查询待下载的合同 -->
+	<select id="queryWaitDownloadEnjoysignRecord" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_enjoysign_record t 
+		WHERE t.status IN 
+		<foreach item="statusTmp" index="index" collection="statusList" open="(" separator="," close=")">
+	       #{statusTmp}
+        </foreach>
+	</select>
+	
+	<!--  根据borrowId 及 状态 获取签章数据信息 -->
+	<select id="getEnjoysignRecordByBorrowIdWithStatus" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_enjoysign_record t 
+		WHERE t.bor_id =#{borId} AND t.status IN 
+		<foreach item="statusTmp" index="index" collection="statusList" open="(" separator="," close=")">
+	       #{statusTmp}
+        </foreach>
+	</select>
+	
+	<!-- 查询签章失败的合同(合同中订单必须不为NULL且必须在订单中存在、状态未签署成功的、签署时间已过去一天的记录) -->
+	<select id="queryEnjoysignRecordBySignatureFail" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_enjoysign_record t 
+		WHERE t.bor_id IS NOT NULL 
+		AND t.status IN <foreach item="statusTmp" index="index" collection="statusList" open="(" separator="," close=")"> #{statusTmp} </foreach>
+		AND EXISTS (SELECT m.id FROM cl_borrow_main m WHERE t.bor_id=m.id) AND NOW() &gt; DATE_ADD(t.gmt_create_time, INTERVAL 1 DAY)
+	</select>
+
+	<select id="findSignAttachment" resultMap="EnjoysignRecordMap" parameterType="java.util.HashMap">
+		select
+		t.id,
+		t.bor_id,
+		t.bor_name,
+		t.order_id,
+		t.email,
+		t.res_parameter,
+		t.interface_type,
+		t.status,
+		t.gmt_create_time,
+		t.gmt_update_time,
+		t.remarks,
+		sys.file_path,
+		sys.target_id,
+		sys.origin_name,
+		sys.suffix,
+		sys.classify
+		from cl_enjoysign_record t inner join cl_sys_attachment sys on t.id = sys.target_id
+		where t.bor_id = #{userId}
+	</select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from cl_enjoysign_record t
+		<include refid="searchBy"/>
+	</select>
+
+	<select id="findSignCount" resultType="java.util.HashMap">
+		select
+		count(1) num
+		from cl_enjoysign_record
+		where DATE_FORMAT(gmt_create_time,'%Y-%m-%d') = #{createTime}
+		and bor_id = #{userId}
+	</select>
+</mapper>

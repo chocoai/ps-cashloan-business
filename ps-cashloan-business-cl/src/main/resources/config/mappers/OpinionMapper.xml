@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_opinion表:意见反馈表模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.OpinionMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.Opinion">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="feedback" property="feedback" jdbcType="VARCHAR" />
+        <result column="sys_user_id" property="sysUserId" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <resultMap id="modelResultMap" extends="BaseResultMap" type="com.adpanshi.cashloan.cl.model.OpinionModel">
+
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,opinion,sys_user_id,feedback,state,create_time,confirm_time
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id !='' and id !=null">
+                id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId !='' and userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </sql>
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.Opinion">
+        insert into cl_opinion(user_id,opinion,sys_user_id,feedback,state,create_time,confirm_time)
+        values
+        (#{userId,jdbcType=BIGINT},#{opinion,jdbcType=VARCHAR},
+        #{sysUserId,jdbcType=BIGINT},#{feedback,jdbcType=VARCHAR},
+        #{state,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{confirmTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.Opinion">
+        update cl_opinion set 
+            create_time = #{createTime,jdbcType=VARCHAR},
+            user_id = #{userId,jdbcType=INTEGER},
+            feedback = #{feedback,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_opinion
+          <trim prefix="set" suffixOverrides=",">
+            <if test="feedback != null and desc != '' ">        
+                feedback = #{feedback,jdbcType=VARCHAR},                
+            </if>
+            <if test="sysUserId != null and sysUserId != '' ">        
+                sys_user_id = #{sysUserId,jdbcType=INTEGER},                
+            </if>
+            <if test="remark != null and remark != '' ">        
+                remark = #{remark,jdbcType=VARCHAR},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR},                
+            </if>
+            <if test="confirmTime != null ">        
+                confirm_time = #{confirmTime,jdbcType=TIMESTAMP},                
+            </if>
+        </trim> 
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_opinion
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_opinion
+        <include refid="searchBy"/>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_opinion
+        <include refid="searchBy"/>
+    </select>
+
+    <!-- @remark: 用户管理.用户反馈! @author: nmnl @date:2017-12-27 新变更 -->
+    <select id="listModel" resultMap="modelResultMap" parameterType="java.util.HashMap">
+
+        SELECT
+        o.*,
+        i.real_name AS realName ,
+        i.id_no,
+        i.phone AS phone ,
+        su.`name` as sysUserRealName
+        FROM
+        cl_opinion o
+        LEFT JOIN cl_user_base_info i ON o.user_id = i.user_id
+        LEFT JOIN arc_sys_user su ON su.id = o.sys_user_id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="phone != null and phone != '' ">
+                i.phone like concat("%",#{phone,jdbcType=VARCHAR},"%") 
+            </if>
+            <if test="realName != null and realName != ''">
+                AND i.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="state != null and state != ''">
+                AND o.state = #{state,jdbcType=VARCHAR} 
+            </if>
+            <if test="idNo != null and idNo != ''">
+                AND i.id_no like concat("%",#{idNo,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="startTime  != null and startTime  != ''">
+                <![CDATA[
+                 AND o.create_time >= CONCAT(#{startTime},' 00:00:00')
+                 ]]>
+            </if>
+            <if test="endTime  != null and endTime  != ''">
+                <![CDATA[
+                 AND o.create_time <= CONCAT(#{endTime},' 23:59:59')
+                 ]]>
+            </if>
+        </trim>
+        order by o.id desc
+    </select>
+    
+</mapper>

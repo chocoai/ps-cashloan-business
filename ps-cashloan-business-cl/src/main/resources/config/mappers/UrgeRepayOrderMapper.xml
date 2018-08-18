@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_urge_repay_order表:催款计划表模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.UrgeRepayOrderMapper">
+    <!--返回Map-->         
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.UrgeRepayOrder">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_name" property="borrowName" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="time_limit" property="timeLimit" jdbcType="VARCHAR" />
+        <result column="borrow_time" property="borrowTime" jdbcType="TIMESTAMP" />
+        <result column="repay_time" property="repayTime" jdbcType="TIMESTAMP" />
+        <result column="penalty_day" property="penaltyDay" jdbcType="BIGINT" />
+        <result column="penalty_amout" property="penaltyAmout" jdbcType="DECIMAL" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="count" property="count" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="level" property="level" jdbcType="VARCHAR" />
+    </resultMap>
+
+   
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        o.id,o.user_id,o.user_name,o.phone,o.borrow_id,o.amount,o.time_limit,o.borrow_time,o.repay_time,o.penalty_day,o.penalty_amout,
+        o.state,o.count,o.create_time,o.borrow_name,o.level
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id !='' and id !=null">
+                o.id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId !='' and userId !=null">
+                and o.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userName !='' and userName !=null">
+                and o.user_name  like  concat("%",#{userName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="phone !='' and phone !=null">
+                and o.phone like  concat("%",#{phone,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="borrowId !='' and borrowId !=null">
+                and o.borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="amount !='' and amount !=null">
+                and o.amount = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="timeLimit !='' and timeLimit !=null">
+                and o.time_limit = #{timeLimit,jdbcType=VARCHAR}
+            </if>
+            <if test="borrowTime !=null">
+                and o.borrow_time = #{borrowTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="repayTime !=null">
+                and o.repay_time = #{repayTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="penaltyDay !='' and penaltyDay !=null">
+                and o.penalty_day = #{penaltyDay,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyDayFrom !='' and penaltyDayFrom !=null">
+                and o.penalty_day &gt;= #{penaltyDayFrom,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyDayTo !='' and penaltyDayTo !=null">
+                and o.penalty_day &lt;= #{penaltyDayTo,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyAmout !='' and penaltyAmout !=null">
+                and o.penalty_amout = #{penaltyAmout,jdbcType=DECIMAL}
+            </if>
+            <if test="state !='' and state !=null">
+                and o.state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="count !='' and count !=null">
+                and o.count = #{count,jdbcType=BIGINT}
+            </if>
+            <if test="createTime !=null">
+                and o.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+              <if test="borrowName !='' and borrowName !=null">
+                and o.borrow_name    like  concat("%",#{borrowName,jdbcType=VARCHAR},"%")
+            </if>
+             <if test="level !='' and level !=null">
+                and o.level = #{level,jdbcType=VARCHAR}
+            </if>
+            <!-- 添加未分配已分配查询,10已分配20未分配 -->
+            <if test="isDestribute != null and isDestribute != ''">
+				<if test="isDestribute =='10' ">
+					and o.user_id is not null
+				</if>
+				<if test="isDestribute =='20' ">
+					and o.user_id is null
+				</if>
+			</if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.UrgeRepayOrder">
+        insert into cl_urge_repay_order(user_id,user_name,phone,borrow_id,amount,time_limit,borrow_time,repay_time,penalty_day,penalty_amout,state,count,create_time,borrow_name,level)values(#{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{borrowId,jdbcType=BIGINT},#{amount,jdbcType=DECIMAL},#{timeLimit,jdbcType=VARCHAR},#{borrowTime,jdbcType=TIMESTAMP},#{repayTime,jdbcType=TIMESTAMP},#{penaltyDay,jdbcType=BIGINT},#{penaltyAmout,jdbcType=DECIMAL},#{state,jdbcType=VARCHAR},#{count,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP},#{borrowName,jdbcType=VARCHAR},#{level,jdbcType=VARCHAR})
+    </insert>
+
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.UrgeRepayOrder">
+        update cl_urge_repay_order set 
+            user_id = #{userId,jdbcType=BIGINT},
+            user_name = #{userName,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            amount = #{amount,jdbcType=DECIMAL},
+            time_limit = #{timeLimit,jdbcType=VARCHAR},
+            borrow_time = #{borrowTime,jdbcType=TIMESTAMP},
+            repay_time = #{repayTime,jdbcType=TIMESTAMP},
+            penalty_day = #{penaltyDay,jdbcType=BIGINT},
+            penalty_amout = #{penaltyAmout,jdbcType=DECIMAL},
+            state = #{state,jdbcType=VARCHAR},
+            count = #{count,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            borrow_name = #{borrowName,jdbcType=VARCHAR},
+            level = #{level,jdbcType=VARCHAR}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_urge_repay_order
+          <set>
+            <if test="userId != null and userId != '' ">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="userName != null and userName != '' ">        
+                user_name = #{userName,jdbcType=VARCHAR},                
+            </if>
+            <if test="phone != null and phone != '' ">        
+                phone = #{phone,jdbcType=VARCHAR},                
+            </if>
+            <if test="borrowId != null and borrowId != '' ">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="amount != null and amount != '' ">        
+                amount = #{amount,jdbcType=DECIMAL},                
+            </if>
+            <if test="timeLimit != null and timeLimit != '' ">        
+                time_limit = #{timeLimit,jdbcType=VARCHAR},                
+            </if>
+            <if test="borrowTime != null ">        
+                borrow_time = #{borrowTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="repayTime != null ">        
+                repay_time = #{repayTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="penaltyDay != null and penaltyDay != '' ">        
+                penalty_day = #{penaltyDay,jdbcType=BIGINT},                
+            </if>
+            <if test="penaltyAmout != null and penaltyAmout != '' ">        
+                penalty_amout = #{penaltyAmout,jdbcType=DECIMAL},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR},                
+            </if>
+            <if test="count != null and count != '' ">        
+                count = #{count,jdbcType=BIGINT},                
+            </if>
+            <if test="createTime != null ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+             <if test="borrowName !='' and borrowName !=null">
+                borrow_name = #{borrowName,jdbcType=VARCHAR}
+            </if>
+            <if test="level !='' and level !=null">
+                level = #{level,jdbcType=VARCHAR}
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateChangeUser"  parameterType="java.util.HashMap">
+        update cl_urge_repay_order set
+                user_id = #{userId,jdbcType=BIGINT},
+                user_name = #{userName,jdbcType=VARCHAR}
+        where user_id = #{userIdBedore ,jdbcType=BIGINT}
+              and state in ('11','20','30','50')
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_urge_repay_order o
+        where o.id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_urge_repay_order o
+        <include refid="searchBy"/>  limit 0,1
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_urge_repay_order o
+        <include refid="searchBy"/>
+        <if test="totalCount !='' and totalCount !=null">
+            limit #{totalCount,jdbcType = BIGINT}
+        </if>
+    </select>
+
+    <select id="listUrgeTotalOrder" resultMap="modelMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />,
+        b.user_id as borrowUserId,
+        CASE INSTR(b.order_no,'X') WHEN 0 THEN 1 ELSE 0+SUBSTR(b.order_no,INSTR(b.order_no,'X')+1) END as phase/*期数new*/
+        from cl_urge_repay_order o LEFT JOIN cl_borrow b on o.borrow_id=b.id
+        <include refid="searchBy"/>
+
+    </select>
+
+    <resultMap id="modelMap"  extends="BaseResultMap" type="com.adpanshi.cashloan.cl.model.UrgeRepayOrderModel">
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="promise_time" property="promiseTime" jdbcType="TIMESTAMP" />
+        <result column="way" property="way" jdbcType="VARCHAR" />
+        <result column="phase" property="phase" jdbcType="INTEGER" />
+        <result column="borrowUserId" property="borrowUserId" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <resultMap id="modelMapVo"  extends="BaseResultMap" type="com.adpanshi.cashloan.cl.model.UrgeRepayOrderModelVo">
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="promise_time" property="promiseTime" jdbcType="TIMESTAMP" />
+        <result column="way" property="way" jdbcType="VARCHAR" />
+        <result column="recently_urge_time" property="recentlyUrgeTime" jdbcType="TIMESTAMP" />
+        <result column="borrow_user_id" property="borrowUserId" jdbcType="BIGINT" />
+        <result column="phase" property="phase" jdbcType="INTEGER" />
+    </resultMap>
+    
+     <sql id="searchModelBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userId !='' and userId !=null">
+                 o.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userName !='' and userName !=null">
+                and o.user_name  like  concat("%",#{userName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="phone !='' and phone !=null">
+                and o.phone    like  concat("%",#{phone,jdbcType=VARCHAR},"%") 
+            </if>
+            <if test="state !='' and state !=null">
+                and o.state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="logState !='' and logState !=null">
+                and l.state = #{logState,jdbcType=VARCHAR}
+            </if>
+            <if test="logUserId !='' and logUserId !=null">
+                and l.user_id = #{logUserId,jdbcType=BIGINT}
+            </if>
+              <if test="borrowName !='' and borrowName !=null">
+                and o.borrow_name   like  concat("%",#{borrowName,jdbcType=VARCHAR},"%") 
+            </if>
+            <if test="level !='' and level !=null">
+               and  o.level = #{level,jdbcType=VARCHAR}
+            </if>
+             <if test="borrowId !='' and borrowId !=null">
+               and o.borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyDay !='' and penaltyDay !=null">
+                and o.penalty_day = #{penaltyDay,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyDayFrom !='' and penaltyDayFrom !=null">
+                and o.penalty_day &gt;= #{penaltyDayFrom,jdbcType=BIGINT}
+            </if>
+            <if test="penaltyDayTo !='' and penaltyDayTo !=null">
+                and o.penalty_day &lt;= #{penaltyDayTo,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </sql>
+    
+    <select id="listModel" resultMap="modelMap" parameterType="java.util.HashMap">
+        select   
+        o.user_id,o.user_name,o.phone,o.borrow_id,o.amount,o.time_limit,o.borrow_time,o.repay_time,o.penalty_day,o.penalty_amout,o.borrow_name,o.count,o.level,
+        l.id,l.create_time,l.remark,l.promise_time,l.way,l.state,b.user_id as borrowUserId,
+        CASE INSTR(b.order_no,'X') WHEN 0 THEN 1 ELSE 0+SUBSTR(b.order_no,INSTR(b.order_no,'X')+1) END as phase/*期数new*/
+        from cl_urge_repay_order o  join  cl_urge_repay_log l  on  o.id=l.due_id left join cl_borrow b on o.borrow_id=b.id
+        <include refid="searchModelBy"/>
+        order by   l.create_time  desc
+        <if test="totalCount !='' and totalCount !=null">
+            limit #{totalCount,jdbcType = BIGINT}
+        </if>
+    </select>
+    
+    <sql id="searchMemberCountBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="userName !='' and userName !=null">
+                 c.userName  like  concat("%",#{userName,jdbcType=VARCHAR},"%")   
+            </if>
+            <if test="realName !='' and realName !=null">
+                c.realName  like  concat("%",#{realName,jdbcType=VARCHAR},"%")
+            </if>
+            <if test="loginName !='' and loginName !=null">
+                and c.loginName  like  concat("%",#{loginName,jdbcType=VARCHAR},"%")  
+            </if>
+            <if test="jobNum !='' and jobNum !=null">
+                and c.jobNum  like  concat("%",#{jobNum,jdbcType=VARCHAR},"%")  
+            </if>
+        </trim>
+    </sql>
+     <resultMap id="countMap"  type="com.adpanshi.cashloan.cl.model.UrgeRepayCountModel">
+    </resultMap>
+    
+    <select id="memberCount" resultMap="countMap" parameterType="java.util.HashMap">
+	  	select c.userName ,c.loginName,c.realName,c.jobNum,c.status,count(1) as count,sum(c.waitCount) as waitCount,sum(c.successCount) as successCount ,SUM(yesterdayCount) as   yesterdayCount
+		FROM (
+		select d.user_name as userName,u.user_name as loginName,u.name as realName,u.job_num AS jobNum,u.status,0 as count,
+		(CASE d.state  when 11 THEN 1   when 20 THEN 1 ELSE  0 end )as waitCount,
+		(case d.state   when 40 THEN  1   else 0 end ) as  successCount,
+		(case when date_format(l.create_time, '%Y-%m-%d')= date_format(date_sub(curdate(),interval 1 day), '%Y-%m-%d') THEN  1    else 0 end ) as  yesterdayCount
+		from    cl_urge_repay_order  d  LEFT  JOIN  arc_sys_user  u    on  u.id=d.user_id   LEFT  join  cl_urge_repay_log l on l.due_id=d.id
+        where d.user_id is not null
+		) as c
+		 <include refid="searchMemberCountBy"/>
+		 group by c.userName
+    </select>
+    
+     <select id="urgeCount" resultMap="countMap" parameterType="java.util.HashMap">
+	 select   al.createTime,sum(orderCount) as orderCount,sum(count) as count ,SUM(al.successCount) as successCount,sum(al.failCount) as failCount,(SUM(al.successCount)/sum(count)*100) as  backRate from (
+		select    date_format(r.create_time, '%Y-%m-%d')  as createTime, 1 as orderCount, 0 as count, 0 as successCount, 0  as failCount, 0 as   backRate
+					from cl_urge_repay_order   r 
+		UNION all
+		select   date_format(l .create_time, '%Y-%m-%d')  as createTime,0 as orderCount,1 as count,
+				(CASE l.state  when 40 THEN 1   ELSE  0 end ) as  successCount,
+				(CASE l.state  when 50 THEN 1   ELSE  0 end ) as  failCount, 
+		         0 as   backRate
+				  from   cl_urge_repay_log l  
+	     ) al
+	 <if test=" beforeTime !=null and  afterTime !=null">
+		          where  unix_timestamp(date_format(al.createTime, '%Y-%m-%d')) 
+		           BETWEEN   unix_timestamp(#{beforeTime,jdbcType=TIMESTAMP})  and unix_timestamp(#{afterTime,jdbcType=TIMESTAMP})
+	  </if>
+	 group by  al.createTime ORDER BY  al.createTime  desc 
+	 </select>   
+    
+     <select id="memberDayCount" resultMap="countMap" parameterType="java.util.HashMap">
+		SELECT 
+		    al.createTime, al.userName, SUM(al.orderCount) AS orderCount, SUM(al.successCount) AS successCount, SUM(al.promisCount) AS promisCount, SUM(al.failCount) AS failCount, (IFNULL( SUM(al.successCount) / SUM(al.orderCount), 1) * 100) AS backRate, SUM(al.urgeCount) AS COUNT
+		FROM
+		    (SELECT 
+		        DATE_FORMAT(r.create_time, '%Y-%m-%d') AS createTime, r.user_name AS userName, COUNT(1) AS orderCount, 0 AS successCount, 0 AS promisCount, 0 AS failCount, 0 AS backRate, 0 AS urgeCount 
+		    FROM
+		        cl_urge_repay_order r 
+		    GROUP BY DATE_FORMAT(r.create_time, '%Y-%m-%d'), r.user_id 
+		    UNION ALL 
+		    SELECT 
+		        DATE_FORMAT(l.create_time, '%Y-%m-%d') AS createTime, r.user_name AS userName, 0 AS orderCount,
+		        SUM(CASE l.state WHEN 40 THEN 1 ELSE 0 END) AS successCount, 
+		        SUM(CASE l.state WHEN 30 THEN 1 ELSE 0 END) AS promisCount, 
+		        SUM(CASE l.state WHEN 50 THEN 1 ELSE 0 END) AS failCount, 0 AS backRate, COUNT(1) AS urgeCount 
+		    FROM
+		        cl_urge_repay_log l 
+		        LEFT JOIN cl_urge_repay_order r  ON r.id = l.due_id 
+		    GROUP BY DATE_FORMAT(l.create_time, '%Y-%m-%d'), r.user_id) al 
+		WHERE al.userName IS NOT NULL AND al.userName != "" 
+		<if test=" beforeTime !=null and  afterTime !=null ">
+			and unix_timestamp(date_format(al.createTime, '%Y-%m-%d')) BETWEEN unix_timestamp(#{beforeTime,jdbcType=TIMESTAMP})  and unix_timestamp(#{afterTime,jdbcType=TIMESTAMP})
+		</if>
+		<if test=" userName !=null and  userName !='' ">
+			and  al.userName  like  concat("%",#{userName,jdbcType=VARCHAR},"%")  
+		</if>
+		GROUP BY al.createTime, al.userName ORDER BY al.createTime DESC 
+	 </select> 
+	 
+	   
+	<select id="orderCount" resultMap="countMap" parameterType="java.util.HashMap">
+		SELECT 
+		    z.createTime, SUM(z.allOrderCount) AS allOrderCount, SUM(z.allSuccessCount) AS allSuccessCount, SUM(z.allFailCount) AS allFailCount, SUM(z.allBackRate) AS allBackRate, SUM(z.orderCount) AS orderCount, SUM(z.successCount) AS successCount, SUM(z.promisCount) AS promisCount, SUM(z.failCount) AS failCount, SUM(z.backRate) AS backRate 
+		FROM
+		    (
+		        (SELECT 
+		            A.createTime, SUM(C.orderCount) AS allOrderCount, SUM(B.successCount) AS allSuccessCount, SUM(B.failCount) AS allFailCount, (SUM(B.successCount) / SUM(C.orderCount) * 100) AS allBackRate, 0 AS orderCount, 0 AS successCount, 0 AS promisCount, 0 AS failCount, 0 AS backRate 
+		        FROM
+		            (SELECT 
+		                r.id, DATE_FORMAT(r.create_time, '%Y-%m-%d') AS createTime, COUNT(1) AS orderCount, 
+		                (CASE r.state WHEN 40 THEN 1 ELSE 0 END) AS successCount, 
+		                (CASE r.state WHEN 50 THEN 1 ELSE 0 END) AS failCount, 0 AS backRate 
+		            FROM
+		                cl_urge_repay_order r 
+		            GROUP BY DATE_FORMAT(r.create_time, '%Y-%m-%d')) A, 
+		            (SELECT 
+		                r.id, DATE_FORMAT(l.create_time, '%Y-%m-%d') AS createTime, 
+		                SUM(CASE l.state WHEN 40 THEN 1 ELSE 0 END) AS successCount,
+		                SUM(CASE l.state WHEN 50 THEN 1 ELSE 0 END) AS failCount, 0 AS backRate 
+		            FROM
+		                cl_urge_repay_log l 
+		                LEFT JOIN cl_urge_repay_order r  ON r.id = l.due_id 
+		            GROUP BY DATE_FORMAT(l.create_time, '%Y-%m-%d')) B, 
+		            (SELECT 
+		                DATE_FORMAT(create_time, '%Y-%m-%d') AS createTime, COUNT(1) AS orderCount 
+		            FROM
+		                cl_urge_repay_order 
+		            GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')) C 
+		        WHERE A.createTime >= B.createTime 
+		            AND B.createTime = C.createTime 
+		        GROUP BY A.createTime 
+		        ORDER BY A.createTime DESC) 
+		        UNION ALL 
+		        (SELECT 
+		            al.createTime, 0 AS allOrderCount, 0 AS allSuccessCount, 0 AS allFailCount, 0 AS allBackRate, SUM(al.orderCount) AS orderCount, SUM(al.successCount) AS successCount, SUM(al.promisCount) AS promisCount, SUM(al.failCount) AS failCount, (SUM(al.successCount) / SUM(al.orderCount) * 100 ) AS backRate
+		         FROM
+		            (SELECT 
+		                DATE_FORMAT(r.create_time, '%Y-%m-%d') AS createTime, COUNT(1) AS orderCount, 0 AS successCount, 0 AS promisCount, 0 AS failCount, 0 AS backRate 
+		            FROM
+		                cl_urge_repay_order r 
+		            GROUP BY DATE_FORMAT(r.create_time, '%Y-%m-%d') 
+		                UNION ALL 
+		                SELECT 
+		                    DATE_FORMAT(l.create_time, '%Y-%m-%d') AS createTime, 0 AS orderCount,
+		                     SUM(CASE l.state WHEN 40 THEN 1 ELSE 0 END) AS successCount, 
+		                     SUM(CASE l.state WHEN 30 THEN 1 ELSE 0 END) AS promisCount, 
+		                     SUM(CASE l.state WHEN 50 THEN 1 ELSE 0 END) AS failCount, 0 AS backRate 
+		                FROM
+		                    cl_urge_repay_log l 
+		                    LEFT JOIN cl_urge_repay_order r 
+		                        ON r.id = l.due_id 
+		                GROUP BY DATE_FORMAT(l.create_time, '%Y-%m-%d')) al 
+		            GROUP BY al.createTime 
+		            ORDER BY al.createTime DESC)
+		        ) z 
+		        <if test=" beforeTime !=null and  afterTime !=null ">
+					WHERE UNIX_TIMESTAMP(DATE_FORMAT(z.createTime, '%Y-%m-%d'))
+					BETWEEN UNIX_TIMESTAMP(#{beforeTime,jdbcType=TIMESTAMP}) and UNIX_TIMESTAMP(#{afterTime,jdbcType=TIMESTAMP})
+				</if>
+		        GROUP BY z.createTime 
+		        ORDER BY z.createTime DESC 
+    </select>  
+    
+    <!--根据borrowId删除 -->
+    <delete id="deleteByBorrowId" parameterType="java.lang.Long">
+		delete from `cl_urge_repay_order` where borrow_id = #{borrowId,jdbcType=BIGINT}
+    </delete>  
+    
+    <!--manager 催收信息查询-->
+    <select id="listManage" resultMap="modelMapVo" parameterType="java.util.HashMap">
+        select
+        o.id,o.user_id,o.user_name,o.phone,o.borrow_id,o.amount,o.time_limit,o.borrow_time,o.repay_time,o.penalty_day,o.penalty_amout,o.state,count,o.create_time,o.borrow_name,o.level,
+        l.recently_urge_time, cubi.user_id borrow_user_id,
+        CASE INSTR(cb.order_no,'X') WHEN 0 THEN 1 ELSE 0+SUBSTR(cb.order_no,INSTR(cb.order_no,'X')+1) END as phase/*期数new*/
+        from cl_urge_repay_order o
+        left  join  (SELECT borrow_id,max(create_time) recently_urge_time FROM cl_urge_repay_log group by borrow_id) l on  o.borrow_id=l.borrow_id
+        left  join  cl_borrow cb on  o.borrow_id=cb.id
+        left  join  cl_user_base_info cubi on  cb.user_id=cubi.user_id
+        <include refid="searchModelBy"/>
+        order by  o.create_time desc, o.id desc
+    </select>
+    
+</mapper>

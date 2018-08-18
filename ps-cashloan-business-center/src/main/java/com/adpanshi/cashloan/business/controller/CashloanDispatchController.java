@@ -26,8 +26,8 @@ public class CashloanDispatchController {
 
     private static final Logger logger = LoggerFactory.getLogger(CashloanDispatchController.class);
 
-    @Resource
-    private DispatchRunDomain dispatchRunDomain;
+//    @Resource
+//    private DispatchRunDomain dispatchRunDomain;
 
     @ApiOperation("数据查询")
     @RequestMapping(value = "/dataQuery/getOperator", method = RequestMethod.GET)

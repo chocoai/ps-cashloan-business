@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_borrow_main_progress表:借款主信息表模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.BorrowMainProgressMapper">
+    <!--返回Map-->        
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.BorrowMainProgress">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <resultMap id="ProgressMap" type="com.adpanshi.cashloan.cl.model.ProgressModel">
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,borrow_id,state,remark,create_time 
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test=" id != null and id != '' ">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId != null and userId != '' ">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="borrowId != null and borrowId != '' ">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="state != null and state != '' ">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != '' ">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    
+    
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.BorrowMainProgress">
+        insert into cl_borrow_main_progress(user_id,borrow_id,state,remark,create_time)values(#{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{state,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.BorrowMainProgress">
+        update cl_borrow_main_progress set 
+            user_id = #{userId,jdbcType=BIGINT},
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            state = #{state,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateSelective"  parameterType="java.util.HashMap">
+        update cl_borrow_main_progress
+          <set>
+            <if test="userId != null and userId != '' ">        
+                user_id = #{userId,jdbcType=BIGINT},                
+            </if>
+            <if test="borrowId != null and borrowId != '' ">        
+                borrow_id = #{borrowId,jdbcType=BIGINT},                
+            </if>
+            <if test="state != null and state != '' ">        
+                state = #{state,jdbcType=VARCHAR},                
+            </if>
+            <if test="remark != null and remark != '' ">        
+                remark = #{remark,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP}                
+            </if>
+        </set>    
+        where id = #{id ,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_main_progress
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_main_progress
+        <include refid="searchBy"/>
+        <if test="orderByDesc !=null and orderByDesc!=''">
+            order by ${orderByDesc}
+        </if>
+        <if test="limit !=null and limit!=''">
+            limit #{limit,jdbcType=BIGINT}
+        </if>
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_main_progress
+        <include refid="searchBy"/>
+        <if test="@OGNL@isNotEmpty(orderColumn)">
+        	ORDER BY t.${orderColumn} <if test="@OGNL@isNotEmpty(orderDirection)">${orderDirection}</if>
+        </if>
+    </select>
+
+    <select id="listProgress" resultType="com.adpanshi.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_main_progress
+        <![CDATA[where state <= #{state,jdbcType=VARCHAR} and borrow_id = #{borrowId,jdbcType=BIGINT}]]>
+        ORDER BY state ASC
+    </select>
+    
+    <!-- 根据userID、borrowId查询借款进度 -->
+    <select id="queryProgressByBorIdWithUserId" resultMap="ProgressMap" parameterType="java.util.HashMap">
+        select user_id,borrow_id,state,remark,DATE_FORMAT(create_time,'%Y-%m-%d') AS create_time
+        from cl_borrow_main_progress
+        WHERE user_id=#{userId} AND borrow_id=#{borrowId}
+        <if test="@OGNL@isNotEmpty(orderColumn)">
+        	ORDER BY ${orderColumn} <if test="@OGNL@isNotEmpty(orderDirection)">${orderDirection}</if>
+        </if>
+    </select>
+    
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.EnjoysignDownloadLogMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.EnjoysignDownloadLog" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="borId" column="bor_id" javaType="Long"/>
+		<result property="email" column="email" javaType="String"/>
+		<result property="resParameter" column="res_parameter" javaType="String"/>
+        <result property="downloadType" column="download_type" javaType="Integer"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="gmtUpdateTime" column="gmt_update_time" javaType="Date"/>
+		<result property="remark" column="remark" javaType="String"/>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+        t.id,
+        t.bor_id,
+        t.email,
+        t.res_parameter,
+        t.interface_type,
+        t.status,
+        t.remark,
+        t.gmt_create_time,
+        t.gmt_update_time
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		<trim prefix="where" prefixOverrides="and|or">
+		 <if test="null != id and id !=''">
+            AND t.id = #{id}
+         </if>
+		 <if test="null != borId and borId !=''">
+            AND t.bor_id = #{borId}
+         </if>
+		<if test="null != email and email !=''">
+			AND t.email = #{email}
+		</if>
+		 <if test="null !=resParameter and resParameter !=''">
+            AND t.res_parameter = #{resParameter}
+         </if>
+		 <if test="null !=downloadType and downloadType !=''">
+            AND t.download_type = #{downloadType}
+         </if>
+		 <if test="null !=status and status !=''">
+            AND t.status = #{status}
+         </if>
+		<if test="null !=remark and remark !=''">
+			AND t.remark = #{remark}
+		</if>
+		 <if test="null !=gmtCreateTime and gmtCreateTime !=''">
+            AND t.gmt_create_time = #{gmtCreateTime}
+         </if>
+		 <if test="null !=gmtUpdateTime and gmtUpdateTime !=''">
+            AND t.gmt_update_time = #{gmtUpdateTime}
+         </if>
+		</trim>
+	</sql>
+	
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.EnjoysignDownloadLog" useGeneratedKeys="true" keyProperty="id">
+	        INSERT INTO cl_enjoysign_download_log (
+	            bor_id,
+	            email,
+	            res_parameter,
+	            download_type,
+	            status,
+	            remark,
+	            gmt_create_time,
+	            gmt_update_time
+	        ) VALUES (
+	        	#{borId},
+	        	#{email},
+	        	#{resParameter},
+	        	#{downloadType},
+	        	#{status},
+	        	#{remark},
+	        	now(),
+	        	now()
+	        )
+	</insert>
+	
+	<update id="updateSelective" parameterType="com.adpanshi.cashloan.cl.domain.EnjoysignDownloadLog">
+        UPDATE cl_enjoysign_download_log
+        <set>
+			<if test="null != borId and borId !=''">
+			     bor_id = #{borId},
+			 </if>
+			<if test="null != email and email !=''">
+				email = #{email},
+			</if>
+			<if test="null !=resParameter and resParameter !=''">
+			     res_parameter = #{resParameter},
+			 </if>
+			<if test="null !=downloadType and downloadType !=''">
+				download_type = #{downloadType},
+			 </if>
+			<if test="null !=status and status !=''">
+			     status = #{status},
+			 </if>
+			<if test="null !=remark and remark !=''">
+				remark = #{remark},
+			</if>
+			 gmt_update_time = now()
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_enjoysign_download_log t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+    
+    <select id="getEnjoysignRecordByBorId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_enjoysign_download_log t
+       	WHERE t.bor_id = #{value}
+		]]>
+    </select>
+	
+	<select id="listSelective" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_enjoysign_download_log t
+		<include refid="searchBy"/>
+		ORDER BY t.gmt_update_time DESC
+	</select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		select
+		<include refid="Base_Column_List" />
+		from cl_enjoysign_download_log t
+		<include refid="searchBy"/>
+	</select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.PanVerifyModelMapper">
+
+	<insert id="save" parameterType="java.util.HashMap" >
+        insert into pan_valid_log(`user_id`, `pan_no`, `message`, `success`, `pan_status`, `first_name`, `last_name`, `transaction_id`, `status`, `pan_auth`, `create_time`)
+        values(#{userId,jdbcType=INTEGER},#{panNo,jdbcType=VARCHAR},#{message,jdbcType=VARCHAR},#{success,jdbcType=VARCHAR},#{pan_status,jdbcType=VARCHAR},#{first_name,jdbcType=VARCHAR},#{last_name,jdbcType=VARCHAR},#{transaction_id,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{panAuth,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+
+    <select id="getPanInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+        user_id, pan_no, message, success, pan_status, first_name, last_name, `transaction_id`, `status`, `pan_auth`, `create_time`, max(id) as id
+        FROM
+        pan_valid_log
+        WHERE
+        pan_status = 'VALID_PAN'
+        AND pan_no = #{panNo}
+    </select>
+
+    <select id="getUserPanList" resultType="java.util.HashMap">
+        SELECT
+        user_id as userId, pan_number as panNo, first_name as firstName, last_name as lastName
+        FROM
+        cl_user_base_info
+        WHERE
+        pan_number IS NOT NULL
+    </select>
+
+</mapper>

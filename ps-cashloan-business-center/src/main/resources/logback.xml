@@ -7,7 +7,7 @@
         3、修改INFO_KAFKA_OUT->topic
      -->
     <!-- 工程、上下文名字 -->
-    <property name="APPLICATION_NAME" value="bt-wallet-center"/>
+    <property name="APPLICATION_NAME" value="ps-cashloan-business-center"/>
     <contextName>${APPLICATION_NAME}</contextName>
     <!-- 日志最大的历史 30天 -->
     <property name="MAX_HISTORY" value="30"/>

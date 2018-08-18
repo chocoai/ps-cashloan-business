@@ -7,8 +7,137 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
     <context:component-scan base-package="com.adpanshi.cashloan.business.controller" />
+
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
     <context:annotation-config/>
+
+    <!-- 配置freeMarker视图解析器 -->
+    <!-- FreeMarker视图解析 如返回student,在这里配置后缀名ftl和视图解析器 -->
+    <bean id="freemarkerResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+        <property name="cache" value="true" />
+        <property name="suffix" value=".ftl" />
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="requestContextAttribute" value="request" />
+        <!-- 将请求和会话属性作为变量暴露给FreeMarker模板使用。要做到这一点，可以设置exposeRequestAttributes或者exposeSessionAttributes为true -->
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="exposeSessionAttributes" value="true" />
+        <!-- 使用这些宏，必须设置FreeMarkerViewResolver的exposeMacroHelpers属性为true -->
+        <property name="exposeSpringMacroHelpers" value="true" />
+    </bean>
+
+    <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="utf-8" />
+        <!-- 文件大小最大值 -->
+        <property name="maxUploadSize" value="10485760000" />
+        <!-- 内存中的最大值，默认为10K
+        <property name="maxInMemorySize" value="40960" /> -->
+    </bean>
+
+    <bean id="RDobjectMapper" class="com.adpanshi.cashloan.core.common.util.json.mapper.RDObjectMapper" init-method="init">
+        <property name="dateFormatPattern" value="yyyy-MM-dd HH:mm:ss"/>
+    </bean>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="RDobjectMapper"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 指定自己定义的validator -->
+    <mvc:annotation-driven validator="validator"/>
+
+    <!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+    <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+                <value>classpath:*</value>
+                <value>classpath:*</value>
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="60"/>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/api/**/*"/>
+            <mvc:exclude-mapping path="/api/operatorReturnback.htm"/>
+            <mvc:exclude-mapping path="/api/actzm/mine/zhima/AuthCallBack.htm"/>
+            <mvc:exclude-mapping path="/api/actzm/mine/youdun/livingCallBack.htm"/>
+            <mvc:exclude-mapping path="/api/user/h5SendSms.htm"/>
+            <mvc:exclude-mapping path="/api/h5/imgCode/generate.htm"/>
+            <mvc:exclude-mapping path="/api/user/wxRegister.htm"/>
+            <mvc:exclude-mapping path="/api/user/wxRegisterNex.htm"/>
+            <mvc:exclude-mapping path="/api/user/isPhoneExists.htm"/>
+            <!-- 同盾(数据魔盒) 运营商认证-->
+            <mvc:exclude-mapping path="/api/act/rongdu/operatorTongdunCallback.htm"/>
+            <mvc:exclude-mapping path="/api/act/fentuan/operatorTongdunCallback.htm"/>
+            <!-- 天创   运营商认证 -->
+            <mvc:exclude-mapping path="/api/tc/*.htm"/>
+            <mvc:exclude-mapping path="/api/act/tc/operatorTianChuangCallback.htm"/>
+            <!-- 连连认证支付,app 同步修改-->
+            <mvc:exclude-mapping path="/api/act/active/payment/syncNotify.htm"/>
+            <!-- 连连认证支付,异步接口-->
+            <mvc:exclude-mapping path="/api/active/payment/asynNotify.htm"/>
+            <!-- 借款合同-->
+            <mvc:exclude-mapping path="/api/act/borrow/agreement/find.htm"/>
+
+            <!--联信语音回调接口-->
+            <mvc:exclude-mapping path="/api/lianxin/Callback.htm"/>
+            <!-- h5下载 -->
+            <mvc:exclude-mapping path="/api/h5/app/latestDownload.htm"/>
+            <mvc:exclude-mapping path="/api/h5/list.htm"/>
+
+            <!-- 小额钱袋引导第一钱庄 -->
+            <mvc:exclude-mapping path="/api/h5/app/firstbank.htm"/>
+            <!--91征信异步回掉-->
+            <mvc:exclude-mapping path="/api/91/ReceiveServlet.htm"/>
+
+            <!--消贷同城接口-->
+            <mvc:exclude-mapping path="/api/loancity/demand.htm"/>
+            <mvc:exclude-mapping path="/api/loancity/expired.htm"/>
+            <mvc:exclude-mapping path="/api/loancity/rescind.htm"/>
+
+            <!-- 附件上传接口 -->
+            <mvc:exclude-mapping path="/api/act/file/upload.htm"/>
+            <mvc:exclude-mapping path="/api/act/file/remove.htm"/>
+            <mvc:exclude-mapping path="/api/act/user/userAuth/tenementIncome.htm"/>
+            <mvc:exclude-mapping path="/api/act/pettyLoanScene/savePettyLoanScene.htm"/>
+            <mvc:exclude-mapping path="/api/act/pettyLoanScene/intoScene.htm"/>
+
+            <!-- 新支付宝接口,同步异步 -->
+
+            <mvc:exclude-mapping path="/api/actzm/mine/zhima/syncSaasCallBack.htm"/>
+            <mvc:exclude-mapping path="/api/actzm/mine/zhima/asyncSaasCallBack.htm"/>
+
+            <!-- 公信宝接口,异步 -->
+            <mvc:exclude-mapping path="/api/actzm/mine/zhima/asyncSaasGxbCallBack.htm"/>
+
+            <!-- 异步回调 -->
+            <mvc:exclude-mapping path="/api/act/async/callback/**"/>
+            <mvc:exclude-mapping path="/api/act/mx/chatMoxieCallback.htm"/>
+
+            <!-- 银程金服,单个满标放款接口 @author yecy-->
+            <mvc:exclude-mapping path="/api/yincheng/loan.htm"/>
+            <!-- 银程金服,批量满标放款接口 @author yecy-->
+            <mvc:exclude-mapping path="/api/yincheng/loans.htm"/>
+            <bean class="com.adpanshi.cashloan.api.interceptor.ApiInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

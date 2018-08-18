@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.AppMsgTplMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.AppMsgTpl" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="type" column="type" javaType="String"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="content" column="content" javaType="String"/>
+        <result property="state" column="state" javaType="Integer"/>
+        <result property="number" column="number" javaType="String"/>
+        <result property="ctime" column="ctime" javaType="Date"/>
+        <result property="etime" column="etime" javaType="Date"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.type,
+        t.name,
+        t.content,
+        t.state,
+        t.number,
+        t.ctime,
+        t.etime
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+		 <if test="id !=null and id !=''">
+            t.id = #{id}
+         </if>
+		 <if test="type !=null and type !=''">
+            AND t.type = #{type}
+         </if>
+		 <if test="name !=null and name !=''">
+            AND t.name = #{name}
+         </if>
+		 <if test="content !=null and content !=''">
+            AND t.content = #{content}
+         </if>
+		 <if test="state !=null and state !=''">
+            AND t.state = #{state}
+         </if>
+		 <if test="number !=null and number !=''">
+            AND t.number = #{number}
+         </if>
+		 <if test="ctime !=null and ctime !=''">
+            AND t.ctime = #{ctime}
+         </if>
+         <if test="etime !=null and etime !=''">
+            AND t.etime = #{etime}
+         </if>
+        </trim>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.AppMsgTpl" >
+		<![CDATA[
+	        INSERT INTO cl_app_msg_tpl (
+	            type ,
+	            name ,
+	            content ,
+	            state ,
+	            number ,
+	            ctime ,
+	            etime
+	        ) VALUES (
+	        	#{type},
+	        	#{name},
+	        	#{content},
+	        	#{state},
+	        	#{number},
+	        	now(),
+	        	now()
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="updateSelective" parameterType="com.adpanshi.cashloan.cl.domain.AppMsgTpl">
+        UPDATE cl_app_msg_tpl 
+        <set>
+        	 <if test="type !=null and type !=''">
+	           type = #{type}
+	         </if>
+			 <if test="name !=null and name !=''">
+	            name = #{name}
+	         </if>
+			 <if test="content !=null and content !=''">
+	           content = #{content}
+	         </if>
+			 <if test="state !=null and state !=''">
+	           state = #{state}
+	         </if>
+			 <if test="number !=null and number !=''">
+	            number = #{number}
+	         </if>
+	            etime = now()
+        </set>
+        WHERE  id = #{id}
+	</update>
+	
+	
+	<select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_app_msg_tpl t
+        where t.id = #{id}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_app_msg_tpl t
+        <include refid="searchBy"/>
+    </select>
+    
+    <select id="getByTypeWithState" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_app_msg_tpl t
+        where t.type=#{type} AND t.state=#{state}
+    </select>
+               
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_sms_tpl t
+        <include refid="searchBy"/>
+    </select>
+
+</mapper>

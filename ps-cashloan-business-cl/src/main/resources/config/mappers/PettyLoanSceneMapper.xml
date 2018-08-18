@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.PettyLoanSceneMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.PettyLoanScene" id="BaseResultMap">
+        <result property="id" column="id" javaType="Long"/>
+        <result property="userId" column="user_id" javaType="Long"/>
+        <result property="sceneType" column="scene_type" javaType="Integer"/>
+        <result property="livingCity" column="living_city" javaType="String"/>
+        <result property="communityName" column="community_name" javaType="String"/>
+        <result property="floorUnit" column="floor_unit" javaType="String"/>
+        <result property="rent" column="rent" javaType="String"/>
+        <result property="rentArea" column="rent_area" javaType="String"/>
+        <result property="depositType" column="deposit_type" javaType="String"/>
+        <result property="isPress" column="is_press" javaType="String"/>
+        <result property="natureProperty" column="nature_property" javaType="String"/>
+        <result property="houseType" column="house_type" javaType="String"/>
+        <result property="status" column="status" javaType="Integer"/>
+        <result property="gmtCreateTime" column="gmt_create_time" javaType="Date"/>
+        <result property="gmtUpdateTimes" column="gmt_update_times" javaType="Date"/>
+        <result property="history" column="history" javaType="String"/>
+        <result property="startTime" column="start_time" javaType="Date"/>
+        <result property="validityTime" column="validity_time" javaType="Date"/>
+        <result property="remarks" column="remarks" javaType="String"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        t.id,
+        t.user_id,
+        t.scene_type,
+        t.living_city,
+        t.community_name,
+        t.floor_unit,
+        t.rent,
+        t.rent_area,
+        t.deposit_type,
+        t.is_press,
+        t.nature_property,
+        t.house_type,
+        t.status,
+        t.gmt_create_time,
+        t.gmt_update_times,
+        t.history,
+        t.start_time,
+        t.validity_time,
+        t.remarks
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		 <if test="@OGNL@isNotEmpty(id)">
+            AND t.id = #{id}
+         </if>
+		 <if test="@OGNL@isNotEmpty(userId)">
+            AND t.user_id = #{userId}
+         </if>
+		 <if test="@OGNL@isNotEmpty(sceneType)">
+            AND t.scene_type = #{sceneType}
+         </if>
+         <if test="@OGNL@isNotEmpty(livingCity)">
+            AND t.living_city = #{livingCity}
+         </if>
+         <if test="@OGNL@isNotEmpty(communityName)">
+            AND t.community_name = #{communityName}
+         </if>
+         <if test="@OGNL@isNotEmpty(floorUnit)">
+            AND t.floor_unit = #{floorUnit}
+         </if>
+         <if test="@OGNL@isNotEmpty(rent)">
+            AND t.rent = #{rent}
+         </if>
+         <if test="@OGNL@isNotEmpty(rentArea)">
+            AND t.rent_area = #{rentArea}
+         </if>
+         <if test="@OGNL@isNotEmpty(depositType)">
+            AND t.deposit_type = #{depositType}
+         </if>
+         <if test="@OGNL@isNotEmpty(isPress)">
+            AND t.is_press = #{isPress}
+         </if>
+         <if test="@OGNL@isNotEmpty(natureProperty)">
+            AND t.nature_property = #{natureProperty}
+         </if>
+         <if test="@OGNL@isNotEmpty(houseType)">
+            AND t.house_type = #{houseType}
+         </if>
+		 <if test="@OGNL@isNotEmpty(status)">
+            AND t.status = #{status}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtCreateTime)">
+            AND t.gmt_create_time = #{gmtCreateTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(gmtUpdateTimes)">
+            AND t.gmt_update_times = #{gmtUpdateTimes}
+         </if>
+		 <if test="@OGNL@isNotEmpty(history)">
+            AND t.history = #{history}
+         </if>
+		 <if test="@OGNL@isNotEmpty(startTime)">
+            AND t.start_time = #{startTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(validityTime)">
+            AND t.validity_time = #{validityTime}
+         </if>
+		 <if test="@OGNL@isNotEmpty(remarks)">
+            AND t.remarks = #{remarks}
+         </if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.PettyLoanScene" >
+		<![CDATA[
+	        INSERT INTO cl_petty_loan_scene (
+	            user_id ,
+	            scene_type ,
+	            living_city,
+		        community_name,
+		        floor_unit,
+		        rent,
+		        rent_area,
+		        deposit_type,
+		        is_press,
+		        nature_property,
+		        house_type,
+	            status ,
+	            gmt_create_time ,
+	            gmt_update_times ,
+	            history ,
+	            start_time ,
+	            validity_time ,
+	            remarks 
+	        ) VALUES (
+	        	#{userId},
+	        	#{sceneType},
+	        	#{livingCity},
+		        #{communityName},
+		        #{floorUnit},
+		        #{rent},
+		        #{rentArea},
+		        #{depositType},
+		        #{isPress},
+		        #{natureProperty},
+		        #{houseType},
+	        	#{status},
+	        	NOW(),
+	        	#{gmtUpdateTimes},
+	        	#{history},
+	        	#{startTime},
+	        	#{validityTime},
+	        	#{remarks}
+	        )
+	    ]]>
+    	<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+	</insert>
+	
+	<update id="update" parameterType="com.adpanshi.cashloan.cl.domain.PettyLoanScene">
+        UPDATE cl_petty_loan_scene 
+        <set>
+        	<if test="@OGNL@isNotEmpty(userId)">
+	            user_id = #{userId},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(sceneType)">
+	            scene_type = #{sceneType},
+	        </if>
+	         <if test="@OGNL@isNotEmpty(livingCity)">
+	            living_city = #{livingCity},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(communityName)">
+	            community_name = #{communityName},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(floorUnit)">
+	            floor_unit = #{floorUnit},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(rent)">
+	            rent = #{rent},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(rentArea)">
+	            rent_area = #{rentArea},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(depositType)">
+	            deposit_type = #{depositType},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(isPress)">
+	            is_press = #{isPress},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(natureProperty)">
+	            nature_property = #{natureProperty},
+	         </if>
+	         <if test="@OGNL@isNotEmpty(houseType)">
+	            house_type = #{houseType},
+	         </if>
+        	<if test="@OGNL@isNotEmpty(status)">
+	            status = #{status},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(gmtCreateTime)">
+	            gmt_create_time = #{gmtCreateTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(gmtUpdateTimes)">
+	            gmt_update_times = #{gmtUpdateTimes},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(history)">
+	            history = #{history},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(startTime)">
+	            start_time = #{startTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(validityTime)">
+	            validity_time = #{validityTime},
+	        </if>
+        	<if test="@OGNL@isNotEmpty(remarks)">
+	            remarks = #{remarks},
+	        </if>
+        </set>
+        WHERE id = #{id}
+	</update>
+	
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	<![CDATA[
+       	FROM cl_petty_loan_scene t
+       	WHERE t.id = #{value}
+		]]>
+    </select>
+    
+    <!-- 根据userId查询 -->
+    <select id="findpettyLoanSceneByUserId" parameterType="map" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_petty_loan_scene t
+       	WHERE t.user_id = #{userId} AND t.status=1 order by t.gmt_create_time DESC LIMIT 1
+    </select>
+	
+	<select id="listSelective" parameterType="map" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+	    FROM cl_petty_loan_scene t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+
+	<select id="queryCount" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_petty_loan_scene t
+        <where> <include refid="searchBy"/>  </where>
+	</select>
+
+	<!-- 根据给定用户查询最新的一条场景 userId -->
+	<select id="queryPettyLoanSceneByLast" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_petty_loan_scene t
+       	WHERE t.user_id = #{userId} AND t.status=#{status} AND t.scene_type IN
+       		<foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		       #{itemScene}
+	        </foreach>
+       	 ORDER BY t.gmt_create_time DESC LIMIT 1
+    </select>
+    
+    <!-- 根据给定用户查询最新的一条场景-且场景没有关联借款订单的记录(借款前) -->
+	<select id="queryPettyLoanSceneByBeforBorrow" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />
+       	FROM cl_petty_loan_scene t
+       	WHERE t.user_id = #{userId} AND t.status=1 AND t.scene_type IN
+       		<foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		       #{itemScene}
+	        </foreach>
+	        AND NOT EXISTS (SELECT b.id FROM cl_petty_loan_scene_borrow b WHERE b.petty_loan_scene_id=t.id)
+       	 ORDER BY t.gmt_create_time DESC LIMIT 1
+    </select>
+    
+    <!-- 更新指定用户对应的小额贷场景状态为失效 -->
+    <update id="updateLoanSceneExpiryByUserIdWithSceneType">
+        UPDATE cl_petty_loan_scene 
+        	SET status =0,gmt_update_times=NOW()
+        WHERE status=1 AND user_id=#{userId} AND scene_type IN 
+          <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		       #{itemScene}
+	      </foreach>
+	</update>
+	
+	<!-- 通过userId、borrowId、sceneType反查使用的租房场景 -->
+	<select id="queryLoanSceneByBorIdScenTypeWithUserId" resultMap="BaseResultMap">
+	   	SELECT <include refid="Base_Column_List" />	 FROM cl_petty_loan_scene t 
+	   		WHERE t.scene_type IN
+	   		 <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+		       #{itemScene}
+	         </foreach>
+	   		 AND t.user_id=#{userId} AND EXISTS (
+				SELECT plsb.id FROM cl_petty_loan_scene_borrow plsb WHERE plsb.user_id=t.user_id AND t.id=plsb.petty_loan_scene_id 
+					AND plsb.user_id=#{userId} AND plsb.borrow_id=#{borrowId} 
+			) ORDER BY t.gmt_create_time DESC LIMIT 1
+    </select>
+    
+    <select id="queryByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	   	SELECT <include refid="Base_Column_List" />	 FROM cl_petty_loan_scene t 
+	   		WHERE t.user_id=#{userId} and t.status=1
+    </select>
+    
+    <!-- 查询用户最近一次提交的场景 -->
+    <select id="getPettyLoanSceneLastByUserId" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List" /> FROM cl_petty_loan_scene t where t.scene_type IN 
+    	 <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+    	 	 #{itemScene}
+    	 </foreach>
+    	 AND t.user_id=#{userId} AND t.`status`=1 AND EXISTS (
+			SELECT u.id FROM cl_user_auth u WHERE u.user_id=#{userId} AND u.user_id= t.user_id 
+		) ORDER BY t.gmt_create_time DESC LIMIT 1
+    </select>
+    
+    <!--  -->
+    <!-- 查询用户最近一次提交的场景,每次上传场景时、都需要把之前的场景做废这样就导致、已还款的订单会查询不到 -->
+    <select id="getPettyLoanSceneLastByUserIdWithBorrowMainId" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List" /> FROM cl_petty_loan_scene t where t.scene_type IN 
+    	 <foreach item="itemScene" index="index" collection="sceneTypes" open="(" separator="," close=")">
+    	 	 #{itemScene}
+    	 </foreach>
+    	 AND t.user_id=#{userId}
+    	 AND EXISTS (SELECT u.id FROM cl_user_auth u WHERE u.user_id=#{userId} AND u.user_id= t.user_id) 
+    	 AND EXISTS (SELECT sb.id FROM cl_petty_loan_scene_borrow sb WHERE t.id=sb.petty_loan_scene_id AND sb.borrow_id=#{borrowMainId})
+    	 ORDER BY t.gmt_create_time DESC LIMIT 1
+    </select>
+	
+</mapper>

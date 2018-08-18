@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.AppSessionMapper">
+	<resultMap type="com.adpanshi.cashloan.cl.domain.AppSession" id="BaseResultMap">
+		<result property="id" column="id" javaType="Long"/>
+		<result property="token" column="token" javaType="String"/>
+		<result property="refreshToken" column="refresh_token" javaType="String"/>
+		<result property="userId" column="user_id" javaType="Long"/>
+		<result property="expireTime" column="expire_time" javaType="Date"/>
+		<result property="lastAccessTime" column="last_access_time" javaType="Date"/>
+		<result property="status" column="status" javaType="Integer"/>
+		<result property="session" column="session" javaType="String"/>
+		<result property="errData" column="err_data" javaType="String"/>
+		<result property="loginType" column="login_type" javaType="Integer"/>
+		<result property="loginId" column="login_id" javaType="Long"/>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+        t.id,
+        t.token,
+        t.refresh_token,
+        t.user_id,
+        t.expire_time,
+        t.last_access_time,
+        t.status,
+        t.session,
+        t.err_data,
+        t.login_type,
+        t.login_id
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="searchBy">
+		<if test="@OGNL@isNotEmpty(id)">
+			AND t.id = #{id}
+		</if>
+		<if test="@OGNL@isNotEmpty(token)">
+			AND t.token = #{token}
+		</if>
+		<if test="@OGNL@isNotEmpty(refreshToken)">
+			AND t.refresh_token = #{refreshToken}
+		</if>
+		<if test="@OGNL@isNotEmpty(userId)">
+			AND t.user_id = #{userId}
+		</if>
+		<if test="@OGNL@isNotEmpty(expireTime)">
+			AND t.expire_time = #{expireTime}
+		</if>
+		<if test="@OGNL@isNotEmpty(lastAccessTime)">
+			AND t.last_access_time = #{lastAccessTime}
+		</if>
+		<if test="@OGNL@isNotEmpty(status)">
+			AND t.status = #{status}
+		</if>
+		<if test="@OGNL@isNotEmpty(session)">
+			AND t.session = #{session}
+		</if>
+		<if test="@OGNL@isNotEmpty(errData)">
+			AND t.err_data = #{errData}
+		</if>
+		<if test="@OGNL@isNotEmpty(loginType)">
+			AND t.login_type = #{loginType}
+		</if>
+		<if test="@OGNL@isNotEmpty(loginId)">
+			AND t.login_id = #{loginId}
+		</if>
+	</sql>
+
+	<insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.AppSession" >
+		<![CDATA[
+	        INSERT INTO cl_app_session (
+	            token ,
+	            refresh_token ,
+	            user_id ,
+	            expire_time ,
+	            last_access_time ,
+	            status ,
+	            session ,
+	            err_data ,
+	            login_type ,
+	            login_id 
+	        ) VALUES (
+	        	#{token},
+	        	#{refreshToken},
+	        	#{userId},
+	        	#{expireTime},
+	        	#{lastAccessTime},
+	        	#{status},
+	        	#{session},
+	        	#{errData},
+	        	#{loginType},
+	        	#{loginId}
+	        )
+	    ]]>
+		<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+
+	<update id="updateSelective">
+		UPDATE cl_app_session
+		<set>
+			<if test="@OGNL@isNotEmpty(token)">
+				token = #{token},
+			</if>
+			<if test="@OGNL@isNotEmpty(refreshToken)">
+				refresh_token = #{refreshToken},
+			</if>
+			<if test="@OGNL@isNotEmpty(userId)">
+				user_id = #{userId},
+			</if>
+			<if test="@OGNL@isNotEmpty(expireTime)">
+				expire_time = #{expireTime},
+			</if>
+			<if test="@OGNL@isNotEmpty(lastAccessTime)">
+				last_access_time = #{lastAccessTime},
+			</if>
+			<if test="@OGNL@isNotEmpty(status)">
+				status = #{status},
+			</if>
+			<if test="@OGNL@isNotEmpty(session)">
+				session = #{session},
+			</if>
+			<if test="@OGNL@isNotEmpty(errData)">
+				err_data = #{errData},
+			</if>
+			<if test="@OGNL@isNotEmpty(loginType)">
+				login_type = #{loginType},
+			</if>
+			<if test="@OGNL@isNotEmpty(loginId)">
+				login_id = #{loginId},
+			</if>
+		</set>
+		WHERE  id = #{id}
+	</update>
+
+	<select id="findByPrimary" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		<![CDATA[
+       	FROM cl_app_session t
+       	WHERE t.id = #{value}
+		]]>
+	</select>
+
+	<!-- 根据userId查询最新的一条记录 -->
+	<select id="queryLateAppSessionByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM cl_app_session t
+		WHERE t.status =1 AND t.user_id=#{userId} ORDER BY t.id DESC LIMIT 1
+	</select>
+
+	<!-- 根据userId查询最新的一条记录 -->
+	<select id="queryLateAppSessionByToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM cl_app_session t
+		WHERE t.token=#{value} ORDER BY t.id DESC LIMIT 1
+	</select>
+
+	<delete id="deleteByToken" parameterType="java.lang.String" >
+		DELETE FROM cl_app_session
+		WHERE token = #{token}
+	</delete>
+
+	<delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM cl_app_session
+		WHERE id = #{id}
+	</delete>
+
+	<select id="queryCount" parameterType="map" resultType="java.lang.Integer">
+		select count(t.id) FROM cl_app_session t
+		<where> <include refid="searchBy"/>  </where>
+	</select>
+</mapper>

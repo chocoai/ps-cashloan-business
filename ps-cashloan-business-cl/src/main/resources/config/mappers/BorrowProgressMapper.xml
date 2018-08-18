@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- cl_borrow_progress表:借款进度表模块 -->
+<mapper namespace="com.adpanshi.cashloan.cl.mapper.BorrowProgressMapper">
+    <!--返回Map-->
+    <resultMap id="BaseResultMap" type="com.adpanshi.cashloan.cl.domain.BorrowProgress">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="borrow_id" property="borrowId" jdbcType="BIGINT" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="userBorrowMap"  extends="BaseResultMap" type="com.adpanshi.cashloan.cl.model.ManageBorrowProgressModel">
+         <result column="real_name" property="realName" jdbcType="VARCHAR" />
+         <result column="phone" property="phone" jdbcType="VARCHAR" />
+    	 <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+         <result column="amount" property="amount" jdbcType="DECIMAL" />
+
+    </resultMap>
+
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="Base_Column_List">
+        id,user_id,borrow_id,state,remark,create_time
+    </sql>
+
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="searchBy">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id !='' and id !=null">
+                id  = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="userId !='' and userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="borrowId !='' and borrowId !=null">
+                and borrow_id = #{borrowId,jdbcType=BIGINT}
+            </if>
+            <if test="state !='' and state !=null">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="remark !='' and remark !=null">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime !=null">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+
+
+    <insert id="save" parameterType="com.adpanshi.cashloan.cl.domain.BorrowProgress">
+        insert into cl_borrow_progress(user_id,borrow_id,state,remark,create_time)values(#{userId,jdbcType=BIGINT},#{borrowId,jdbcType=BIGINT},#{state,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.adpanshi.cashloan.cl.domain.BorrowProgress">
+        update cl_borrow_progress set
+            user_id = #{userId,jdbcType=BIGINT},
+            borrow_id = #{borrowId,jdbcType=BIGINT},
+            state = #{state,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id ,jdbcType=BIGINT}
+    </update>
+
+
+	<update id="updateSelective" parameterType="java.util.HashMap">
+		update cl_borrow_progress
+		<set>
+			<if test="userId != null and userId != '' ">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="borrowId != null and borrowId != '' ">
+				borrow_id = #{borrowId,jdbcType=BIGINT},
+			</if>
+			<if test="state != null and state != '' ">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != '' ">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null ">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id ,jdbcType=BIGINT}
+	</update>
+
+
+    <select id="findByPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<select id="findSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        <include refid="searchBy"/>
+        <if test="orderByDesc !=null and orderByDesc!=''">
+            order by ${orderByDesc}
+        </if>
+        <if test="limit !=null and limit!=''">
+            limit #{limit,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="listSelective" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        <include refid="searchBy"/>
+    </select>
+
+    <select id="listIndex" resultType="com.adpanshi.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        <include refid="searchBy"/>
+        ORDER BY state ASC
+    </select>
+
+    <select id="listProgress" resultType="com.adpanshi.cashloan.cl.model.BorrowProgressModel" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        <![CDATA[where state <= #{state,jdbcType=VARCHAR} and borrow_id = #{borrowId,jdbcType=BIGINT}]]>
+        ORDER BY state ASC
+    </select>
+
+    <select id="listModel" resultMap="userBorrowMap" parameterType="java.util.HashMap">
+		select
+			u.real_name,u.phone,b.order_no,b.amount,p.id,p.user_id,p.borrow_id,p.state,p.remark,p.create_time
+		from cl_borrow b
+		left join cl_user_base_info u on u.user_id = b.user_id
+		join cl_borrow_progress p on p.borrow_id = b.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="realName !='' and realName !=null">
+				and u.real_name like concat("%",#{realName,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="phone !='' and phone !=null">
+				and u.phone like concat("%",#{phone,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="loginName !='' and loginName !=null">
+				and u.phone like concat("%",#{loginName,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="orderNo !='' and orderNo !=null">
+				and b.order_no like concat("%",#{orderNo,jdbcType=VARCHAR},"%")
+			</if>
+			<if test="state != null and state != '' ">
+				and p.state = #{state,jdbcType=VARCHAR}
+			</if>
+		</trim>
+		ORDER BY p.create_time DESC ,p.id DESC
+	</select>
+
+    <select id="findProcessByState" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        from cl_borrow_progress
+        WHERE
+        borrow_id = #{borrowId,jdbcType=BIGINT}
+        AND state in
+        <foreach item="item" collection="stateList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="saveAll" parameterType="com.adpanshi.cashloan.cl.domain.BorrowProgress">
+        insert into cl_borrow_progress(user_id,borrow_id,state,remark,create_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId,jdbcType=BIGINT},
+            #{item.borrowId,jdbcType=BIGINT},
+            #{item.state,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+
+    </insert>
+	<!-- 根据给定主订单id、userId查询子订单最近一条还款进度记录 -->
+    <select id="findLateByBorMainIdWithUserId" resultMap="BaseResultMap">
+		SELECT * FROM cl_borrow_progress t WHERE t.user_id=#{userId} AND t.state=#{state}  AND EXISTS (
+				SELECT br.id FROM cl_borrow br WHERE br.borrow_main_id =#{borMainId} AND br.state=#{state} AND t.user_id=br.user_id  AND t.borrow_id=br.id 
+		) ORDER BY t.repay_time DESC LIMIT 1
+    </select>
+
+</mapper>
